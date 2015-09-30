@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/cara" >
+        <file>images/logo_24.png</file>
+        <file>images/logo_16.png</file>
+        <file>images/logo_32.png</file>
+        <file>images/logo_48.png</file>
+        <file>images/logo_128.png</file>
+        <file>images/close.png</file>
+        <file>images/pen.png</file>
+    </qresource>
+</RCC>
