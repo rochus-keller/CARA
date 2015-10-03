@@ -31,7 +31,7 @@
 #include <Spec/StarFile.h>
 #include <Root/MessageLog.h>
 #include <Script/Engine.h>
-#include <Script/Terminal.h>
+#include <Script/Terminal2.h>
 
 #include <AidaCentral.h>
 #include <ResidueTypeView.h>
@@ -107,7 +107,7 @@ enum _ItemType {
 	_Systems,
 	_SpinLinks,
 	_MessageLog,
-	_Terminal,
+	_Terminal
 };
 
 static const char* s_names[] =
@@ -427,7 +427,7 @@ QWidget* AidaCentralAgent::createView( int type, const char* name )
 		w = new LabelingSchemeView( this, d_parent->getRep() );
 		break;
 	case _Terminal:
-		return new Lua::Terminal( this, Engine::inst() );
+		return new Lua::Terminal2( this, Engine::inst() );
 	default:
 		return new DynValueEditor( this, 
 			d_parent->getRep()->findObjectDef( Repository::keyRepository ), d_parent->getRep() );
@@ -498,7 +498,7 @@ Gui::Menu* AidaCentralAgent::createMenu( int type )
 			break;
 		case _MessageLog:
             return 0; // nicht automatisierbar
-        case _Terminal:
+		case _Terminal:
             return 0; // nicht automatisierbar
         default:
 			return 0;

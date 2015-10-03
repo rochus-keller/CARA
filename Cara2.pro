@@ -124,7 +124,6 @@ HEADERS += ../NAF/Root/Action.h \
 	../Expat/xmltok.h \
 	../Expat/xmltok_impl.h \
 	../NAF/Script/Engine.h \
-	../NAF/Script/Terminal.h \
 	../NAF/Script/Util.h \
 	../NAF/LuaQt3/LuaBox2.h \
 	../NAF/LuaQt3/LuaButton2.h \
@@ -452,7 +451,9 @@ HEADERS += ../NAF/Root/Action.h \
     ../NAF/Script/LocalsView.h \
     ../NAF/Script/ExpressionParser.h \
     PolyScope3.h \
-    ../NAF/Qtl2/QtlFrame.h
+    ../NAF/Qtl2/QtlFrame.h \
+    ../NAF/Script/Terminal2.h \
+    ../NAF/Script/Engine2.h
 
 #Source files
 SOURCES += ../NAF/Root/Action.cpp \
@@ -531,7 +532,6 @@ SOURCES += ../NAF/Root/Action.cpp \
 	../Expat/xmlrole.cpp \
 	../Expat/xmltok.cpp \
 	../NAF/Script/Engine.cpp \
-	../NAF/Script/Terminal.cpp \
 	../NAF/Script/Util.cpp \
 	../NAF/Spec/AtomType.cpp \
 	../NAF/Spec/BackCalculation.cpp \
@@ -877,7 +877,9 @@ SOURCES += ../NAF/Root/Action.cpp \
     ../NAF/Script/LocalsView.cpp \
     ../NAF/Script/ExpressionParser.cpp \
     PolyScope3.cpp \
-    ../NAF/Qtl2/QtlFrame.cpp
+    ../NAF/Qtl2/QtlFrame.cpp \
+    ../NAF/Script/Terminal2.cpp \
+    ../NAF/Script/Engine2.cpp
 
 
 #Resource file(s)

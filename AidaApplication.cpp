@@ -119,8 +119,7 @@ AidaApplication::AidaApplication():
 
 	try
 	{
-		Engine* l = Engine::inst();
-        // am 28.12.11 Konzept gendert. Neu werden wieder Lua-Patterns verwendet.
+		Engine* l = new Engine();
 		const QString appPath = QApplication::applicationDirPath();
 #ifdef _WIN32
         const QString dllExt = "dll";
@@ -374,10 +373,10 @@ void AidaApplication::handle(Root::Message& m )
 		{
 			switch( a->getType() )
 			{
-			case Engine::Update::Print:
+			case Engine::Print:
                 print_info( a->d_val1 );
 				break;
-			case Engine::Update::Error:
+			case Engine::Error:
                 print_error( a->d_val1 );
 				break;
             default:
@@ -385,12 +384,6 @@ void AidaApplication::handle(Root::Message& m )
 			}
 			m.consume();
 		}
-	}MESSAGE( Engine::Loader, a, m )
-	{
-		Repository::ScriptMap::const_iterator i = 
-			d_rep->getScripts().find( a->getName() );
-		if( i != d_rep->getScripts().end() )
-			a->setCode( (*i).second->getCode() );
 	}HANDLE_ELSE()
 		AppAgent::handle( m );
 	END_HANDLER();

@@ -46,7 +46,7 @@
 #ifdef _HasNeasy_
 #include <Neasy/Neasy.h>
 #endif
-#include <Script/Terminal.h>
+#include <Script/Terminal2.h>
 #include <Script/StackView.h>
 #include <Script/LocalsView.h>
 #include "ScriptEditor3.h"
@@ -147,8 +147,8 @@ AidaCentral::AidaCentral(Root::Agent* parent, AidaApplication* app):
 
 	Root::MessageLog::inst()->addObserver( this );
 
-    d_term = new QDockWidget( "Lua Terminal", getQt() );
-	d_term->setWidget( new Lua::Terminal( d_term, Engine::inst() ) );
+	d_term = new QDockWidget( "Lua Terminal", getQt() );
+	d_term->setWidget( new Lua::Terminal2( d_term, Engine::inst() ) );
 	d_term->setAllowedAreas( Qt::AllDockWidgetAreas );
 	d_term->setFeatures( QDockWidget::AllDockWidgetFeatures );
 	d_term->setFloating( false );
@@ -156,7 +156,7 @@ AidaCentral::AidaCentral(Root::Agent* parent, AidaApplication* app):
     getQt()->addDockWidget( Qt::BottomDockWidgetArea, d_term );
 
     d_stack = new QDockWidget( "Lua Stack", getQt() );
-    d_stack->setWidget( new StackView( Engine::inst(false), d_stack ) );
+	d_stack->setWidget( new StackView( Engine::inst(), d_stack ) );
     d_stack->setAllowedAreas( Qt::AllDockWidgetAreas );
     d_stack->setFeatures( QDockWidget::AllDockWidgetFeatures );
     d_stack->setFloating( false );
@@ -164,14 +164,14 @@ AidaCentral::AidaCentral(Root::Agent* parent, AidaApplication* app):
     getQt()->addDockWidget( Qt::BottomDockWidgetArea, d_stack );
 
     d_locals = new QDockWidget( "Lua Locals", getQt() );
-    d_locals->setWidget( new LocalsView( Engine::inst(false), d_locals ) );
+	d_locals->setWidget( new LocalsView( Engine::inst(), d_locals ) );
     d_locals->setAllowedAreas( Qt::AllDockWidgetAreas );
     d_locals->setFeatures( QDockWidget::AllDockWidgetFeatures );
     d_locals->setFloating( false );
     d_locals->setVisible( false );
     getQt()->addDockWidget( Qt::BottomDockWidgetArea, d_locals );
 
-    Engine::inst(false)->addObserver(this);
+	Engine::inst()->addObserver(this);
     // d_app->runScripts(); // wird in run oder runTerminal ausgefhrt
 
 	/* TEST
@@ -187,7 +187,7 @@ AidaCentral::AidaCentral(Root::Agent* parent, AidaApplication* app):
 
 AidaCentral::~AidaCentral()
 {
-    Engine::inst(false)->removeObserver(this);
+	Engine::inst()->removeObserver(this);
 	Root::MessageLog::inst()->removeObserver( this );
 	try
 	{
@@ -275,7 +275,7 @@ void AidaCentral::buildMenus()
 	Gui::Menu::item( menuTools, this, "Project Spectrum...", DoThis::Flatten, false );
 	Gui::Menu::item( menuTools, this, "Convert to CARA Spectrum...", DoThis::Convert, false );
 	Gui::Menu::item( menuTools, this, "Convert to EASY Spectrum...", DoThis::Convert2, false );
-	Gui::Menu::item( menuTools, this, "Lua Terminal...", DoThis::LuaBox, false, Qt::CTRL+Qt::Key_L );
+	Gui::Menu::item( menuTools, this, "Lua Terminal2...", DoThis::LuaBox, false, Qt::CTRL+Qt::Key_L );
 	menuBar()->insertItem( "&Tools", menuTools );
 
 	Gui::Menu* menuSetup = new Gui::Menu( menuBar() );
@@ -424,8 +424,8 @@ void AidaCentral::handle(Root::Message& m )
     {
         switch( a->getType() )
         {
-        case Engine::Update::LineHit:
-        case Engine::Update::BreakHit:
+		case Engine::LineHit:
+		case Engine::BreakHit:
             d_term->setVisible(true);
             d_stack->setVisible(true);
             d_locals->setVisible(true);
@@ -540,7 +540,7 @@ bool AidaCentral::handleSave(bool as) const
 
 bool AidaCentral::askToCloseWindow() const
 {
-    if( Engine::inst(false)->isExecuting() )
+	if( Engine::inst()->isExecuting() )
     {
         QMessageBox::information( getQt(), "About to quit", "Cannot quit CARA while Lua debugger is running!" );
         return false;

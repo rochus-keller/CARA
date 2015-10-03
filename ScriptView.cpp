@@ -239,18 +239,18 @@ void ScriptView::handle( Root::Message& msg )
     {
         switch( a->getType() )
         {
-        case Lua::Engine::Update::Print:
-        case Lua::Engine::Update::Error:
+		case Lua::Engine::Print:
+		case Lua::Engine::Error:
             {
                 Root::ReportStatus msg( a->d_val1 );
                 msg.sendTo(d_parent);
             }
             break;
-        case Lua::Engine::Update::LineHit:
-        case Lua::Engine::Update::BreakHit:
+		case Lua::Engine::LineHit:
+		case Lua::Engine::BreakHit:
             doDebugHit(a->d_val1, a->d_val2);
             break;
-        case Lua::Engine::Update::ActiveLevel:
+		case Lua::Engine::ActiveLevel:
             doActiveLevel(a->d_val1, a->d_val2);
             break;
         default:
