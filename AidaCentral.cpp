@@ -132,7 +132,19 @@ ACTION_SLOTS_END( AidaCentral )
 AidaCentral::AidaCentral(Root::Agent* parent, AidaApplication* app):
 	MainWindow( parent, true, true, true ), d_app( app ),d_context(0)
 {
+	// CARA 1.9.2: use default style and bigger Font on Mac
+#ifdef QT_MAC_USE_COCOA
+	// Qt sets the default Style to Aqua
+	s_style = "Macintosh (aqua)"; // no way to get the name from QStyle
+	QFont f = QApplication::font();
+	f.setPointSize(11);
+	SpinPointView::s_defaultFont = f;
+	SpinPointView3::s_defaultFont = f;
+	PeakPlaneView::s_default = f;
+	PeakPlaneView3::s_default = f;
+#else
 	qApp->setStyle( s_style );
+#endif
 
     d_agent = new AidaCentralAgent( this );
 	getQt()->setCentralWidget( d_agent );

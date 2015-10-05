@@ -389,6 +389,7 @@ HEADERS += ../NAF/Root/Action.h \
     ../NAF/Qtl2/QtlToolBar.h \
     ../NAF/Qtl2/QtlMatrix.h \
     ../NAF/Qtl2/QtlPoint.h \
+    ../NAF/Qtl2/QtlPrinter.h \
     ../NAF/Qtl2/QtlMenuBar.h \
     ../NAF/Qtl2/QtlMessageBox.h \
     ../NAF/Qtl2/QtlPushButton.h \
@@ -408,6 +409,8 @@ HEADERS += ../NAF/Root/Action.h \
     ../NAF/Qtl2/QtlRect.h \
     ../NAF/Qtl2/QtlPolygon.h \
     ../NAF/Qtl2/QtlBitmap.h \
+    ../NAF/Qtl2/QtlPainter.h \
+    ../NAF/Qtl2/QtlTextOption.h \
     ../NAF/Qtl2/QtlPen.h \
     ../NAF/Qtl2/QtlBrush.h \
     ../NAF/Qtl2/QtlImage.h \
@@ -446,6 +449,10 @@ HEADERS += ../NAF/Root/Action.h \
     ../NAF/Script2/PtrBinding.h \
     ../NAF/Qtl2/QtlTreeWidgetItem.h \
     ../NAF/Qtl2/QtlTreeWidget.h \
+    ../NAF/Qtl2/QtlTableView.h \
+    ../NAF/Qtl2/QtlAbstractItemView.h \
+    ../NAF/Qtl2/QtlTableWidgetItem.h \
+    ../NAF/Qtl2/QtlCustomWidget.h \
     ../NAF/Script/DisAss.h \
     ../NAF/Script/StackView.h \
     ../NAF/Script/LocalsView.h \
@@ -453,7 +460,8 @@ HEADERS += ../NAF/Root/Action.h \
     PolyScope3.h \
     ../NAF/Qtl2/QtlFrame.h \
     ../NAF/Script/Terminal2.h \
-    ../NAF/Script/Engine2.h
+    ../NAF/Script/Engine2.h \
+    ../NAF/Qtl2/QtlTableWidget.h
 
 #Source files
 SOURCES += ../NAF/Root/Action.cpp \
@@ -803,6 +811,8 @@ SOURCES += ../NAF/Root/Action.cpp \
     ../NAF/Qtl2/QtlPen.cpp \
     ../NAF/Qtl2/QtlPolygon.cpp \
     ../NAF/Qtl2/QtlSizePolicy.cpp \
+    ../NAF/Qtl2/QtlPrinter.cpp \
+    ../NAF/Qtl2/QtlPainter.cpp \
     ../NAF/Qtl2/QtlImage.cpp \
     ../NAF/Qtl2/QtlPixmap.cpp \
     ../NAF/Qtl2/QtlToolButton.cpp \
@@ -832,6 +842,8 @@ SOURCES += ../NAF/Root/Action.cpp \
     ../NAF/Qtl2/QtlChar.cpp \
     ../NAF/Qtl2/QtlTextEdit.cpp \
     ../NAF/Qtl2/QtlTabBar.cpp \
+    ../NAF/Qtl2/QtlTextOption.cpp \
+    ../NAF/Qtl2/QtlTableView.cpp \
     ../NAF/Qtl2/QtlButtonGroup.cpp \
     ../NAF/Qtl2/QtlActionGroup.cpp \
     ../NAF/Qtl2/QtlMenu.cpp \
@@ -852,6 +864,9 @@ SOURCES += ../NAF/Root/Action.cpp \
     ../NAF/Qtl2/QtlDate.cpp \
     ../NAF/Qtl2/QtlTime.cpp \
     ../NAF/Qtl2/Variant.cpp \
+    ../NAF/Qtl2/QtlAbstractItemView.cpp \
+    ../NAF/Qtl2/QtlTableWidgetItem.cpp \
+    ../NAF/Qtl2/QtlCustomWidget.cpp \
 	../NAF/LuaQt3/LuaPainter2.cpp \
 	../NAF/LuaQt3/LuaPlot2.cpp \
 	../NAF/LuaQt3/LuaBox2.cpp \
@@ -879,7 +894,8 @@ SOURCES += ../NAF/Root/Action.cpp \
     PolyScope3.cpp \
     ../NAF/Qtl2/QtlFrame.cpp \
     ../NAF/Script/Terminal2.cpp \
-    ../NAF/Script/Engine2.cpp
+    ../NAF/Script/Engine2.cpp \
+    ../NAF/Qtl2/QtlTableWidget.cpp
 
 
 #Resource file(s)

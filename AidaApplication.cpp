@@ -38,8 +38,8 @@ using namespace Lua;
 #define PROMPT		"CARA> "
 #define PROMPT2		"CARA>> "
 
-const char* AidaApplication::s_release = "1.9.1";
-const char* AidaApplication::s_relDate = "2015-10-01";
+const char* AidaApplication::s_release = "1.9.1.2";
+const char* AidaApplication::s_relDate = "2015-10-05";
 const char* AidaApplication::s_copyRightYear = "2015";
 const char* AidaApplication::s_appName = "CARA";
 const char* AidaApplication::s_help = 
@@ -106,6 +106,19 @@ static BOOL WINAPI MyConsoleHandler( DWORD dwCtrlType )
 
 #endif
 
+static int type(lua_State * L)
+{
+	luaL_checkany(L, 1);
+	if( lua_type(L,1) == LUA_TUSERDATA )
+	{
+		ValueBindingBase::pushTypeName( L, 1 );
+		if( !lua_isnil( L, -1 ) )
+			return 1;
+		lua_pop( L, 1 );
+	}
+	lua_pushstring(L, luaL_typename(L, 1) );
+	return 1;
+}
 
 ////////////////////////////////////////////////////
 
@@ -274,6 +287,7 @@ AidaApplication::AidaApplication():
 		{
             QString msg = "Loading ";
             msg += rep;
+
             Root::MessageLog::inst()->info( "Repository", msg.toLatin1() );
 			d_rep = new Repository();
 			d_rep->load( rep );
@@ -303,11 +317,12 @@ AidaApplication::AidaApplication():
 		Lua::LuaDlg2::install( Engine::inst()->getCtx() );
         Lua::LuaGui2::install( Engine::inst() );
     }
-	// Lua::LuaDlg::install2( Engine::inst()->getCtx() ); // Doppelung der nicht-interaktiven
 	Lua::LuaDlg2::install2( Engine::inst()->getCtx() ); 
 	LuaSpec2::install( Engine::inst()->getCtx() );
 	LuaSpec2::installRepository( Engine::inst()->getCtx(), d_rep );
 	LuaDomDocument2::install( Engine::inst()->getCtx() );
+	lua_pushcfunction( Engine::inst()->getCtx(), type );
+	lua_setfield( Engine::inst()->getCtx(), LUA_GLOBALSINDEX, "type" );
 
 	if( true ) // isSilent() || !hasGui() ) 
 		Engine::inst()->addObserver( this );

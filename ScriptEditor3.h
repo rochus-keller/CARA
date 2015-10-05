@@ -37,35 +37,19 @@ protected slots:
 	void updateCursor();
 public slots:
     void handleShowLinenumbers();
-    void handleExportPdf();
     void handleRemoveAllBreaks();
-    void handleUnindent();
-    void handleIndent();
     void handleBreakpoint();
     void handleAbort();
     void handleSingleStep();
     void handleContinue();
-    void handleSelectBrace();
-    void handlePrint();
-    void handleFindAgain();
-    void handleReplace();
-    void handleFind();
-    void handleGoto();
-    void handleEditCut();
-    void handleEditSelectAll();
-    void handleEditPaste();
-    void handleEditCopy();
-    void handleEditRedo();
-    void handleEditUndo();
+	//void handleSelectBrace();
     void handleSetFont();
     void handleExecute();
     void handleCheck();
-    void handleSetIndent();
     void handleSetDebug();
     void handleBreakAtFirst();
 private:
 	Root::Ref<Lua::Engine> d_lua;
-	QByteArray d_find;
 };
 
 #endif // !defined(ScriptEditor3__INCLUDED_)

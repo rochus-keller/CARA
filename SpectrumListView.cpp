@@ -19,6 +19,7 @@
 #include <QFileDialog> 
 #include <QApplication>
 #include <QComboBox>
+#include <QInputDialog>
 #include <Root/Application.h>
 #include <Spec/Factory.h>
 #include <Spec/SpecRotator.h>
@@ -376,6 +377,7 @@ Gui::Menu* SpectrumListView::createPopup(Spec::Repository* rep )
     Gui::Menu::item( pop, "Open FourDScope...", OpenFourDScope, false );
 	Gui::Menu::item( pop, "Open FourDScope (rotated)...", OpenFourDScopeRot, false );
 	pop->insertSeparator();
+#ifndef QT_MAC_USE_COCOA
  	Gui::Menu* pop2 = new Gui::Menu( pop, "Add Spectrum" );
 	pop->addMenu( pop2 );
 	typedef std::map<QByteArray ,SpectrumType*> Sort;
@@ -391,6 +393,10 @@ Gui::Menu* SpectrumListView::createPopup(Spec::Repository* rep )
 	{
 		Gui::Menu::item( pop2, (*q).second->getName().data(), AddSpectrum, false )->addParam( (*q).second );
 	}
+#else
+	// Avoid submenus on OS X Aqua because Qt does strange things with them
+	Gui::Menu::item( pop, "Add Spectrum...", AddSpectrum, false );
+#endif
 	Gui::Menu::item( pop, "&Map to Type...", MapToType, false );
 	Gui::Menu::item( pop, "&Rename Spectrum...", RenameSpectrum, false );
 	Gui::Menu::item( pop, "Assign Sample...", SetSample, false );
@@ -1096,20 +1102,44 @@ void SpectrumListView::handleAddSpectrum(Root::Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 	
-	QFileDialog dlg( this, "Select Spectrum Files", Root::AppAgent::getCurrentDir(), 
-        Spectrum::s_fileFilter );
+	SpectrumType* st = dynamic_cast<SpectrumType*>( a.getParam( 0 ).getObject() );
+	if( st == 0 )
+	{
+		typedef std::map<QByteArray ,SpectrumType*> Sort;
+		Sort sort;
+		const Repository::SpectrumTypeMap& stm = d_rep->getSpecTypes();
+		Repository::SpectrumTypeMap::const_iterator p;
+		for( p = stm.begin(); p != stm.end(); ++p )
+			sort[ (*p).first.data() ] = (*p).second;
+		Sort::const_iterator q;
+		QStringList names;
+		QList<SpectrumType*> types;
+		for( q = sort.begin(); q != sort.end(); ++q )
+		{
+			names.push_back((*q).second->getName().data());
+			types.append((*q).second );
+		}
+		bool ok;
+		const int selected = names.indexOf( QInputDialog::getItem( this, "Add Spectrum - CARA",
+			"Select a spectrum type from the list:", names, 0, false, &ok ) );
+		if( !ok || selected == -1 )
+			return;
+		else
+			st = types[selected];
+	}
+
+	QFileDialog dlg( this, "Select Spectrum Files", Root::AppAgent::getCurrentDir(),
+		Spectrum::s_fileFilter );
 	dlg.setFileMode( QFileDialog::ExistingFiles );
 
 	if( dlg.exec() != QDialog::Accepted )
 		return;
-	
-	QStringList files = dlg.selectedFiles();
-	QStringList::Iterator it;
 
-	// TODO: irgendwie in Relativpfad verwandeln
+	const QStringList files = dlg.selectedFiles();
 
 	QString str;
 	QString log;
+	QStringList::const_iterator it;
 	QApplication::setOverrideCursor( Qt::waitCursor );
     //Root::UInt32 old = FileSpectrum::getMapThreshold();	// RISK
 	//FileSpectrum::setMapThreshold( s_max );	// RISK Sicher mit Mapping ffnen
@@ -1130,7 +1160,6 @@ void SpectrumListView::handleAddSpectrum(Root::Action & a)
 				log += str;
 				continue;
 			}
-			SpectrumType* st = dynamic_cast<SpectrumType*>( a.getParam( 0 ).getObject() );
 			assert( st );
 			SpecRef<SpectrumPeer> sp = new SpectrumPeer( spec );
 			sp->setType( st );

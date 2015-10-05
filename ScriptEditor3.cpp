@@ -89,7 +89,7 @@ void ScriptEditor3::installDefaultPopup()
     pop->addCommand( "Copy", this, SLOT(handleEditCopy()), tr("CTRL+C"), true );
     pop->addCommand( "Paste", this, SLOT(handleEditPaste()), tr("CTRL+V"), true );
     pop->addCommand( "Select all", this, SLOT(handleEditSelectAll()), tr("CTRL+A"), true  );
-    pop->addCommand( "Select Matching Brace", this, SLOT(handleSelectBrace()) );
+	//pop->addCommand( "Select Matching Brace", this, SLOT(handleSelectBrace()) );
 	pop->insertSeparator();
     pop->addCommand( "Find...", this, SLOT(handleFind()), tr("CTRL+F"), true );
     pop->addCommand( "Find again", this, SLOT(handleFindAgain()), tr("F3"), true );
@@ -125,42 +125,6 @@ void ScriptEditor3::updateCursor()
     msg.sendToQt();
 }
 
-void ScriptEditor3::find(bool fromTop)
-{
-	int line, col;
-	getCursorPosition( &line, &col );
-	if( fromTop )
-	{
-		line = 0;
-		col = 0;
-	}else
-		col++;
-    const int count = lineCount();
-    int j = -1;
-    for( int i = qMax(line,0); i < count; i++ )
-	{
-        j = textLine( i ).find( d_find, col );
-		if( j != -1 )
-		{
-			line = i;
-			col = j;
-			break;
-		}else if( i < count )
-			col = 0;
-	}
-	if( j == -1 )
-	{
-        Root::ReportStatus msg( "Text not found." );
-        msg.sendToQt();
-	}else
-	{
-		setCursorPosition( line, col + d_find.size() );
-		ensureLineVisible( line );
-		setSelection( line, col, line, col + d_find.size() );
-	}
-		
-}
-
 void ScriptEditor3::handleCheck()
 {
     ENABLED_IF( true );
@@ -191,125 +155,6 @@ void ScriptEditor3::handleSetFont()
     set.setValue( "ScriptEditor3/Font", QVariant::fromValue(res) );
     set.sync();
     setFont( res );
-}
-
-void ScriptEditor3::handleEditUndo()
-{
-    ENABLED_IF( isUndoAvailable() );
-	undo();
-}
-
-void ScriptEditor3::handleEditRedo()
-{
-    ENABLED_IF( isRedoAvailable() );
-	redo();
-}
-
-void ScriptEditor3::handleEditCopy()
-{
-    ENABLED_IF( isCopyAvailable() );
-	copy();
-}
-
-void ScriptEditor3::handleEditPaste()
-{
-	QClipboard* cb = QApplication::clipboard();
-    ENABLED_IF( !isReadOnly() && !cb->text().isNull() );
-	paste();
-}
-
-void ScriptEditor3::handleEditSelectAll()
-{
-    ENABLED_IF( true );
-	selectAll();
-}
-
-void ScriptEditor3::handleEditCut()
-{
-    ENABLED_IF( !isReadOnly() && isCopyAvailable() );
-	cut();
-}
-
-void ScriptEditor3::handleGoto()
-{
-    ENABLED_IF( true );
-	int line, col;
-	getCursorPosition( &line, &col );
-	bool ok	= FALSE;
-	line = QInputDialog::getInteger( "Goto Line", 
-		"Please	enter a valid line number:", 
-		line + 1, 1, 999999, 1,	&ok, this );
-	if( !ok )
-		return;
-	setCursorPosition( line - 1, col );
-    //ensureLineVisible( line - 1 );
-}
-
-void ScriptEditor3::handleFind()
-{
-    ENABLED_IF( true );
-	bool ok	= FALSE;
-	QString res = QInputDialog::getText( "Find Text", 
-		"Enter a string to look for:", QLineEdit::Normal, "", &ok, this );
-	if( !ok )
-		return;
-	d_find = res.toLatin1();
-	find( true );
-}
-
-void ScriptEditor3::handleReplace()
-{
-	// TODO
-}
-
-void ScriptEditor3::handleFindAgain()
-{
-    ENABLED_IF( !d_find.isEmpty() );
-	find( false );
-}
-
-void ScriptEditor3::handlePrint()
-{
-    ENABLED_IF( true );
-
-    QPrinter p;
-    p.setPageMargins( 15, 10, 10, 10, QPrinter::Millimeter );
-
-	if( p.setup( this ) )
-	{
-        print( &p );
-	}
-
-}
-
-void ScriptEditor3::handleExportPdf()
-{
-    ENABLED_IF( true );
-
-    QString fileName = QFileDialog::getSaveFileName(this, "Export PDF", 
-		Root::AppAgent::getCurrentDir(), "*.pdf");
-    if (fileName.isEmpty())
-        return;
-
-	QFileInfo info( fileName );
-
-	if( info.suffix().toUpper() != "PDF" )
-		fileName += ".pdf";
-	info.setFile( fileName );
-	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1() );
-
-    QPrinter p;
-    p.setPageMargins( 15, 10, 10, 10, QPrinter::Millimeter );
-    p.setOutputFormat(QPrinter::PdfFormat);
-    p.setOutputFileName(fileName);
-
-    print( &p );
-}
-
-void ScriptEditor3::handleSelectBrace()
-{
-//	ENABLED_IF( true );
-
 }
 
 void ScriptEditor3::handleContinue()
@@ -371,24 +216,6 @@ void ScriptEditor3::handleRemoveAllBreaks()
     }
 }
 
-void ScriptEditor3::handleIndent()
-{
-    ENABLED_IF( !isReadOnly() );
-
-	indent();
-}
-
-void ScriptEditor3::handleSetIndent()
-{
-    ENABLED_IF( !isReadOnly() );
-
-	bool ok;
-	const int level = QInputDialog::getInteger( this, tr("Set Indentation Level"), 
-		tr("Enter the indentation level (0..20):"), 0, 0, 20, 1, &ok );
-	if( ok )
-        setIndentation( level );
-}
-
 void ScriptEditor3::handleSetDebug()
 {
     CHECKED_IF( !d_lua->isExecuting(), d_lua->isDebug() );
@@ -402,13 +229,6 @@ void ScriptEditor3::handleBreakAtFirst()
         d_lua->setDefaultCmd( Engine::RunToBreakPoint );
     else
         d_lua->setDefaultCmd( Engine::RunToNextLine );
-}
-
-void ScriptEditor3::handleUnindent()
-{
-    ENABLED_IF( !isReadOnly() );
-
-	unindent();
 }
 
 void ScriptEditor3::handleShowLinenumbers()
