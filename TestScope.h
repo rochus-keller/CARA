@@ -26,6 +26,7 @@
 namespace Spec
 {
 	class SpinPointSpace;
+	class SpinPointSpace2;
 	class RangeFilterSpaceND;
 }
 class TestScope : public Spec::GenericScope
@@ -43,7 +44,7 @@ protected slots:
 private:
     Root::Ref<Spec::PointMdl> d_pointMdl;
     Root::Ref<Spec::CubeMdl> d_cubeMdl;
-	Spec::SpinPointSpace* d_src4D;
+	Spec::SpinPointSpace2* d_src4D;
 	Spec::SpecRotatedSpace* d_rot4D;
 	Spec::RangeFilterSpaceND* d_range4D;
     bool d_flag;

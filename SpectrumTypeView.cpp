@@ -696,11 +696,14 @@ void SpectrumTypeView::handleEditProc(Root::Action & a)
 		}
 		SpectrumType::Procedure p( count );
 		int done = 1;
+		int noesy_steps = 0;
 		for( d = 0; d < count; d++ )
 		{
 			SpectrumType::Step& s = p[ d ];
 			s.d_atom = (AtomType::Isotope) _atoms[ d ]->currentItem();
 			s.d_hops = _hops[ d ]->text().toShort( &_ok ); done *= _ok;
+			if( s.d_hops == -1 )
+				noesy_steps++;
 			s.d_repeat = _rep[ d ]->isChecked();
 			if( !_means[ d ]->text().isEmpty() )
 				s.d_range.d_mean = _means[ d ]->text().toFloat( &_ok ); done *= _ok;
@@ -714,6 +717,17 @@ void SpectrumTypeView::handleEditProc(Root::Action & a)
 		{
 			QMessageBox::critical( this, title, 
 				"Invalid field values!", "&Cancel" );
+			continue;
+		}
+		if( noesy_steps > 1 )
+		{
+			QMessageBox::critical( this, title, "The current version of CARA does not support "
+								   "spectrum types with more than one NOESY step!", "&Cancel" );
+			continue;
+		}
+		if( p[0].d_hops == -1 )
+		{
+			QMessageBox::critical( this, title, "The first step of the procedure cannot be a NOESY step!", "&Cancel" );
 			continue;
 		}
 		try

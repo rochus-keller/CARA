@@ -461,7 +461,8 @@ HEADERS += ../NAF/Root/Action.h \
     ../NAF/Qtl2/QtlFrame.h \
     ../NAF/Script/Terminal2.h \
     ../NAF/Script/Engine2.h \
-    ../NAF/Qtl2/QtlTableWidget.h
+    ../NAF/Qtl2/QtlTableWidget.h \
+    ../NAF/Spec/SpinPointSpace2.h
 
 #Source files
 SOURCES += ../NAF/Root/Action.cpp \
@@ -540,7 +541,6 @@ SOURCES += ../NAF/Root/Action.cpp \
 	../Expat/xmlrole.cpp \
 	../Expat/xmltok.cpp \
 	../NAF/Script/Engine.cpp \
-	../NAF/Script/Util.cpp \
 	../NAF/Spec/AtomType.cpp \
 	../NAF/Spec/BackCalculation.cpp \
 	../NAF/Spec/BioSample.cpp \
@@ -895,7 +895,9 @@ SOURCES += ../NAF/Root/Action.cpp \
     ../NAF/Qtl2/QtlFrame.cpp \
     ../NAF/Script/Terminal2.cpp \
     ../NAF/Script/Engine2.cpp \
-    ../NAF/Qtl2/QtlTableWidget.cpp
+    ../NAF/Qtl2/QtlTableWidget.cpp \
+    ../NAF/Script/Util.cpp \
+    ../NAF/Spec/SpinPointSpace2.cpp
 
 
 #Resource file(s)

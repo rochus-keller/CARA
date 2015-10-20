@@ -41,7 +41,7 @@ namespace Spec
 	class Project;
 	class Spectrum;
     class PeakListPeer;
-    class SpinPointSpace;
+	class SpinPointSpace2;
     class CommandLine2;
     class StripListGadget2;
     class SpinPointList;
@@ -239,10 +239,10 @@ namespace Spec
         QColor d_4dPlanePos, d_4dPlaneNeg;
 
         Root::Ref<Project> d_pro;
-        Root::Ref<SpinPointSpace> d_src2D;
+		Root::Ref<SpinPointSpace2> d_src2D;
         Root::Ref<SpecRotatedSpace> d_rot2D;
         Root::Ref<RangeFilterSpaceND> d_range2D;
-        Root::Ref<SpinPointSpace> d_src4D;
+		Root::Ref<SpinPointSpace2> d_src4D;
         Root::Ref<SpecRotatedSpace> d_rot4D;
         Root::Ref<RangeFilterSpaceND> d_range4D;
         Root::Ref<PeakSubSpaceND> d_peaks2D;

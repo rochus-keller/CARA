@@ -18,6 +18,7 @@
 #include <SpecView3/SpinPointList.h>
 #include <Spec/Repository.h>
 #include <Spec/SpecProjector.h>
+#include <Spec/SpinPointSpace2.h>
 #include <Gui2/AutoMenu.h>
 #include <QDockWidget>
 using namespace Spec;
@@ -26,8 +27,7 @@ using namespace Root;
 TestScope::TestScope(Spectrum* spec, Project * pro):d_flag(false)
 {
 	d_pointMdl = new PointMdl();
-	d_src4D = new SpinPointSpace( pro->getSpins(), pro->getRepository()->getTypes(), false,
-								 true, true, false );
+	d_src4D = new SpinPointSpace2( pro->getSpins(), pro->getRepository()->getTypes() );
 	d_rot4D = new SpecRotatedSpace( d_src4D );
 	d_range4D = new RangeFilterSpaceND( d_rot4D, d_pointMdl, DimVector( DimX, DimY ), true );
 

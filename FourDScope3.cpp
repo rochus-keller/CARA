@@ -45,7 +45,7 @@ using namespace Root;
 #include <Spec/SpectrumType.h>
 #include <Spec/Repository.h>
 #include <Spec/SpecRotator.h>
-#include <Spec/SpinPointSpace.h>
+#include <Spec/SpinPointSpace2.h>
 #include <Spec/PeakListPeer.h>
 
 // SpecView
@@ -140,11 +140,11 @@ FourDScope3::FourDScope3(Root::Agent * supervisor, Spectrum* spec, Project* pro 
     d_cubeMdl = new CubeMdl();
     d_cubeMdl->addObserver( this );
 
-    d_src2D = new SpinPointSpace( pro->getSpins(),
+	d_src2D = new SpinPointSpace2( pro->getSpins(),
                                  pro->getRepository()->getTypes(), false,
                                  true, true, false );
     d_rot2D = new SpecRotatedSpace( d_src2D );
-    d_src4D = new SpinPointSpace( pro->getSpins(), pro->getRepository()->getTypes(), false,
+	d_src4D = new SpinPointSpace2( pro->getSpins(), pro->getRepository()->getTypes(), false,
                                  true, true, false );
     d_rot4D = new SpecRotatedSpace( d_src4D );
     d_range4D = new RangeFilterSpaceND( d_rot4D, d_pointMdl, DimVector( DimX, DimY ), true );
