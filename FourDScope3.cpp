@@ -1240,6 +1240,8 @@ void FourDScope3::handlePickSystem()
         SpinLabelPoint pair;
         if( !Dlg::getLabelPoint( this, pairs, pair, DimCount, "Pick System" ) )
             return;
+		for( int i = 0; i < pair.maxSize(); i++ )
+			pair[i].setAssigned(); // werde Wildcard los
         Root::Ref<Root::MakroCommand> cmd = new Root::MakroCommand( "Pick System" );
         Root::Ref<CreateSystemPairCmd> c1 = new CreateSystemPairCmd( d_pro->getSpins(),	xyPoint, d_spec4D );
         c1->execute();
@@ -1911,7 +1913,10 @@ void FourDScope3::handlePickLabel4D()
     if( !Dlg::getLabelPoint( this, pairs, pair, 2, "Pick Labels" ) )
         return;
 
-    Root::Ref<Root::MakroCommand> cmd = new Root::MakroCommand( "Pick Labels" );
+	for( int i = 0; i < pair.maxSize(); i++ )
+		pair[i].setAssigned(); // werde Wildcard los
+
+	Root::Ref<Root::MakroCommand> cmd = new Root::MakroCommand( "Pick Labels" );
     if( sys->isAcceptable( pair[1] ) )
         cmd->add( new PickSystemSpinLabelCmd( d_pro->getSpins(),
                                               sys, d_spec4D->getColor( DimZ ), d_pointMdl->getPos( DimZ ), pair[1], 0 ) );

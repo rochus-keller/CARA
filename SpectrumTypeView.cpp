@@ -233,6 +233,7 @@ void SpectrumTypeView::refill()
 		_SpectrumTypeItem* sti = new _SpectrumTypeItem( this, (*p1).second );
 		_fill( sti, (*p1).second );
 	}
+	QMetaObject::invokeMethod( this, "resizeFirstColumnToContents", Qt::QueuedConnection );
 }
 
 static _SpectrumTypeItem* _find( Gui::ListView* v, SpectrumType* st )
