@@ -1433,7 +1433,7 @@ void FourDScope3::handleHidePeak()
     if( d_plane->getPointView()->getSel().size() != 1 )
         return;
     SpinPoint tuple = *d_plane->getPointView()->getSel().begin();
-    SpinLink* link = tuple[ DimX ]->findLink( tuple[ DimY ] );
+	SpinLink* link = d_plane->getPointView()->getLink(tuple);
     ENABLED_IF( link );
     Root::Ref<HideSpinLinkCmd> cmd = new HideSpinLinkCmd( d_pro->getSpins(), link, getSpec2() );
     cmd->handle( getAgent() );
@@ -2230,7 +2230,7 @@ void FourDScope3::handlePlaneLinkAttr()
     if( d_plane->getPointView()->getSel().size() != 1 )
         return;
     SpinPoint tuple = *d_plane->getPointView()->getSel().begin();
-    SpinLink* l = tuple[ DimX ]->findLink( tuple[ DimY ] );
+	SpinLink* l = d_plane->getPointView()->getLink(tuple);
     ENABLED_IF( l );
 
     DynValueEditor::edit( this,
@@ -2364,10 +2364,11 @@ void FourDScope3::handleDeleteLinks()
     SpinLink* l;
     for( p = sel.begin(); p != sel.end(); ++p )
     {
-        l = (*p)[ DimX ]->findLink( (*p)[ DimY ] );
+		l = d_plane->getPointView()->getLink((*p));
         if( l && test.count( l ) == 0 )
         {
-            cmd->add( new UnlinkSpinCmd( base, (*p)[ DimX ], (*p)[ DimY ] ) );
+			cmd->add( new UnlinkSpinCmd( base, d_pro->getSpins()->getSpin(l->getLhs()),
+										 d_pro->getSpins()->getSpin(l->getRhs()) ) );
             test.insert( l );
         }
     }
@@ -2509,10 +2510,11 @@ void FourDScope3::handleDeleteLinks4D()
     std::set<SpinLink*> test;
     for( p = sel.begin(); p != sel.end(); ++p )
     {
-        l = (*p)[ DimX ]->findLink( (*p)[ DimY ] );
+		l = d_ortho->getPointView()->getLink((*p));
         if( l && test.count( l ) == 0 )
         {
-            cmd->add( new UnlinkSpinCmd( d_pro->getSpins(), (*p)[ DimX ], (*p)[ DimY ] ) );
+			cmd->add( new UnlinkSpinCmd( d_pro->getSpins(), d_pro->getSpins()->getSpin(l->getLhs()),
+										 d_pro->getSpins()->getSpin(l->getRhs()) ) );
             test.insert( l );
         }
     }
@@ -2538,7 +2540,7 @@ void FourDScope3::handleHidePeak4D()
     if( d_ortho->getPointView()->getSel().size() != 1 )
         return;
     SpinPoint tuple = *d_ortho->getPointView()->getSel().begin();
-    SpinLink* link = tuple[ DimX ]->findLink( tuple[ DimY ] );
+	SpinLink* link = d_ortho->getPointView()->getLink(tuple);
     ENABLED_IF( link );
     Root::Ref<HideSpinLinkCmd> cmd = new HideSpinLinkCmd( d_pro->getSpins(), link, d_spec4D );
     cmd->handle( getAgent() );
@@ -2584,7 +2586,7 @@ void FourDScope3::handleOrthoLinkAttr()
     if( d_ortho->getPointView()->getSel().size() != 1 )
         return;
     SpinPoint tuple = *d_ortho->getPointView()->getSel().begin();
-    SpinLink* l = tuple[ DimX ]->findLink( tuple[ DimY ] );
+	SpinLink* l = d_ortho->getPointView()->getLink(tuple);
     ENABLED_IF( l );
 
     DynValueEditor::edit( this,
@@ -2634,7 +2636,7 @@ void FourDScope3::handleSetLinkParams()
     if( d_plane->getPointView()->getSel().size() != 1 )
         return;
     SpinPoint tuple = *d_plane->getPointView()->getSel().begin();
-    SpinLink* l = tuple[ DimX ]->findLink( tuple[ DimY ] );
+	SpinLink* l = d_plane->getPointView()->getLink( tuple );
     ENABLED_IF( l );
     const SpinLink::Alias& al = l->getAlias( getSpec2() );
     Dlg::LinkParams2 par;
@@ -2651,7 +2653,7 @@ void FourDScope3::handleSetLinkParams4D()
     if( d_spec4D.isNull() || d_ortho->getPointView()->getSel().size() != 1 )
         return;
     SpinPoint tuple = *d_ortho->getPointView()->getSel().begin();
-    SpinLink* l = tuple[ DimX ]->findLink( tuple[ DimY ] );
+	SpinLink* l = d_ortho->getPointView()->getLink(tuple);
     ENABLED_IF( l );
     const SpinLink::Alias& al = l->getAlias( d_spec4D );
     Dlg::LinkParams2 par;
