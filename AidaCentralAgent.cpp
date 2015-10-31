@@ -1266,7 +1266,7 @@ void AidaCentralAgent::handleImportProject(Action & a)
 		StarFile sf( fileName );
 		sf.parse();
 		if( !sf.d_err.isEmpty() )
-			throw Root::Exception( sf.d_err.data(), QString( " (line %1)" ).arg( sf.d_line ).toLatin1() );
+			throw Root::Exception( sf.d_err.data() );
 		StarFile::Resi::const_iterator i;
 		Root::Ref<SequenceFile> seq = new SequenceFile();
 		for( i = sf.getSeq().begin(); i != sf.getSeq().end(); ++i )
