@@ -463,7 +463,8 @@ HEADERS += ../NAF/Root/Action.h \
     ../NAF/Script/Engine2.h \
     ../NAF/Qtl2/QtlTableWidget.h \
     ../NAF/Star/StarLexer.h \
-    ../NAF/Star/StarParser.h
+    ../NAF/Star/StarParser.h \
+    ../NAF/Star/LuaStar.h
 
 #Source files
 SOURCES += ../NAF/Root/Action.cpp \
@@ -899,7 +900,8 @@ SOURCES += ../NAF/Root/Action.cpp \
     ../NAF/Script/Engine2.cpp \
     ../NAF/Qtl2/QtlTableWidget.cpp \
     ../NAF/Star/StarLexer.cpp \
-    ../NAF/Star/StarParser.cpp
+    ../NAF/Star/StarParser.cpp \
+    ../NAF/Star/LuaStar.cpp
 
 
 #Resource file(s)

@@ -25,6 +25,7 @@
 #include <LuaQt3/LuaXml2.h>
 #include <Root/MessageLog.h>
 #include <Script2/QtObject.h>
+#include <Star/LuaStar.h>
 #include <QDir>
 
 #ifdef _WIN32
@@ -38,8 +39,8 @@ using namespace Lua;
 #define PROMPT		"CARA> "
 #define PROMPT2		"CARA>> "
 
-const char* AidaApplication::s_release = "1.9.1.3";
-const char* AidaApplication::s_relDate = "2015-10-31";
+const char* AidaApplication::s_release = "1.9.1.4";
+const char* AidaApplication::s_relDate = "2015-11-13";
 const char* AidaApplication::s_copyRightYear = "2015";
 const char* AidaApplication::s_appName = "CARA";
 const char* AidaApplication::s_help = 
@@ -321,6 +322,7 @@ AidaApplication::AidaApplication():
 	LuaSpec2::install( Engine::inst()->getCtx() );
 	LuaSpec2::installRepository( Engine::inst()->getCtx(), d_rep );
 	LuaDomDocument2::install( Engine::inst()->getCtx() );
+	Star::LuaStar::install( Engine::inst()->getCtx() );
 	lua_pushcfunction( Engine::inst()->getCtx(), type );
 	lua_setfield( Engine::inst()->getCtx(), LUA_GLOBALSINDEX, "type" );
 
