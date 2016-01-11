@@ -1128,6 +1128,8 @@ void SpectrumListView::handleAddSpectrum(Root::Action & a)
 			st = types[selected];
 	}
 
+#ifndef _WIN32
+	// funktioniert nicht unter Windows 10; es werden keine Ordner angezeigt; s. http://forum.cara.nmr.ch/index.php?action=vthread&forum=2&topic=10
 	QFileDialog dlg( this, "Select Spectrum Files", Root::AppAgent::getCurrentDir(),
 		Spectrum::s_fileFilter );
 	dlg.setFileMode( QFileDialog::ExistingFiles );
@@ -1136,7 +1138,10 @@ void SpectrumListView::handleAddSpectrum(Root::Action & a)
 		return;
 
 	const QStringList files = dlg.selectedFiles();
-
+#else
+	const QStringList files = QFileDialog::getOpenFileNames( this, "Select Spectrum Files",
+															 Root::AppAgent::getCurrentDir(), Spectrum::s_fileFilter );
+#endif
 	QString str;
 	QString log;
 	QStringList::const_iterator it;
