@@ -106,7 +106,7 @@ public:
 			case 2:
 				return e.d_src.data();
             case 3:
-                return e.d_msg;
+				return e.d_msg.simplified();
 			}
 		}
 		return QVariant();
