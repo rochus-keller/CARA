@@ -39,8 +39,8 @@ using namespace Lua;
 #define PROMPT		"CARA> "
 #define PROMPT2		"CARA>> "
 
-const char* AidaApplication::s_release = "1.9.1.6a1";
-const char* AidaApplication::s_relDate = "2016-05-26";
+const char* AidaApplication::s_release = "1.9.1.6";
+const char* AidaApplication::s_relDate = "2016-09-15";
 const char* AidaApplication::s_copyRightYear = "2016";
 const char* AidaApplication::s_appName = "CARA";
 const char* AidaApplication::s_help = 

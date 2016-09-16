@@ -800,7 +800,7 @@ void MonoScopeAgent::updateSlice(Dimension dim, CursorMdl::Update *msg)
 		if( d_cursorSync )
 			GlobalCursor::setCursor( dim, msg->getX(), 
 				d_slices[ dim ].d_spec->getColor( DimX ) );
-	}else
+	}else // Depth
 	{
 		Lexi::Viewport::pushHourglass();
 		registerPlane();

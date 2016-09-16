@@ -1966,7 +1966,7 @@ void PolyScope3::updateSlice(Dimension dim, CursorMdl::Update *msg)
 		d_strips[ DimY ].d_cur->setCursor( (Dimension)DimY, d_cursor[ dim ] );
 		notifyCursor( false );
 		if( d_cursorSync && d_syncDepth )
-			GlobalCursor::setCursor( DimY, msg->getX(), d_spec3D->getColor( DimZ ) );
+			GlobalCursor::setCursor( DimZ, msg->getX(), d_spec3D->getColor( DimZ ) );
 	}
 }
 

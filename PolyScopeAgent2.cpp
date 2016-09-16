@@ -1054,15 +1054,15 @@ void PolyScopeAgent2::handle(Root::Message& msg)
 		if( ( a->getDim() == DimX || a->getDim() == DimUndefined ) &&
 			d_plane.d_ol[0].d_spec->getColor( DimX ) == a->getTx() )
 			d_plane.d_cur->setCursor( Dimension( DimX ), a->getX() );
-		if( d_syncDepth && ( a->getDim() == DimY ) && d_spec3D &&
-			d_spec3D->getColor( DimZ ) == a->getTy() )
+		if( d_syncDepth && ( a->getDim() == DimZ ) && d_spec3D &&
+			d_spec3D->getColor( DimZ ) == a->getTx() )
 		{
-			d_cursor[ DimZ ] = a->getY();
+			d_cursor[ DimZ ] = a->getX();
 			if( !d_strips.empty() )
 			{
-				d_slices[ DimZ ].d_cur->setCursor( (Dimension)DimY, a->getY() );
-				d_strips[ DimX ].d_cur->setCursor( (Dimension)DimY, a->getY() );
-				d_strips[ DimY ].d_cur->setCursor( (Dimension)DimY, a->getY() );
+				d_slices[ DimZ ].d_cur->setCursor( (Dimension)DimY, a->getX() );
+				d_strips[ DimX ].d_cur->setCursor( (Dimension)DimY, a->getX() );
+				d_strips[ DimY ].d_cur->setCursor( (Dimension)DimY, a->getX() );
 			}
 			threeD = true;
 		}
@@ -1289,7 +1289,7 @@ void PolyScopeAgent2::updateSlice(Dimension dim, CursorMdl::Update *msg)
 		d_strips[ DimY ].d_cur->setCursor( (Dimension)DimY, d_cursor[ dim ] );
 		notifyCursor( false );
 		if( d_cursorSync && d_syncDepth )
-			GlobalCursor::setCursor( DimY, msg->getX(), d_spec3D->getColor( DimZ ) );
+			GlobalCursor::setCursor( DimZ, msg->getX(), d_spec3D->getColor( DimZ ) );
 	}
 }
 
@@ -1464,7 +1464,7 @@ void PolyScopeAgent2::updateStrip(Dimension dim, CursorMdl::Update *msg)
 		updateContour( 0, true );
 	notifyCursor( false );
 	if( d_cursorSync && d_syncDepth )
-		GlobalCursor::setCursor( DimY, d_cursor[ DimZ ], d_spec3D->getColor( DimZ ) );
+		GlobalCursor::setCursor( DimZ, d_cursor[ DimZ ], d_spec3D->getColor( DimZ ) );
 }
 
 void PolyScopeAgent2::updatePlaneLabel()
@@ -1952,6 +1952,11 @@ void PolyScopeAgent2::notifyCursor(bool plane)
 	else if( d_strips[ DimY ].d_viewer->hasFocus() )
 		tv = d_strips[ DimY ].d_tuples;
 	if( tv && tv->formatSelection( tmp, SpinPointView::PairAll, 3 ) )
+	{
+		str += ",  ";
+		str += tmp.data();
+	}
+	if( plane && d_plane.d_peaks->formatSelection( tmp ) )
 	{
 		str += ",  ";
 		str += tmp.data();
