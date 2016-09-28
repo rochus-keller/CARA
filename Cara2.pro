@@ -14,14 +14,15 @@ win32 {
  }else {
 	DESTDIR = ./tmp
     OBJECTS_DIR = ./tmp
-    CONFIG(debug, debug|release) {
+	MOC_DIR = ./tmp
+	RCC_DIR = ./tmp
+	CONFIG(debug, debug|release) {
         DESTDIR = ./tmp-dbg
         OBJECTS_DIR = ./tmp-dbg
 		DEFINES += _DEBUG
-    }
-    RCC_DIR = ./tmp
-    UI_DIR = ./tmp
-	MOC_DIR = ./moc
+		MOC_DIR = ./tmp-dbg
+		RCC_DIR = ./tmp-dbg
+	}
 	QMAKE_CXXFLAGS += -Wno-reorder -Wno-unused-parameter
  }
 macx {
