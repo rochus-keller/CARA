@@ -272,7 +272,7 @@ void ReportViewer::Setup::save(const char * path)
 	os << d_frameLw; // 7
 	os << d_frameClr; // 8
 	os << qint32( d_posClr.size() ); // 9
-	for( long j = 0; j < d_posClr.size(); j++ )
+	for( int j = 0; j < d_posClr.size(); j++ )
 	{
 		os << QColor( d_posClr[j] ); // 10
 		os << QColor( d_negClr[j] ); // 11
@@ -434,7 +434,7 @@ void ReportViewer::Setup::load(const char * path)
 	{
 		qint32 count;
 		is >> count; // 9
-		for( long j = 0; j < count; j++ )
+		for( int j = 0; j < count; j++ )
 		{
 			is >> clr; // 10
 			if( j < ClrTableSize )
@@ -481,7 +481,7 @@ void ReportViewer::Setup::load(const char * path)
 	is >> count; // 36
 	d_links.clear();
 	char* str;
-	for( long i = 0; i < count; ++i )
+	for( int i = 0; i < count; ++i )
 	{
 		is >> str; // 37
 		d_links.insert( str );

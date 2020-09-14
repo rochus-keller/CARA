@@ -951,7 +951,7 @@ void MonoScope::handleGotoSpec(Action & a)
 {
 	ACTION_ENABLED_IF( a, d_agent->getPro() && d_agent->getPeaklist() );
 
-	long i = a.getParam( 0 ).getLong();
+	int i = a.getParam( 0 ).getLong();
 	const PeakList::SpecList& specs = d_agent->getPeaklist()->getSpecs();
 
 	Spectrum* spec = 0;

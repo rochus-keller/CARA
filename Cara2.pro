@@ -26,7 +26,6 @@ win32 {
 	QMAKE_CXXFLAGS += -Wno-reorder -Wno-unused-parameter
  }
 macx {
-	CONFIG += x86
 	ICON=icon.icns
 	QMAKE_INFO_PLIST = MyInfo.plist
 	 }
