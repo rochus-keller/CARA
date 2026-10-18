@@ -320,7 +320,7 @@ void ScriptView::handleShowFile(Root::Action & a)
         d_tab->setCurrentWidget( e );
     }else
     {
-        // File öffnen, allenfalls dekompilieren
+        // File Ã¶ffnen, allenfalls dekompilieren
 		createViewFromFile( fileName.toLatin1(), false ); // ohne @, damit Debugger eigene Version hat.
     }
 }
@@ -462,7 +462,7 @@ ScriptEditor3 *ScriptView::findEditorByName(const QByteArray &name, bool open)
                 d_tab->setCurrentWidget( e );
         }else if( open )
         {
-            // File öffnen, allenfalls dekompilieren
+            // File Ã¶ffnen, allenfalls dekompilieren
 			e = createViewFromFile( name, true );
         }
         return e;
@@ -475,7 +475,7 @@ ScriptEditor3 *ScriptView::findEditorByName(const QByteArray &name, bool open)
 				d_tab->setCurrentWidget( e );
 		}else if( open )
 		{
-			// File öffnen, allenfalls dekompilieren
+			// File Ã¶ffnen, allenfalls dekompilieren
 			e = new ScriptEditor3( d_tab, d_lua );
 			e->installDefaultPopup();
 			e->updateBreakpoints();

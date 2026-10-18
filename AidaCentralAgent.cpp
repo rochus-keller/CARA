@@ -446,7 +446,7 @@ QWidget* AidaCentralAgent::createView( int type, const char* name )
 Gui::Menu* AidaCentralAgent::createMenu( int type )
 {
     // Wir machen das, damit man per Lua auf die Popups zugreifen kann!
-    // Das kann passieren, bevor die View überhaupt erzeugt wurde.
+    // Das kann passieren, bevor die View Ã¼berhaupt erzeugt wurde.
 	Gui::Menu* pop = d_pops.value( type );
 	if( pop == 0 )
 	{

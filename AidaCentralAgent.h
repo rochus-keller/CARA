@@ -96,7 +96,7 @@ private:
 	AidaCentralAgentTreeItem* d_cur;
 	Root::Ptr<AidaCentral> d_parent;
 	QMenu* d_popup;
-	QMap<int,QPointer<Gui::Menu> > d_pops; // Pointer, da via Lua löschbar
+	QMap<int,QPointer<Gui::Menu> > d_pops; // Pointer, da via Lua lÃ¶schbar
 };
 
 #endif // !defined(AFX_AIDACENTRALAGENT_H__7F8C2721_4034_4606_B6F4_B81B172C6412__INCLUDED_)

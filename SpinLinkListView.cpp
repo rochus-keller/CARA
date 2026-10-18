@@ -331,7 +331,7 @@ void SpinLinkListView::handleCreate(Root::Action & a)
 	// TODO
 }
 
-/* TODO: Freds Wünsche
+/* TODO: Freds WÃ¼nsche
 select spin links involving only one system.
 (e.g. Sys# 3: any spinlink including atoms from this
 system are listed)

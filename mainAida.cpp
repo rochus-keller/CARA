@@ -108,12 +108,12 @@ int main( int argc, char **argv )
 
 			QString arg;
 			QStringList args = app->arguments();
-			for( int i = 1; i < args.size(); i++ ) // arg 0 enthält Anwendungspfad
+			for( int i = 1; i < args.size(); i++ ) // arg 0 enthÃ¤lt Anwendungspfad
 			{
 				arg = args[ i ];
 				if( arg[ 0 ] != '-' )
 				{
-					// Reagiere nun auf übrige File-Typen
+					// Reagiere nun auf Ã¼brige File-Typen
 					QFileInfo info( arg );
 
 					if( info.extension( false ).upper() == "XEP" || 

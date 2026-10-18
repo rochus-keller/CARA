@@ -687,12 +687,12 @@ void SitarViewer::createSlice(Dimension view, Dimension spec )
 
 void SitarViewer::updatePlane(CursorMdl::Update * msg)
 {
-	// Auf der Plane wurde der Cursor ge�dert
+	// Auf der Plane wurde der Cursor geï¿½dert
 	assert( d_slices.size() >= 2 );
 	PpmPoint pos( msg->getX(), msg->getY() );
 
 	// Der X-Slice zeigt den durch den Y-Cursor der Plane
-	// repr�entierten Slice mit Origin Y (und umgekehrt)
+	// reprï¿½entierten Slice mit Origin Y (und umgekehrt)
 	if( msg->getDim() == DimY || msg->getDim() == DimUndefined )
 	{
 		d_cursor[ DimY ] = pos[ DimY ];
@@ -759,7 +759,7 @@ void SitarViewer::updatePlane(ViewAreaMdl::Update * msg)
 
 void SitarViewer::updateSlice(Dimension dim, CursorMdl::Update *msg)
 {
-	// Auf einem Slice wurde der Cursor ge�dert
+	// Auf einem Slice wurde der Cursor geï¿½dert
 	bool twoD = true;
 	if( dim == DimZ )
 	{
@@ -815,7 +815,7 @@ void SitarViewer::updateSlice(Dimension dim, ViewAreaMdl::Update *msg)
 
 void SitarViewer::updateStrip(Dimension dim, ViewAreaMdl::Update *msg)
 {
-	// In einem Strip wurde Ausschnitt ge�dert
+	// In einem Strip wurde Ausschnitt geï¿½dert
 
 	if( msg->getType() != ViewAreaMdl::Update::Range )
 		return;
@@ -838,7 +838,7 @@ void SitarViewer::updateStrip(Dimension dim, ViewAreaMdl::Update *msg)
 
 void SitarViewer::updateStrip(Dimension dim, CursorMdl::Update *msg)
 {
-	// In einem Strip wurde Cursor ge�dert
+	// In einem Strip wurde Cursor geï¿½dert
 	d_plane.d_cur->setCursor( (Dimension)DimY, msg->getX() ); // Beide Dims gleich
 	updatePlane( msg );
 	notifyCursor(false);

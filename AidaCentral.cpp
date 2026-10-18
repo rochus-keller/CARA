@@ -678,7 +678,7 @@ void AidaCentral::handleHelpAbout( Action& a )
 
 		"<p>CARA is an application for the analysis of NMR spectra and computer "
 		"aided resonance assignment developed in the group of Prof. Dr. Kurt "
-		"Wüthrich at the Institute of Molecular Biology and Biophysics, ETH Zürich.</p>"
+		"WÃ¼thrich at the Institute of Molecular Biology and Biophysics, ETH ZÃ¼rich.</p>"
 
 		"<p>CARA is written, maintained and supported by the <em>CARA Definition Team</em> "
 		"(CDT): <a href='mailto:fred@nmr.ch'>Fred Damberger</a>, "
@@ -690,8 +690,8 @@ void AidaCentral::handleHelpAbout( Action& a )
 		"<p>Copyright (c) 2000-%s by Rochus Keller and others</p>"
 
 		"<h4>Additional Credits:</h4>"
-		"<p>Peter Güntert, Pascal Bettendorff, James Masse, Konstantin Pervushin, "
-		"Roland Riek, Beat Meier, Ansgar Siemer, Kurt Wüthrich, Thorsten Lührs, Jocélyne Fiaux, "
+		"<p>Peter GÃ¼ntert, Pascal Bettendorff, James Masse, Konstantin Pervushin, "
+		"Roland Riek, Beat Meier, Ansgar Siemer, Kurt WÃ¼thrich, Thorsten LÃ¼hrs, JocÃ©lyne Fiaux, "
 		"Sebastian Hiller, Alvar Gossert, Daniel Perez, Francesco Fiorito, Rudolf Baumann<br>"
 		"NEWMAT (c) 1991-2002 by R. B. Davies<br>"
 		"Qt GUI Toolkit 4.3 (c) 1995-2009 Trolltech AS<br>"

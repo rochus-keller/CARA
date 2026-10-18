@@ -339,7 +339,7 @@ namespace Spec
 		void selectCurSystem(bool force = false);
 		void updateContour2( Dimension d, bool );
 		void update3dPlane();
-        PolyScope3* getQt() { return this; } // helper für Migration
+        PolyScope3* getQt() { return this; } // helper fÃ¼r Migration
 	private:	
 		void buildMenus();
         void buildViews( );

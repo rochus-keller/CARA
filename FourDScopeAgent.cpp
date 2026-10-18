@@ -1144,7 +1144,7 @@ bool FourDScopeAgent::savePeakList()
 
 void FourDScopeAgent::planeCursUpdated(CursorMdl::Update * msg)
 {
-	// Auf der Plane wurde der Cursor ge�dert
+	// Auf der Plane wurde der Cursor geï¿½dert
 	assert( d_slices.size() >= 2 );
 	PpmPoint pos( msg->getX(), msg->getY() );
 
@@ -1170,7 +1170,7 @@ void FourDScopeAgent::planeCursUpdated(CursorMdl::Update * msg)
 				msg->override( p[ DimX ], p[ DimY ] ); 
 				pos[ DimX ] = p[ DimX ];
 				pos[ DimY ] = p[ DimY ];
-				// das geht, da View die Message erst nach Agent erh�t.
+				// das geht, da View die Message erst nach Agent erhï¿½t.
 			}
 		}
 	}
@@ -1323,7 +1323,7 @@ void FourDScopeAgent::sliceAreaUpdated(Dimension dim, ViewAreaMdl::Update *msg)
 
 void FourDScopeAgent::planeAreaUpdated(ViewAreaMdl::Update * msg)
 {
-	// In Plane wurde Ausschnitt ge�dert
+	// In Plane wurde Ausschnitt geï¿½dert
 	if( msg->getType() != ViewAreaMdl::Update::Range )
 		return;
 	PpmCube cube;
@@ -1403,7 +1403,7 @@ void FourDScopeAgent::orthoCursUpdated(CursorMdl::Update *msg)
 				msg->override( p[ DimX ], p[ DimY ] );
                 pos[ DimX ] = p[ DimX ];
 				pos[ DimY ] = p[ DimY ];
-				// das geht, da View die Message erst nach Agent erh�t.
+				// das geht, da View die Message erst nach Agent erhï¿½t.
 			}
 		}
 	}
@@ -1665,7 +1665,7 @@ void FourDScopeAgent::pickSpin(Dimension d, Spin *other, SpinSystem *owner)
 	// 26.6.05: immer anzeigen if( !d_src2D->showNulls() )
 	{
 		SpinLabelSet ly = d_spec2D->getType()->getLabels( d_spec2D->mapToType( d ) );
-			// Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enth�t.
+			// Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthï¿½t.
 
 		NmrExperiment* e = d_pro->getRepository()->getTypes()->
 			inferExperiment2( d_spec2D->getType(), owner, d_spec2D );
@@ -2403,7 +2403,7 @@ void FourDScopeAgent::handleLabelPeak(Action & a)
 	SpinLabel y = tuple[ DimY ]->getLabel();
 	SpinLabelSet lx = spec->getType()->getLabels( spec->mapToType( DimX ) );
 	SpinLabelSet ly = spec->getType()->getLabels( spec->mapToType( DimY ) );
-		// lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das wegl�st,
+		// lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglï¿½st,
 		// verschwinden zur Zeit noch CB aus der Liste von HNCACB von Freds Template.
 		// Zu grosse Auswirkungen auf bestehende Projekte.
 	NmrExperiment* e;
@@ -2846,7 +2846,7 @@ void FourDScopeAgent::handleProposeHori(Action & a)
 	// TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
 	// TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-	if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zul�sig wegen Diagonaler
+	if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulï¿½sig wegen Diagonaler
 	{
 		Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() ); 
 		cmd->handle( this );
@@ -2876,7 +2876,7 @@ void FourDScopeAgent::handleProposeVerti(Action & a)
 	// TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
 	// TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-	if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zul�sig wegen Diagonaler
+	if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
 	{
 		Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() ); 
 		cmd->handle( this );
@@ -2933,7 +2933,7 @@ void FourDScopeAgent::handleProposePeak(Action & a)
 			l1, l2, "Select Matching Spins" );
 		if( res.empty() )
 			return;
-		if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zul�sig wegen Diagonaler
+		if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
 			cmd->add( new LinkSpinCmd( d_pro->getSpins(), res[DimX], res[DimY] ) ); 
 	}
 
@@ -4457,14 +4457,14 @@ void FourDScopeAgent::handleDeleteAliasPeak(Action & a)
 		if( test.count( (*p)[ DimX ] ) == 0 )
 		{
 			cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimX ], 
-			(*p)[ DimX ]->getShift(), // auf Home schieben l�cht Alias
+			(*p)[ DimX ]->getShift(), // auf Home schieben lï¿½cht Alias
 			getSpec() ) );
 			test.insert( (*p)[ DimX ] );
 		}
 		if( test.count( (*p)[ DimY ] ) == 0 )
 		{
 			cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimY ], 
-			(*p)[ DimY ]->getShift(), // auf Home schieben l�cht Alias
+			(*p)[ DimY ]->getShift(), // auf Home schieben lï¿½cht Alias
 			getSpec() ) );
 			test.insert( (*p)[ DimY ] );
 		}

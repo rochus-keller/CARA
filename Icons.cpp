@@ -51,7 +51,7 @@ void Icons::init()
 	if( s_repository )
 		return;
 
-	// Pix können nicht statisch alloziiert werden, da Qt noch nicht initialisiert ist.
+	// Pix kÃ¶nnen nicht statisch alloziiert werden, da Qt noch nicht initialisiert ist.
 	s_repository = new QPixmap( x_repository );
 
 }

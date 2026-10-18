@@ -326,7 +326,7 @@ void MonoScope2::init()
 
 void MonoScope2::restoreLayout()
 {
-	/* Restore ist nicht erwünscht
+	/* Restore ist nicht erwÃ¼nscht
 	QSettings set;
 	QVariant state = set.value( "MonoScope/State" );
 	if( !state.isNull() )
@@ -561,7 +561,7 @@ static GlyphWidget* _create( MonoScope2* w, CommandLine* cl, SpecViewer* v )
 
 void MonoScope2::buildViews( bool create )
 {
-	// Hier wird für jede Pane ein GlyphWidget verwendet, so dass Layout und Fokus neu Sache von Qt ist.
+	// Hier wird fÃ¼r jede Pane ein GlyphWidget verwendet, so dass Layout und Fokus neu Sache von Qt ist.
 	if( getQt()->centralWidget() )
 		delete getQt()->centralWidget();
 
@@ -850,7 +850,7 @@ void MonoScope2::handleImportPeaklist(Action & a)
 			Rotation rot = createRotation( specClr, psClr );
 			if( rot.size() == psClr.size() )
 			{
-				pl->rotateAll( rot ); // eine Rotation ist möglich.
+				pl->rotateAll( rot ); // eine Rotation ist mÃ¶glich.
 			}
 			d_agent->setPeaklist( pl, rot.size() != psClr.size() );
 		}else

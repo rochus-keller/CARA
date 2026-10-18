@@ -273,7 +273,7 @@ namespace Spec
 
 		Rotation d_rot;
 		SpecRef<Spectrum> d_spec;
-		SpecRef<Spectrum> d_main;	// Das Spektrum, mit dem MonoSope geöffnet wurde
+		SpecRef<Spectrum> d_main;	// Das Spektrum, mit dem MonoSope geÃ¶ffnet wurde
 		Root::Ref<PeakList> d_peaks;
 		PeakProjector* d_pp;
 		Root::Ref<Project> d_pro; 
