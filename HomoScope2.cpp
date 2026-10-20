@@ -292,7 +292,7 @@ void HomoScope2::updateCaption()
 {
 	QString str;
 	str.sprintf( "HomoScope2 - %s", d_agent->getSpec()->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void HomoScope2::buildMenus()

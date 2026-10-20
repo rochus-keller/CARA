@@ -23,6 +23,7 @@
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
+#include <q3combobox.h>
 #include <qcheckbox.h> 
 #include <q3multilineedit.h>
 //Added by qt3to4:
@@ -297,12 +298,12 @@ void SpectrumTypeView::handleAddType(Root::Action & a)
 	ACTION_ENABLED_IF( a, true );
 
 	const char* title = "New Spectrum Type";
-	QDialog dlg( this, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( this ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	const Dimension maxDim = 4;
 	Root::Vector<QLineEdit*> _labels( maxDim );
-	Root::Vector<QComboBox*> _atoms( maxDim );
+	Root::Vector<Q3ComboBox*> _atoms( maxDim );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
@@ -321,7 +322,7 @@ void SpectrumTypeView::handleAddType(Root::Action & a)
 		str.sprintf( "Dim. %s", getDimSymbolLetter( d ) );
 		contents->addWidget( new QLabel( str, &dlg ), 1, d + 1 ); 
 
-		_atoms[ d ] = new QComboBox( &dlg );
+		_atoms[ d ] = new Q3ComboBox( &dlg );
 		for( int i = AtomType::None; i <= AtomType::Lr; i++ )
 			_atoms[ d ]->insertItem( AtomType::s_labels[ i ] );
 		_atoms[ d ]->setCurrentItem( 0 );
@@ -360,7 +361,7 @@ void SpectrumTypeView::handleAddType(Root::Action & a)
 				"Type needs at least one dimenstion!", "&Cancel" );
 			continue;
 		} 
-		str = _name->text().stripWhiteSpace();
+		str = _name->text().trimmed();
 		if( str.isEmpty() )
 		{
 			QMessageBox::critical( this, title, 
@@ -388,7 +389,7 @@ void SpectrumTypeView::handleAddLabel(Root::Action & a)
 	_TypeDimItem* i = dynamic_cast<_TypeDimItem*>( currentItem() );
 	ACTION_ENABLED_IF( a, i );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "Please enter a valid label (%s):", SpinLabel::s_syntax );
 	res = QInputDialog::getText( "Add Label", res, QLineEdit::Normal, "", &ok, this );
@@ -420,8 +421,8 @@ void SpectrumTypeView::handleEditOrder(Root::Action & a)
 	ACTION_ENABLED_IF( a, item );
 
 	const char* title = "Edit Spectrum Type";
-	QDialog dlg( this, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( this ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	SpectrumType* t = item->d_type;
 	const Dimension maxDim = item->d_type->getDimCount();
@@ -546,7 +547,7 @@ void SpectrumTypeView::handleShowPath(Root::Action & a)
 //	Q3MultiLineEdit* w = new Q3MultiLineEdit();
 //	QString str;
 //	str.sprintf( "Experiment Path: %s on %s", t->getName().data(), rt->getShort().data() );
-//	w->setCaption( str );
+//	w->setWindowTitle( str );
 //	w->setText( QByteArray ( out.str(), out.pcount() ).data() );
 //	out.rdbuf()->freeze(false);
 //	w->setReadOnly( true );
@@ -559,14 +560,14 @@ void SpectrumTypeView::handleEditProc(Root::Action & a)
 	ACTION_ENABLED_IF( a, item );
 
 	const char* title = "Edit Experiment Procedure";
-	QDialog dlg( this, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( this ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	SpectrumType* t = item->d_type;
 	const Dimension maxStep = 6;			// RISK
-	Root::Vector<QComboBox*> _atoms( maxStep );
+	Root::Vector<Q3ComboBox*> _atoms( maxStep );
 	Root::Vector<QLineEdit*> _names( maxStep );
-	Root::Vector<QComboBox*> _dims( maxStep );
+	Root::Vector<Q3ComboBox*> _dims( maxStep );
 	Root::Vector<QLineEdit*> _hops( maxStep );
 	Root::Vector<QCheckBox*> _rep( maxStep );
 	Root::Vector<QLineEdit*> _means( maxStep );
@@ -589,7 +590,7 @@ void SpectrumTypeView::handleEditProc(Root::Action & a)
 	QLabel* lbl = new QLabel( QByteArray ( out.str(), out.pcount() ).data(), &dlg );
 	out.rdbuf()->freeze(false);
 	lbl->setFrameStyle( Q3Frame::Panel );
-	lbl->setFrameShadow( Q3Frame::Sunken );
+	lbl->setFrameShadow( QFrame::Sunken );
 	contents->addMultiCellWidget( lbl, 0, 0, 0, maxStep ); 
 
 	contents->addWidget( new QLabel( "Target:", &dlg ), 2, 0 ); 
@@ -607,7 +608,7 @@ void SpectrumTypeView::handleEditProc(Root::Action & a)
 		str.sprintf( "Step %d", d + 1 );
 		contents->addWidget( new QLabel( str, &dlg ), 1, d + 1 ); 
 
-		_atoms[ d ] = new QComboBox( &dlg );
+		_atoms[ d ] = new Q3ComboBox( &dlg );
 		for( i = AtomType::None; i <= AtomType::Lr; i++ )
 			_atoms[ d ]->insertItem( AtomType::s_labels[ i ] );
 		contents->addWidget( _atoms[ d ], 2, d + 1 );
@@ -624,7 +625,7 @@ void SpectrumTypeView::handleEditProc(Root::Action & a)
 		_devs[ d ] = new QLineEdit( &dlg );
 		contents->addWidget( _devs[ d ], 6, d + 1 );
 
-		_dims[ d ] = new QComboBox( &dlg );
+		_dims[ d ] = new Q3ComboBox( &dlg );
 		contents->addWidget( _dims[ d ], 7, d + 1 );
 		_dims[ d ]->insertItem( "" );
 		for( i = 0; i < t->getDimCount(); i++ )
@@ -757,7 +758,7 @@ void SpectrumTypeView::handlePeakWidth(Root::Action & a)
 {
 	_TypeDimItem* i = dynamic_cast<_TypeDimItem*>( currentItem() );
 	ACTION_ENABLED_IF( a, i );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", i->d_type->getPeakWidth( i->d_dim ) );
 	res	= QInputDialog::getText( "Set Peak Width", 
@@ -808,11 +809,11 @@ void SpectrumTypeView::handleImportTypes(Root::Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		Root::Ref<Repository> temp = new Repository();
 		temp->load( fileName, true );
 		Dlg::StringList l;

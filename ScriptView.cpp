@@ -99,7 +99,7 @@ ScriptView::ScriptView(QWidget* p, Root::Agent* a, Lua::Engine* e, Spec::Reposit
 
 	d_closer = new QToolButton( d_tab );
 	d_closer->setEnabled(false);
-	d_closer->setPixmap( QPixmap( ":/cara/images/close.png" ) );
+	d_closer->setIcon( QIcon( QPixmap( ":/cara/images/close.png" ) ) );
 	d_closer->setAutoRaise( true );
 	connect( d_closer, SIGNAL( clicked() ), this, SLOT( onClose() ) );
 	d_tab->setCornerWidget( d_closer );
@@ -216,7 +216,7 @@ void ScriptView::handle( Root::Message& msg )
     MESSAGE( Script::Changed, a, msg )
 	{
         Q_UNUSED(a)
-        // TODO: was ist, wenn Script gerade gendert wird?
+        // TODO: was ist, wenn Script gerade geändert wird?
 	}
     MESSAGE( Repository::Changed, a, msg )
 	{
@@ -312,7 +312,7 @@ void ScriptView::handleShowFile(Root::Action & a)
         return;
 
     QFileInfo info( fileName );
-    Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+    Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
     ScriptEditor3* e = findEditorInTab( fileName );
     if( e != 0 )
@@ -569,7 +569,7 @@ void ScriptView::handleImportScript(Root::Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	bool ok	= false;
 	QString res = QInputDialog::getText( "Import Script", 
@@ -622,7 +622,7 @@ void ScriptView::handleExportScript(Root::Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "LUA" )
+	if( info.suffix().toUpper() != "LUA" )
 		fileName += ".lua";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -632,8 +632,8 @@ void ScriptView::handleExportScript(Root::Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
-	std::ofstream out( fileName );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
+	std::ofstream out( fileName.toLatin1().constData() );
 	if( !out )
 	{
 		QMessageBox::critical( this, "Save As", 
@@ -683,7 +683,7 @@ void ScriptView::handleExportBinary(Root::Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "LUA" )
+	if( info.suffix().toUpper() != "LUA" )
 		fileName += ".lua";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -694,7 +694,7 @@ void ScriptView::handleExportBinary(Root::Action & a)
 			return;
 	}
 
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
     if( !d_lua->saveBinary( svi->d_script->getCode(), fileName.toLatin1() ) )
         QMessageBox::critical( this, tr("Export Binary Script"), d_lua->getLastError() );
 }
@@ -708,7 +708,7 @@ void ScriptView::handleRunFromFile(Root::Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
     if( !d_lua->executeFile( fileName.toLatin1() ) )
     {

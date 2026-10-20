@@ -295,7 +295,7 @@ void StripScope2::updateCaption()
 {
 	QString str;
 	str.sprintf( "StripScope - %s", d_agent->getSpec()->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void StripScope2::buildMenus()
@@ -666,7 +666,7 @@ void StripScope2::handleSelectRuler(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	Index res;
 	if( a.getParamCount() == 0 )
 	{
@@ -694,7 +694,7 @@ void StripScope2::handleSetLaneCount(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	int res	= QInputDialog::getInteger( "Set strip count", 
 		"Please	enter the number of strips to display:", 
 		d_agent->getLaneCount(), 1, 10,	1, &ok,	d_widget );
@@ -854,7 +854,7 @@ void StripScope2::handleExportAnchorPeaks(Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -864,7 +864,7 @@ void StripScope2::handleExportAnchorPeaks(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		Spectrum* spec = d_agent->getSpec();
@@ -891,7 +891,7 @@ void StripScope2::handleExportAnchorPeaks(Action & a)
 			ps->setPoint( id, p );
 			ps->setAssig( id, a );
 		}
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -911,7 +911,7 @@ void StripScope2::handleExportStripPeaks(Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -921,7 +921,7 @@ void StripScope2::handleExportStripPeaks(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		PpmPoint p( 0, 0, 0 );
@@ -951,7 +951,7 @@ void StripScope2::handleExportStripPeaks(Action & a)
 			SpinPointView::formatLabel( buf, sizeof(buf), e.d_point, l, DimY );
 			ps->setComment( id, buf );
 		}
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -1001,7 +1001,7 @@ void StripScope2::handleGotoResidue(Action & a)
 	Root::Index id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Residue", 
 			"Please	enter a residue number:", 
 			0, -999999, 999999, 1, &ok, getQt() );
@@ -1031,7 +1031,7 @@ void StripScope2::handleSetWidthFactor(Action & a)
 	float g;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
 		res.sprintf( "%0.2f", d_agent->getProject()->getWidthFactor() );
 		res	= QInputDialog::getText( "Set Strip Width Factor", 
@@ -1056,7 +1056,7 @@ void StripScope2::handleSetDepth(Action & a)
 	float g;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
 		res.sprintf( "%f", d_agent->getProject()->inferPeakWidth( DimZ, 
 			d_agent->getSpec() ) );

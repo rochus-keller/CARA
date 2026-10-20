@@ -116,20 +116,20 @@ int main( int argc, char **argv )
 					// Reagiere nun auf übrige File-Typen
 					QFileInfo info( arg );
 
-					if( info.extension( false ).upper() == "XEP" || 
-						info.extension( false ).upper() == "XED" )
+					if( info.suffix().toUpper() == "XEP" || 
+						info.suffix().toUpper() == "XED" )
 					{
 #ifdef _HasNeasy_
 
-						Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+						Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 						QMainWindow* w = Neasy::showMainWindow( false );
 						if( w )
 							w->raise();
 #endif
-					}else if( info.extension( false ).upper() == "PARAM" ||
-						info.extension( false ).upper() == "NMR" )
+					}else if( info.suffix().toUpper() == "PARAM" ||
+						info.suffix().toUpper() == "NMR" )
 					{
-						Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+						Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 						w->openSpectrum(arg);
 					}			
 				}

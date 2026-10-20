@@ -337,11 +337,11 @@ extern void createMonoScope( Root::Agent* a, Spec::Spectrum* s,
 void AidaCentral::openSpectrum(const char *path)
 {
 	QFileInfo info( path );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> spec = Factory::createSpectrum( path );
 		if( spec == 0 )
 			Root::ReportToUser::alert( this, "Error opening spectrum",
@@ -482,8 +482,8 @@ void AidaCentral::handleTest( Action& a )
 		new MonoScope( this, spec );
 	*/
 	QFileInfo info( "test.cara" );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
-	openRepository( info.absFilePath() );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
+	openRepository( info.absoluteFilePath() );
 }
 
 bool AidaCentral::handleSave(bool as) const
@@ -525,10 +525,10 @@ bool AidaCentral::handleSave(bool as) const
 			return false;
 
 		QFileInfo info( fileName );
-		if( info.extension( false ).upper() != "CARA" )
+		if( info.suffix().toUpper() != "CARA" )
 			fileName += ".cara";
 		info.setFile( fileName );
-		fileName = info.absFilePath();
+		fileName = info.absoluteFilePath();
 		if( info.exists() )
 		{
 			if( QMessageBox::warning( getQt(), "Save As",
@@ -536,7 +536,7 @@ bool AidaCentral::handleSave(bool as) const
 				"&OK", "&Cancel" ) != 0 )
 				return false;
 		}
-		AppAgent::setCurrentDir( info.dirPath( true ) );
+		AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	}
 
 	try
@@ -594,19 +594,19 @@ void AidaCentral::updateTitle()
 	if( str2.isEmpty() )
 	{
 		str2 = "<Untitled>";
-		str1.sprintf( "%s - %s", CAPTION2, str2.toAscii().data() );
+		str1.sprintf( "%s - %s", CAPTION2, str2.toLatin1().data() );
 	}else
-        str1.sprintf( "%s - %s", AidaApplication::s_appName, str2.toAscii().data() );
+        str1.sprintf( "%s - %s", AidaApplication::s_appName, str2.toLatin1().data() );
 	if( d_app->getRep()->isDirty() )
 		str1 += "*";
-	getQt()->setCaption( str1 );
+	getQt()->setWindowTitle( str1 );
 }
 
 void AidaCentral::openRepository(const char * path)
 {
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		d_app->openRepository( path );
 		d_app->reloadSpecs();
 		updateTitle();
@@ -641,8 +641,8 @@ void AidaCentral::handleFileOpen( Action& a )
 		return;
 
 	QFileInfo info( fileName );
-	fileName = info.absFilePath();
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	fileName = info.absoluteFilePath();
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	openRepository( fileName );
 }
@@ -738,11 +738,11 @@ void AidaCentral::handleNewFromTemplate(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		d_app->newFromTemplate( fileName );
 		d_app->reloadSpecs();
 		QApplication::restoreOverrideCursor();
@@ -788,11 +788,11 @@ void AidaCentral::handleOpenPhaser(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		Spectrum* spec = Factory::createSpectrum( fileName );
 		if( spec == 0 )
 			Root::ReportToUser::alert( this, "Error opening spectrum",
@@ -817,7 +817,7 @@ void AidaCentral::handleOpenSpecRot(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
@@ -832,7 +832,7 @@ void AidaCentral::handleOpenSpecRot(Action & a)
 		{ 
 			Rotation rot( spec->getDimCount() );	
 			RotateDlg dlg( getQt(), "Original", "View" );
-			dlg.setCaption( "Open MonoScope" );
+			dlg.setWindowTitle( "Open MonoScope" );
 			QString s1, s2;
 			for( Dimension d = 0; d < spec->getDimCount(); d++ )
 			{
@@ -845,7 +845,7 @@ void AidaCentral::handleOpenSpecRot(Action & a)
 			}
 			if( !dlg.rotate( rot ) )
 				return;
-			QApplication::setOverrideCursor( Qt::waitCursor );
+			QApplication::setOverrideCursor( Qt::WaitCursor );
 			createMonoScope( this, spec, 0, 0, rot );
 			QApplication::restoreOverrideCursor();
 		}
@@ -866,7 +866,7 @@ void AidaCentral::handleConvert(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	Root::Ref<Spectrum> spec;
     //Root::UInt32 old = FileSpectrum::getMapThreshold();
@@ -898,7 +898,7 @@ void AidaCentral::handleConvert2(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	Root::Ref<Spectrum> spec;
     //Root::UInt32 old = FileSpectrum::getMapThreshold();
@@ -967,7 +967,7 @@ void AidaCentral::handleFlatten(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	Root::Ref<Spectrum> spec;
     //Root::UInt32 old = FileSpectrum::getMapThreshold();
@@ -1026,7 +1026,7 @@ void AidaCentral::handleLabelCross(Action & a)
 void AidaCentral::handleGarbageCollect(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	Root::Mem::collect();
 	Engine* lua = Engine::inst();
 	if( lua )
@@ -1039,7 +1039,7 @@ void AidaCentral::handleEnableGc(Action & a)
 {
 	ACTION_CHECKED_IF( a, true, s_gcEnabled );
 	
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	if( s_gcEnabled )
 		Root::Mem::disableGc();
 	else
@@ -1077,7 +1077,7 @@ void AidaCentral::handleXeasyN(Action & a)
 	g_useXeasyN = !g_useXeasyN;
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		d_app->getRep()->reloadSpecs();
 		QApplication::restoreOverrideCursor();
 	}catch( Root::Exception& e )
@@ -1099,11 +1099,11 @@ void AidaCentral::handleOpenSitar(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> spec = Factory::createSpectrum( fileName );
 		if( spec == 0 )
 			Root::ReportToUser::alert( this, "Error opening spectrum",

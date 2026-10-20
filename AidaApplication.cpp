@@ -39,9 +39,9 @@ using namespace Lua;
 #define PROMPT		"CARA> "
 #define PROMPT2		"CARA>> "
 
-const char* AidaApplication::s_release = "1.9.1.8a2";
-const char* AidaApplication::s_relDate = "2020-09-17";
-const char* AidaApplication::s_copyRightYear = "2020";
+const char* AidaApplication::s_release = "1.9.1.9";
+const char* AidaApplication::s_relDate = "2026-10-19";
+const char* AidaApplication::s_copyRightYear = "2026";
 const char* AidaApplication::s_appName = "CARA";
 const char* AidaApplication::s_help = 
 "cara [options] [files]\n"
@@ -82,7 +82,7 @@ static void print_error( const char *msg)
 }
 
 #ifndef _DEBUG
-static void myMessageOutput( QtMsgType type, const char *msg )
+static void myMessageOutput( QtMsgType type, const QMessageLogContext &, const QString &msg )
 {
 	return;
 	// Wir wollen im Release-Terminal-Mode keine Debug-Messages mehr.
@@ -102,7 +102,7 @@ const char* s_ext_delta = "#ext-delta#";
 static BOOL WINAPI MyConsoleHandler( DWORD dwCtrlType )
 {
 	// ::fprintf( stdout, "Event %d\n", dwCtrlType );
-	return TRUE;
+	return true;
 }
 
 #endif
@@ -128,7 +128,7 @@ AidaApplication::AidaApplication():
 	d_batch( false ), d_console( false ), d_silent( false )
 {
 #ifndef _DEBUG
-	qInstallMsgHandler( myMessageOutput );
+	qInstallMessageHandler( myMessageOutput );
 #endif
 
 	try
@@ -175,22 +175,22 @@ AidaApplication::AidaApplication():
 		if( arg[ 0 ] != '-' )
 		{
 			QFileInfo info( arg );
-			if( info.extension( false ).upper() == "CARA" )
+			if( info.suffix().toUpper() == "CARA" )
 			{
-				arg = info.absFilePath();
+				arg = info.absoluteFilePath();
 				QString str;
                 str.sprintf( "Opening %s", arg.toLatin1().data() );
 				print_error( str.toLatin1().data() );
-				setCurrentDir( info.dirPath( true ) );
+				setCurrentDir( info.absolutePath().toLatin1().constData() );
 				rep = arg;
-			}else if( info.extension( false ).upper() == "LUA" )
+			}else if( info.suffix().toUpper() == "LUA" )
 			{
-				setCurrentDir( info.dirPath( true ) );
+				setCurrentDir( info.absolutePath().toLatin1().constData() );
 				d_scripts.push_back( arg.toLatin1() );
 			}
 		}else
 		{
-			arg = arg.mid( 1 ).upper();
+			arg = arg.mid( 1 ).toUpper();
 			if( arg == "BATCH" || arg == "B" )
 				d_batch = true;
 			else if( arg == "CONS" || arg == "C" || arg == "CONSOLE" )
@@ -207,22 +207,22 @@ AidaApplication::AidaApplication():
 				; // Das sind die von XEASY absorbierten Optionen
 			else if( arg == "LUA" || arg == "A" )
 			{
-				const char *chunk = args[++i];
-				if( chunk == 0 )
+				QByteArray chunk = args.value( ++i ).toLatin1();
+				if( chunk.isNull() )
 					Root::MessageLog::inst()->error( "Command Line", "Invalid Lua Statement" );
 				else
 					d_commands.push_back( chunk );
 			}else if( arg == "LOG" || arg == "G" )
 			{
-				const char *chunk = args[++i];
-				if( chunk == 0 )
+				QByteArray chunk = args.value( ++i ).toLatin1();
+				if( chunk.isNull() )
 					Root::MessageLog::inst()->error( "Command Line", "Invalid logfile name" );
 				else
 					log_name = chunk;
 			}else if( arg == "REQ" || arg == "R" )
 			{
-				const char *chunk = args[++i];
-				if( chunk == 0 )
+				QByteArray chunk = args.value( ++i ).toLatin1();
+				if( chunk.isNull() )
 					Root::MessageLog::inst()->error( "Command Line", "Invalid script name" );
 				else
 					d_requires.push_back( chunk );
@@ -235,7 +235,7 @@ AidaApplication::AidaApplication():
 			}else
 			{
 				QString msg = "Invalid option -";
-				msg += arg.lower();
+				msg += arg.toLower();
 				Root::MessageLog::inst()->error( "Command Line", msg.toLatin1() );
 				show_help = true;
 				break;
@@ -269,8 +269,8 @@ AidaApplication::AidaApplication():
 		str.sprintf( "%s Console %s", s_appName, s_release );
 		if( hasGui() && !d_silent )
 		{
-			SetConsoleCtrlHandler( MyConsoleHandler, TRUE );
-			// SetConsoleCtrlHandler( NULL, TRUE ); // friss CTRL-C
+			SetConsoleCtrlHandler( MyConsoleHandler, true );
+			// SetConsoleCtrlHandler( NULL, true ); // friss CTRL-C
 			print_error( "GUI mode, console locked, use CARA Explorer to quit" );
 		}else if( hasGui() )
 		{
@@ -291,7 +291,7 @@ AidaApplication::AidaApplication():
 
             Root::MessageLog::inst()->info( "Repository", msg.toLatin1() );
 			d_rep = new Repository();
-			d_rep->load( rep );
+			d_rep->load( rep.toLatin1().constData() );
 			reloadSpecs();
 		}catch( Root::Exception& e )
 		{
@@ -513,7 +513,7 @@ void AidaApplication::save(Repository* rep, const char* path)
 	assert( rep );
 	QString str;
 	str.sprintf( "%s %s", s_appName, s_release );
-	rep->saveToFile( path, str );
+	rep->saveToFile( path, str.toLatin1().constData() );
 }
 
 //////////////////////////////
@@ -529,7 +529,7 @@ static int readline( lua_State *l, const char *prompt )
 	QString str = QInputDialog::getText( "CARA Console", prompt, QLineEdit::Normal, "", &ok );
 	if( !ok )
 		return 0;
-	lua_pushstring( l, str.latin1() );
+	lua_pushstring( l, str.toLatin1().constData() );
 	return 1;
 #else
 	// RISK: nur hier lesen und schreiben

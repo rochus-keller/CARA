@@ -159,6 +159,14 @@ namespace Spec
             void load2( const char* );
 			void save( const char* );
             void save2( const char* );
+			void load( const QString& p ) { load( p.toLatin1().constData() ); }
+            void load2( const QString& p ) { load2( p.toLatin1().constData() ); }
+			void save( const QString& p ) { save( p.toLatin1().constData() ); }
+            void save2( const QString& p ) { save2( p.toLatin1().constData() ); }
+			void load( const QByteArray& p ) { load( p.constData() ); }
+            void load2( const QByteArray& p ) { load2( p.constData() ); }
+			void save( const QByteArray& p ) { save( p.constData() ); }
+            void save2( const QByteArray& p ) { save2( p.constData() ); }
 			Setup();
 			QColor  getPosClr( int i ) const
 			{

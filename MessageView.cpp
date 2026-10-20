@@ -60,7 +60,8 @@ public:
 			switch( a->getType() )
 			{
 			case Root::MessageLog::Update::All:
-				reset();
+				beginResetModel();
+				endResetModel();
 				break;
 			case Root::MessageLog::Update::Add:
 				beginInsertRows( QModelIndex(), a->getNr(), a->getNr() );
@@ -193,7 +194,7 @@ void MessageView::handleSaveTo(Root::Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "LOG" )
+	if( info.suffix().toUpper() != "LOG" )
 		fileName += ".log";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -203,7 +204,7 @@ void MessageView::handleSaveTo(Root::Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
     QFile out( fileName );
     if( !out.open( QFile::Append ) )

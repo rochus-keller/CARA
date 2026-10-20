@@ -590,8 +590,8 @@ void PhaserAgent::notifyCursor()
 	QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-	ts.setf( QTextStream::fixed );
-	ts.precision( 3 );
+	ts.setRealNumberNotation( QTextStream::FixedNotation );
+	ts.setRealNumberPrecision( 3 );
 
 	ts <<  "Cursor:  ";
 
@@ -609,14 +609,14 @@ void PhaserAgent::notifyCursor()
 	try
 	{
 		Amplitude val = d_spec->Spectrum::getAt( d_cursor, d_folding, d_folding );
-		ts.setf( QTextStream::showpos );
-		ts.precision( 0 );
+		ts.setNumberFlags( QTextStream::ForceSign );
+		ts.setRealNumberPrecision( 0 );
 		ts << "Level=" << val;
 	}catch( ... )
 	{
 		ts << " Out of Spectrum";
 	}
-	Lexi::ShowStatusMessage msg( str );
+	Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 	traverseUp( msg );
 }
 
@@ -749,7 +749,7 @@ void PhaserAgent::handleSetResolution(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	int res	= QInputDialog::getInteger( "Set Resolution", 
 		"Please	enter the minimal number of pixels per sample:", 
 		d_resol, 1, 20, 1,	&ok, MW );
@@ -1082,7 +1082,7 @@ void PhaserAgent::handleSetPivot(Action & a)
 	ACTION_ENABLED_IF( a, d_curDim != -1 ); 
 
 	PPM pivot = d_spec->getPivot( d_curDim );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", double( d_cursor[ d_curDim ] ) );
 	res	= QInputDialog::getText( "Set Pivot", 

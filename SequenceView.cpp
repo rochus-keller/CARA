@@ -362,17 +362,17 @@ void SequenceView::handleImportValues(Root::Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	ResidueBase db;
-	QApplication::setOverrideCursor( Qt::waitCursor );
-	if( info.extension(false).upper() == "REL" )
+	QApplication::setOverrideCursor( Qt::WaitCursor );
+	if( info.suffix().toUpper() == "REL" )
 	{
 		if( !db.read( fileName, d_pro->getRepository(), d_pro->getSequence() ) )
 		{
 			QMessageBox::critical( this, "Error Import Values",
 					db.d_result.data(), "&Cancel" );
 		}
-	}else if( info.extension(false).upper() == "STATS" )
+	}else if( info.suffix().toUpper() == "STATS" )
 	{
 		if( !db.readStats( fileName, d_pro->getRepository(), d_pro->getSequence() ) )
 		{
@@ -425,7 +425,7 @@ void SequenceView::handleExportValues(Root::Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "REL" )
+	if( info.suffix().toUpper() != "REL" )
 		fileName += ".rel";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -435,7 +435,7 @@ void SequenceView::handleExportValues(Root::Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	ResidueBase db;
 	if( !db.write( fileName, d_pro->getSequence() ) )
 	{
@@ -506,7 +506,7 @@ void SequenceView::handleSetChain(Root::Action & a)
 		i->d_res->getChain().data(), &ok, this );
 	if( !ok )
 		return;
-	Root::SymbolString c = res.stripWhiteSpace().toLatin1();
+	Root::SymbolString c = res.trimmed().toLatin1();
 	if( !isValidChain( c ) )
 		return;
 	Root::SymbolString old = i->d_res->getChain();
@@ -537,7 +537,7 @@ void SequenceView::handleAddChain(Root::Action & a)
 			sf->loadFromFile( d_pro->getRepository(), fileName, next );
 
 			QFileInfo info( fileName );
-			Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+			Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 		}else
 			return;
 
@@ -546,7 +546,7 @@ void SequenceView::handleAddChain(Root::Action & a)
 			"Please enter a unique chain id (alpha-numeric):", QLineEdit::Normal, "", &ok, this );
 		if( !ok )
 			return;
-		Root::SymbolString c = res.stripWhiteSpace().toLatin1();
+		Root::SymbolString c = res.trimmed().toLatin1();
 		if( !isValidChain( c ) )
 			return;
 
@@ -640,7 +640,7 @@ void SequenceView::handleExportChain(Root::Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "SEQ" )
+	if( info.suffix().toUpper() != "SEQ" )
 		fileName += ".seq";
 	info.setFile( fileName );
 	if( info.exists() )

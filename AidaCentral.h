@@ -14,6 +14,7 @@
  */
 
 #if !defined(AFX_AIDACENTRAL_H__8AC4550C_B0F1_4452_8174_B9FC30D337BB__INCLUDED_)
+#include <Root/SymbolString.h>
 #define AFX_AIDACENTRAL_H__8AC4550C_B0F1_4452_8174_B9FC30D337BB__INCLUDED_
 
 #if _MSC_VER > 1000
@@ -36,11 +37,17 @@ public:
 	AidaCentral( Root::Agent*, AidaApplication *);
 	Spec::Repository* getRep() const { return d_app->getRep(); }
 	void openSpectrum( const char* path );
+	void openSpectrum( const QString& path ) { openSpectrum( path.toLatin1().constData() ); }
+	void openSpectrum( const QByteArray& path ) { openSpectrum( path.constData() ); }
+	void openSpectrum( const Root::SymbolString& path ) { openSpectrum( path.data() ); }
 	virtual ~AidaCentral();
 	void setContextMenu( QMenu* );
 protected:
 	void closeRepository();
 	void openRepository( const char* path );
+	void openRepository( const QString& path ) { openRepository( path.toLatin1().constData() ); }
+	void openRepository( const QByteArray& path ) { openRepository( path.constData() ); }
+	void openRepository( const Root::SymbolString& path ) { openRepository( path.data() ); }
 	void handle( Root::Message& );
 	void handleAction(Root::Action & msg );
 private:

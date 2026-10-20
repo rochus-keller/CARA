@@ -441,7 +441,7 @@ void SitarViewer::updateCaption()
 {
 	QString str;
 	str.sprintf( "SitarViewer - %s", d_spec->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void SitarViewer::handle(Root::Message& msg)
@@ -687,12 +687,12 @@ void SitarViewer::createSlice(Dimension view, Dimension spec )
 
 void SitarViewer::updatePlane(CursorMdl::Update * msg)
 {
-	// Auf der Plane wurde der Cursor geï¿½dert
+	// Auf der Plane wurde der Cursor geändert
 	assert( d_slices.size() >= 2 );
 	PpmPoint pos( msg->getX(), msg->getY() );
 
 	// Der X-Slice zeigt den durch den Y-Cursor der Plane
-	// reprï¿½entierten Slice mit Origin Y (und umgekehrt)
+	// repräsentierten Slice mit Origin Y (und umgekehrt)
 	if( msg->getDim() == DimY || msg->getDim() == DimUndefined )
 	{
 		d_cursor[ DimY ] = pos[ DimY ];
@@ -759,7 +759,7 @@ void SitarViewer::updatePlane(ViewAreaMdl::Update * msg)
 
 void SitarViewer::updateSlice(Dimension dim, CursorMdl::Update *msg)
 {
-	// Auf einem Slice wurde der Cursor geï¿½dert
+	// Auf einem Slice wurde der Cursor geändert
 	bool twoD = true;
 	if( dim == DimZ )
 	{
@@ -815,7 +815,7 @@ void SitarViewer::updateSlice(Dimension dim, ViewAreaMdl::Update *msg)
 
 void SitarViewer::updateStrip(Dimension dim, ViewAreaMdl::Update *msg)
 {
-	// In einem Strip wurde Ausschnitt geï¿½dert
+	// In einem Strip wurde Ausschnitt geändert
 
 	if( msg->getType() != ViewAreaMdl::Update::Range )
 		return;
@@ -838,7 +838,7 @@ void SitarViewer::updateStrip(Dimension dim, ViewAreaMdl::Update *msg)
 
 void SitarViewer::updateStrip(Dimension dim, CursorMdl::Update *msg)
 {
-	// In einem Strip wurde Cursor geï¿½dert
+	// In einem Strip wurde Cursor geändert
 	d_plane.d_cur->setCursor( (Dimension)DimY, msg->getX() ); // Beide Dims gleich
 	updatePlane( msg );
 	notifyCursor(false);
@@ -849,8 +849,8 @@ void SitarViewer::notifyCursor(bool plane)
 	QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-	ts.setf( QTextStream::fixed );
-	ts.precision( 3 );
+	ts.setRealNumberNotation( QTextStream::FixedNotation );
+	ts.setRealNumberPrecision( 3 );
 
 	ts <<  "Cursor:  ";
 
@@ -871,8 +871,8 @@ void SitarViewer::notifyCursor(bool plane)
 
 	try
 	{
-		ts.setf( QTextStream::showpos );
-		ts.precision( 0 );
+		ts.setNumberFlags( QTextStream::ForceSign );
+		ts.setRealNumberPrecision( 0 );
 		if( plane )
 		{
 			PpmPoint p;
@@ -887,7 +887,7 @@ void SitarViewer::notifyCursor(bool plane)
 		ts << " Out of Spectrum";
 	}
 	QByteArray  tmp;
-	Lexi::ShowStatusMessage msg( str );
+	Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 	MainWindow::handle( msg );
 }
 
@@ -1006,7 +1006,7 @@ void SitarViewer::handleSetPeakWidht(Action & a)
 	{
 		dim = DimY;
 	}
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_pw[dim] );
 	res	= QInputDialog::getText( "Set Peak Width", 

@@ -210,7 +210,7 @@ void SynchroScope2::updateCaption()
 {
 	QString str;
 	str.sprintf( "SynchroScope - %s", d_agent->getSpec2D()->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void SynchroScope2::buildMenus()
@@ -279,9 +279,9 @@ void SynchroScope2::buildMenus()
 		PolyScopeAgent2::ContourParams, false );
 	menuPlane->insertSeparator();
 	Gui::Menu::item( menuPlane, d_agent, "Forward Plane", 
-		PolyScopeAgent2::ForwardPlane, false, Qt::SHIFT+Qt::Key_Next );
+		PolyScopeAgent2::ForwardPlane, false, Qt::SHIFT+Qt::Key_PageDown );
 	Gui::Menu::item( menuPlane, d_agent, "Backward Plane", 
-		PolyScopeAgent2::BackwardPlane, false, Qt::SHIFT+Qt::Key_Prior );
+		PolyScopeAgent2::BackwardPlane, false, Qt::SHIFT+Qt::Key_PageUp );
 	menuPlane->insertSeparator();
 	Gui::Menu::item( menuPlane, d_agent, "Pick System", 
 		PolyScopeAgent2::PickSystem, false );

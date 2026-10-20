@@ -684,8 +684,8 @@ void SystemScopeAgent2::notifyCursor( bool ortho )
 	QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-	ts.setf( QTextStream::fixed );
-	ts.precision( 3 );
+	ts.setRealNumberNotation( QTextStream::FixedNotation );
+	ts.setRealNumberPrecision( 3 );
 
 	if( d_spec )
 	{
@@ -706,8 +706,8 @@ void SystemScopeAgent2::notifyCursor( bool ortho )
 		try
 		{
 			Amplitude val = d_spec->getAt( d_cursor, d_folding, d_folding );
-			ts.setf( QTextStream::showpos );
-			ts.precision( 0 );
+			ts.setNumberFlags( QTextStream::ForceSign );
+			ts.setRealNumberPrecision( 0 );
 			ts << "Level=" << val;
 		}catch( ... )
 		{
@@ -729,7 +729,7 @@ void SystemScopeAgent2::notifyCursor( bool ortho )
 		str += ",  ";
 		str += tmp.data();
 	}
-	Lexi::ShowStatusMessage msg( str );
+	Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 	traverseUp( msg );
 }
 
@@ -1314,7 +1314,7 @@ void SystemScopeAgent2::handleForceLabelSpin(Action & a)
 
 	SpinPoint tuple = *d_strip.d_tuples->getSel().begin();
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	if( a.getParam( 0 ).isNull() )
 	{
@@ -1353,7 +1353,7 @@ void SystemScopeAgent2::handleSetResolution(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	int res	= QInputDialog::getInteger( "Set Resolution", 
 		"Please	enter the minimal number of pixels per sample:", 
 		d_resol, 1, 20, 1,	&ok, MW );
@@ -1505,7 +1505,7 @@ void SystemScopeAgent2::handleForceLabelOrtho(Action & a)
 
 	SpinPoint spin = *d_orthos[ d_curOrtho ].d_tuples->getSel().begin();
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	if( a.getParam( 0 ).isNull() )
 	{
@@ -1611,7 +1611,7 @@ void SystemScopeAgent2::handleSetWidth(Action & a)
 	ACTION_ENABLED_IF( a, !d_anchor.isZero() &&
 		d_strip.d_viewer->hasFocus() );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_pro->inferPeakWidth( DimX, d_strip.d_spec ) );
 	res	= QInputDialog::getText( "Set Peak Width", 
@@ -1895,7 +1895,7 @@ void SystemScopeAgent2::handleSetDepth(Action & a)
 	float g;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
 		res.sprintf( "%f", d_pro->inferPeakWidth( DimZ, d_spec ) );
 		res	= QInputDialog::getText( "Set Peak Depth", 

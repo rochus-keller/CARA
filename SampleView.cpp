@@ -295,7 +295,7 @@ void SampleView::handleAddSample(Root::Action & a)
 		"Please select a name:", QLineEdit::Normal, "", &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 
 	const Project::SampleMap& sm = d_pro->getSamples();
 	Project::SampleMap::const_iterator p;
@@ -324,7 +324,7 @@ void SampleView::handleRenameSample(Root::Action & a)
 		item->d_samp->getName(), &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 	item->d_samp->setName( res.toLatin1() );
 }
 

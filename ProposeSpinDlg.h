@@ -28,7 +28,7 @@ class ProposeSpinDlg : public QDialog
 public:
 	ProposeSpinDlg( QWidget* parent, Spec::Project*, Spec::AtomType, Spec::PPM,
 		Spec::Spectrum* = 0,const QString& title = "" );
-	bool exec();
+	int exec();
 	Spec::Spin* getSpin() const;
 	Spec::PPM getShift() const { return d_shift; }
 	Spec::AtomType getAtom() const { return d_atom; }

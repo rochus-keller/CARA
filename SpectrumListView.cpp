@@ -197,7 +197,7 @@ public:
 	{
         if( d_spec->isDummy() )
         {
-            return Qt::lightGray;
+            return QColor( Qt::lightGray );
         }else
             return QVariant();
 	}
@@ -285,7 +285,7 @@ public:
         SpectrumPeer* sp = static_cast<_SpectrumListItem*>( parent() )->getSpec();
         if( sp->isDummy() )
         {
-            return Qt::lightGray;
+            return QColor( Qt::lightGray );
         }else
             return QVariant();
 	}
@@ -425,7 +425,7 @@ void SpectrumListView::saveCaraSpectrum(QWidget * parent, Spectrum * spec)
 	QFileInfo info2( spec->getName() );
 
 	RotateDlg dlg( parent, "Original", "Saved", true ); 
-	dlg.setCaption( "Save Original Spectrum Rotated" );
+	dlg.setWindowTitle( "Save Original Spectrum Rotated" );
 	Rotation rot( spec->getDimCount() );
 	QString s1;
 	Dimension d;
@@ -454,7 +454,7 @@ void SpectrumListView::saveCaraSpectrum(QWidget * parent, Spectrum * spec)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "NMR" )
+	if( info.suffix().toUpper() != "NMR" )
 		fileName += ".nmr";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -465,7 +465,7 @@ void SpectrumListView::saveCaraSpectrum(QWidget * parent, Spectrum * spec)
 			return;
 	}
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	SpecRef<Spectrum> tmp = new SpecRotator( spec, rot );
 	Spectrum::Levels l = spec->getLevels( false );	// RISK: false ist schneller
 	Amplitude porig = l.d_pMax, norig = l.d_nMax;
@@ -480,7 +480,7 @@ void SpectrumListView::saveCaraSpectrum(QWidget * parent, Spectrum * spec)
 	}
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		CaraSpectrum::writeToFile( fileName, tmp, l, porig, norig, 
 			CaraSpectrum::Kind(res), clr );
 		QApplication::restoreOverrideCursor();
@@ -496,7 +496,7 @@ void SpectrumListView::saveEasySpectrum(QWidget * parent, Spectrum * spec)
 	QFileInfo info2( spec->getName() );
 
 	RotateDlg dlg( parent, "Original", "Saved", true ); 
-	dlg.setCaption( "Save Original Spectrum Rotated" );
+	dlg.setWindowTitle( "Save Original Spectrum Rotated" );
 	Rotation rot( spec->getDimCount() );
 	QString s1;
 	Dimension d;
@@ -525,7 +525,7 @@ void SpectrumListView::saveEasySpectrum(QWidget * parent, Spectrum * spec)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "3D.PARAM" )
+	if( info.suffix().toUpper() != "3D.PARAM" )
 		fileName += ".3D.param";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -536,12 +536,12 @@ void SpectrumListView::saveEasySpectrum(QWidget * parent, Spectrum * spec)
 			return;
 	}
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	SpecRef<Spectrum> tmp = new SpecRotator( spec, rot );
 	QApplication::restoreOverrideCursor();
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 
 		Spectrum::Levels l = spec->getLevels();
 		double amax = l.d_pMax;
@@ -561,9 +561,9 @@ void SpectrumListView::saveEasySpectrum(QWidget * parent, Spectrum * spec)
 		}
 		if( !Dlg::getSubMatCount( parent, spec, ext, factor ) )
 			return;
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		EasySpectrum::writeParamFile( fileName, tmp, ext );
-		fileName = fileName.left( fileName.findRev( "PARAM", -1, false ) );
+		fileName = fileName.left( fileName.lastIndexOf( "PARAM", -1, Qt::CaseInsensitive ) );
 		fileName += "16";
 		EasySpectrum::writeToFile( fileName, tmp, factor, ext );
 		QApplication::restoreOverrideCursor();
@@ -585,7 +585,7 @@ void SpectrumListView::saveFlatCaraSpectrum(QWidget * parent, Spectrum * spec)
 	QFileInfo info2( spec->getName() );
 
 	RotateDlg dlg( parent, "Original", "Projected", true ); 
-	dlg.setCaption( "Save Projected Spectrum" );
+	dlg.setWindowTitle( "Save Projected Spectrum" );
 	Rotation rot( spec->getDimCount() );
 	QString s1;
 	Dimension d;
@@ -614,7 +614,7 @@ void SpectrumListView::saveFlatCaraSpectrum(QWidget * parent, Spectrum * spec)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "NMR" )
+	if( info.suffix().toUpper() != "NMR" )
 		fileName += ".nmr";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -625,7 +625,7 @@ void SpectrumListView::saveFlatCaraSpectrum(QWidget * parent, Spectrum * spec)
 			return;
 	}
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 
 	// Hier die Projektion herstellen.
 
@@ -652,7 +652,7 @@ void SpectrumListView::saveFlatCaraSpectrum(QWidget * parent, Spectrum * spec)
 	}
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		CaraSpectrum::writeToFile( fileName, mem, l, porig, norig, 
 			CaraSpectrum::Kind(res), clr );
 		QApplication::restoreOverrideCursor();
@@ -673,7 +673,7 @@ void SpectrumListView::exportAtomList(QWidget * parent, Project * pro, Spectrum 
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "PROT" )
+	if( info.suffix().toUpper() != "PROT" )
 		fileName += ".prot";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -683,7 +683,7 @@ void SpectrumListView::exportAtomList(QWidget * parent, Project * pro, Spectrum 
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	bool resi = true;
 	switch( QMessageBox::information( parent, "Export Atom List",
@@ -700,7 +700,7 @@ void SpectrumListView::exportAtomList(QWidget * parent, Project * pro, Spectrum 
 		return;	// Cancel
 	}
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 
 	const SpinBase::SpinMap& sm = pro->getSpins()->getSpins();
 	Root::Ref<EasyProtonList> pl = new EasyProtonList( sm.size() );
@@ -758,7 +758,7 @@ bool SpectrumListView::mapToType( QWidget* p, Spec::SpectrumType* st, Spec::Spec
 	assert( sp );
 	assert( st );
 	RotateDlg dlg( p, "Original Dimension Order", "Mapped", false ); 
-	dlg.setCaption( "Map Original Spectrum to Spectrum Type" );
+	dlg.setWindowTitle( "Map Original Spectrum to Spectrum Type" );
 	Rotation rot = sp->getRotation();
 	QString s1, s2;
 	for( Dimension d = 0; d < sp->getDimCount(); d++ )
@@ -1145,18 +1145,18 @@ void SpectrumListView::handleAddSpectrum(Root::Action & a)
 	QString str;
 	QString log;
 	QStringList::const_iterator it;
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
     //Root::UInt32 old = FileSpectrum::getMapThreshold();	// RISK
 	//FileSpectrum::setMapThreshold( s_max );	// RISK Sicher mit Mapping ffnen
 	for( it = files.begin(); it != files.end(); ++it )
 	{
 		QFileInfo info( (*it) );
         str.sprintf( "Opening %s", info.fileName().toLatin1().data() );
-		Lexi::ShowStatusMessage msg( str );
+		Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 		d_central->traverse( msg );
 		try
 		{
-			Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+			Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 			Root::Ref<Spectrum> spec = Factory::createSpectrum( (*it) );
 			if( spec == 0 )
 			{
@@ -1178,7 +1178,7 @@ void SpectrumListView::handleAddSpectrum(Root::Action & a)
 						//FileSpectrum::setMapThreshold( old );
 						return;
 					}
-					QApplication::setOverrideCursor( Qt::waitCursor );
+					QApplication::setOverrideCursor( Qt::WaitCursor );
 				}
 			}else
 			{
@@ -1230,7 +1230,7 @@ void SpectrumListView::handleOpenSpectrum(Root::Action & a)
 			"At least two dimensions required", "&Cancel" );
 		return;
 	}
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		SpecRef<Spectrum> tmp = i->getSpec();
@@ -1283,7 +1283,7 @@ void SpectrumListView::handleCalcLevels(Root::Action & a)
 		"&OK", "&Cancel" ) != 0 )
 		return;
 	_SpectrumListItem* i = (_SpectrumListItem*) currentItem();
-    QApplication::setOverrideCursor( Qt::waitCursor );
+    QApplication::setOverrideCursor( Qt::WaitCursor );
     i->getSpec()->calcLevels();
     QApplication::restoreOverrideCursor();
     d_rep->touch();
@@ -1316,7 +1316,7 @@ void SpectrumListView::handleOpenSynchroScope2(Action & a)
 		return;
 	}
  
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		SpecRef<Spectrum> tmp = i->getSpec();
@@ -1344,7 +1344,7 @@ void SpectrumListView::handleOpenHomoScope(Root::Action & a)
 		return;
 	}
  
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		SpecRef<Spectrum> tmp = i->getSpec();
@@ -1380,7 +1380,7 @@ void SpectrumListView::handleExportMapperFile(Root::Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "FRA" )
+	if( info.suffix().toUpper() != "FRA" )
 		fileName += ".fra";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -1390,7 +1390,7 @@ void SpectrumListView::handleExportMapperFile(Root::Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	Root::SymbolString CA = "CA";
 	Root::SymbolString CB = "CB";
@@ -1411,7 +1411,7 @@ void SpectrumListView::handleOpenSliceScope(Root::Action & a)
 	ACTION_ENABLED_IF( a, currentItem() && currentItem()->parent() == 0 &&
 		i->getSpec()->getDimCount() == 1 );
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		if( i->getSpec()->getDimCount() != 1 )
@@ -1473,7 +1473,7 @@ void SpectrumListView::handleOpenPolyScope2(Root::Action & a)
 		return;
 	}
  
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		SpecRef<Spectrum> tmp = i->getSpec();
@@ -1507,7 +1507,7 @@ void SpectrumListView::handleOpenPolyScope2Rot(Root::Action & a)
 		Rotation rot( spec->getDimCount() );	
 
 		RotateDlg dlg( this, "Original", "View" );
-		dlg.setCaption( "Open PolyScope" );
+		dlg.setWindowTitle( "Open PolyScope" );
 		QString s1, s2;
 		for( Dimension d = 0; d < spec->getDimCount(); d++ )
 		{
@@ -1520,7 +1520,7 @@ void SpectrumListView::handleOpenPolyScope2Rot(Root::Action & a)
 		}
 		if( !dlg.rotate( rot ) )
 			return;
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> tmp = i->getSpec();
         if( QApplication::keyboardModifiers() == Qt::ControlModifier )
             createPolyScope3( d_central, new SpecRotator( spec, rot ), d_pro );
@@ -1550,7 +1550,7 @@ void SpectrumListView::handleOpenFourDScope(Root::Action & a)
 		return;
 	}
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 #ifndef _DEBUG
 	try
 #endif
@@ -1591,7 +1591,7 @@ void SpectrumListView::handleOpenFourDScopeRot(Root::Action & a)
 		Rotation rot( spec->getDimCount() );
 
 		RotateDlg dlg( this, "Original", "View" );
-		dlg.setCaption( "Open PolyScope" );
+		dlg.setWindowTitle( "Open PolyScope" );
 		QString s1, s2;
 		for( Dimension d = 0; d < spec->getDimCount(); d++ )
 		{
@@ -1604,7 +1604,7 @@ void SpectrumListView::handleOpenFourDScopeRot(Root::Action & a)
 		}
 		if( !dlg.rotate( rot ) )
 			return;
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> tmp = i->getSpec();
         if( QApplication::keyboardModifiers() == Qt::ShiftModifier )
             createFourDScope( d_central, new SpecRotator( spec, rot ), d_pro );
@@ -1683,11 +1683,11 @@ void SpectrumListView::handleReplaceSpec(Root::Action & a)
 		return;
 	
 	QString str;
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	QFileInfo info( fileName );
 	try
 	{
-		Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+		Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 		Root::Ref<Spectrum> spec = Factory::createSpectrum( fileName );
 		if( spec == 0 )
 		{
@@ -1743,7 +1743,7 @@ void SpectrumListView::handleOpenMonoScopeRot(Root::Action & a)
 	Rotation rot( spec->getDimCount() );	
 
 	RotateDlg dlg( this, "Original", "View" );
-	dlg.setCaption( "Open MonoScope" );
+	dlg.setWindowTitle( "Open MonoScope" );
 	QString s1, s2;
 	for( Dimension d = 0; d < spec->getDimCount(); d++ )
 	{
@@ -1756,7 +1756,7 @@ void SpectrumListView::handleOpenMonoScopeRot(Root::Action & a)
 	}
 	if( !dlg.rotate( rot ) )
 		return;
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		SpecRef<Spectrum> tmp = i->getSpec();
@@ -1787,7 +1787,7 @@ void SpectrumListView::handleOpenHomoScopeRot(Root::Action & a)
 		Rotation rot( spec->getDimCount() );	
 
 		RotateDlg dlg( this, "Original", "View" );
-		dlg.setCaption( "Open HomoScope" );
+		dlg.setWindowTitle( "Open HomoScope" );
 		QString s1, s2;
 		for( Dimension d = 0; d < spec->getDimCount(); d++ )
 		{
@@ -1800,7 +1800,7 @@ void SpectrumListView::handleOpenHomoScopeRot(Root::Action & a)
 		}
 		if( !dlg.rotate( rot ) )
 			return;
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> tmp = i->getSpec();
 		createHomoScope2( d_central, new SpecRotator( spec, rot ), d_pro );
 	}catch( Root::Exception& e )
@@ -1844,7 +1844,7 @@ void SpectrumListView::handleOpenSystemScope2(Action & a)
 	ACTION_ENABLED_IF( a, currentItem() && currentItem()->parent() == 0 &&
 		i->getSpec()->getDimCount() > 2 );
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		if( i->getSpec()->getDimCount() != 3 )
@@ -1872,7 +1872,7 @@ void SpectrumListView::handleOpenSystemScope2Rot(Root::Action & a)
 		Rotation rot( 3 );	// Vertausche die Anchor-Dimensionen X und Z
 
 		RotateDlg dlg( this, "Original", "View" );
-		dlg.setCaption( "Open SystemScope" );
+		dlg.setWindowTitle( "Open SystemScope" );
 		QString s1, s2;
 		for( Dimension d = 0; d < spec->getDimCount(); d++ )
 		{
@@ -1885,7 +1885,7 @@ void SpectrumListView::handleOpenSystemScope2Rot(Root::Action & a)
 		}
 		if( !dlg.rotate( rot ) )
 			return;
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> tmp = i->getSpec();
 		createSystemScope2( d_central, d_pro, new SpecRotator( i->getSpec(), rot ) );
 	}catch( Root::Exception& e )
@@ -1903,7 +1903,7 @@ void SpectrumListView::handleOpenStripScope2(Action & a)
 	ACTION_ENABLED_IF( a, currentItem() && currentItem()->parent() == 0 &&
 		i->getSpec()->getDimCount() > 2 );
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		if( i->getSpec()->getDimCount() != 3 )
@@ -1931,7 +1931,7 @@ void SpectrumListView::handleOpenStripScope2Rot(Root::Action & a)
 		Rotation rot( 3 );	// Vertausche die Anchor-Dimensionen X und Z
 
 		RotateDlg dlg( this, "Original", "View" );
-		dlg.setCaption( "Open StripScope" );
+		dlg.setWindowTitle( "Open StripScope" );
 		QString s1, s2;
 		for( Dimension d = 0; d < spec->getDimCount(); d++ )
 		{
@@ -1944,7 +1944,7 @@ void SpectrumListView::handleOpenStripScope2Rot(Root::Action & a)
 		}
 		if( !dlg.rotate( rot ) )
 			return;
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> tmp = i->getSpec();
 		createStripScope2( d_central, d_pro, new SpecRotator( i->getSpec(), rot ) );
 	}catch( Root::Exception& e )
@@ -1962,7 +1962,7 @@ void SpectrumListView::handleOpenStripScope2D(Action & a)
 	ACTION_ENABLED_IF( a, currentItem() && currentItem()->parent() == 0 &&
 		i->getSpec()->getDimCount() == 2 );
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		if( i->getSpec()->getDimCount() != 2 )
@@ -1990,7 +1990,7 @@ void SpectrumListView::handleOpenStripScope2DRot(Root::Action & a)
 		Rotation rot( spec->getDimCount() );	// Vertausche die Anchor-Dimensionen X und Z
 
 		RotateDlg dlg( this, "Original", "View" );
-		dlg.setCaption( "Open StripScope" );
+		dlg.setWindowTitle( "Open StripScope" );
 		QString s1, s2;
 		for( Dimension d = 0; d < spec->getDimCount(); d++ )
 		{
@@ -2003,7 +2003,7 @@ void SpectrumListView::handleOpenStripScope2DRot(Root::Action & a)
 		}
 		if( !dlg.rotate( rot ) )
 			return;
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		SpecRef<Spectrum> tmp = i->getSpec();
 		createStripScope2D( d_central, d_pro, new SpecRotator( i->getSpec(), rot ) );
 	}catch( Root::Exception& e )
@@ -2085,7 +2085,7 @@ void SpectrumListView::handleOpenSitar(Root::Action & a)
 	ACTION_ENABLED_IF( a, currentItem() && currentItem()->parent() == 0 &&
 		dynamic_cast<SitarSpectrum*>( i->getSpec()->getSpectrum() ) );
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	try
 	{
 		SpecRef<SitarSpectrum> tmp = dynamic_cast<SitarSpectrum*>( i->getSpec()->getSpectrum() );
@@ -2137,7 +2137,7 @@ void SpectrumListView::handleOpenTestScope( Root::Action& a )
             "At least two dimensions required", "&Cancel" );
         return;
     }
-    QApplication::setOverrideCursor( Qt::waitCursor );
+    QApplication::setOverrideCursor( Qt::WaitCursor );
 #ifndef _DEBUG
     try
 #endif
@@ -2149,7 +2149,7 @@ void SpectrumListView::handleOpenTestScope( Root::Action& a )
 			Rotation rot( tmp->getDimCount() );
 
 			RotateDlg dlg( this, "Original", "View" );
-			dlg.setCaption( "Open TestScope" );
+			dlg.setWindowTitle( "Open TestScope" );
 			QString s1, s2;
 			for( Dimension d = 0; d < tmp->getDimCount(); d++ )
 			{

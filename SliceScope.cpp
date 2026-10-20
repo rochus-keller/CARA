@@ -124,7 +124,7 @@ void SliceScope::updateCaption()
 {
 	QString str;
 	str.sprintf( "SliceScope - %s", ( *d_agent->getSpecs().begin() )->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void SliceScope::buildMenus()

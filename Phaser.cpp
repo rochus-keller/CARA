@@ -165,7 +165,7 @@ void Phaser::updateCaption()
 {
 	QString str;
 	str.sprintf( "Phaser - %s", d_agent->getSpec()->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void Phaser::buildMenus()
@@ -314,11 +314,11 @@ void Phaser::openImag(Dimension d)
 		return;
 
 	QFileInfo info( fileName );
-	AppAgent::setCurrentDir( info.dirPath( true ) );
+	AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		Spectrum* spec = Factory::createSpectrum( fileName );
 		if( spec == 0 )
 			Root::ReportToUser::alert( this, "Error opening spectrum",

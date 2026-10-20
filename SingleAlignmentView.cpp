@@ -135,7 +135,9 @@ SingleAlignmentView::SingleAlignmentView(Root::Agent * a, Spec::FragmentAssignme
 	hbox->setMargin( 0 );
 	hbox->setSpacing( 0 );
 
-	d_edit = new QSpinBox( 0, 100, 1, this );
+	d_edit = new QSpinBox( this );
+	d_edit->setRange( 0, 100 );
+	d_edit->setSingleStep( 1 );
 	d_list = new _SingleAlignmentList( this );
 	d_list->setAllColumnsShowFocus( true );
 	d_list->setShowSortIndicator( true );
@@ -147,7 +149,7 @@ SingleAlignmentView::SingleAlignmentView(Root::Agent * a, Spec::FragmentAssignme
 	d_list->setUniformRowHeights( true );
 	d_list->setItemsExpandable( false );
 	d_list->header()->setStretchLastSection( false );
-	d_list->header()->setMovable( false );
+	d_list->header()->setSectionsMovable( false );
 
 	g_textWidth = d_list->fontMetrics().width( "(W000)" );	// RISK
 	if( ass->getMatchCount() > 0 )
@@ -185,35 +187,35 @@ SingleAlignmentView::SingleAlignmentView(Root::Agent * a, Spec::FragmentAssignme
 	if( ass )
 		str.sprintf( "Fragment Alignment: #%d - #%d", 
 		ass->getFragment().front()->getId(), ass->getFragment().back()->getId() );
-	setCaption( str );
+	setWindowTitle( str );
 
-    d_list->header()->setResizeMode( 0, QHeaderView::Fixed );
+    d_list->header()->setSectionResizeMode( 0, QHeaderView::Fixed );
     d_list->setColumnWidth(0, d_header->sizeHint().width() );
     d_list->resizeColumnToContents( 1 );
     d_list->resizeColumnToContents( 2 );
 
 	connect( d_edit, SIGNAL( valueChanged ( int ) ), this, SLOT( handleValueChanged ( int ) ) );
 
-	QMenu* pop = new Gui::Menu( d_list, true ); 
+	Gui::Menu* pop = new Gui::Menu( d_list, true ); 
 	pop->insertItem( "Assign", this, SLOT( handleAssign() ) );
 	d_geom = new QAction( this ); 
 	d_geom->setCheckable( true );
 	d_geom->setText( "Geometric Mapping" );
-	d_geom->setOn( true );
+	d_geom->setChecked( true );
 	connect( d_geom, SIGNAL( toggled ( bool ) ), this, SLOT( handleGeom(bool) ) );
-	d_geom->addTo( pop );
+	pop->addAction( d_geom );
 	d_exp = new QAction( this ); 
 	d_exp->setText( "Use Neighbours" );
 	d_exp->setCheckable( true );
-	d_exp->setOn( true );
+	d_exp->setChecked( true );
 	connect( d_exp, SIGNAL( toggled ( bool ) ), this, SLOT( handleExp(bool) ) );
-	d_exp->addTo( pop );
+	pop->addAction( d_exp );
 	d_strict = new QAction( this ); 
 	d_strict->setText( "Drop Zero-Peaks" );
 	d_strict->setCheckable( true );
-	d_strict->setOn( true );
+	d_strict->setChecked( true );
 	connect( d_strict, SIGNAL( toggled ( bool ) ), this, SLOT( handleStrict(bool) ) );
-	d_strict->addTo( pop );
+	pop->addAction( d_strict );
 	pop->insertItem( "Update", this, SLOT( handleUpdate() ) );
 }
 

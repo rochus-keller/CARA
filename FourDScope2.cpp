@@ -941,7 +941,7 @@ void FourDScope2::setCursor( PpmPoint p)
 
 void FourDScope2::planeAreaUpdated(ViewAreaMdl3::UpdRange *msg)
 {
-    // In Plane wurde Ausschnitt geï¿½dert
+    // In Plane wurde Ausschnitt geändert
     PpmCube cube;
     cube.assign( 2, PpmRange() );
     cube[ DimX ] = d_plane.d_viewer->getArea()->getRange( DimX );
@@ -1253,7 +1253,7 @@ void FourDScope2::pickSpin(Dimension d, Spin *other, SpinSystem *owner)
     // 26.6.05: immer anzeigen if( !d_src2D->showNulls() )
     {
         SpinLabelSet ly = d_spec2D->getType()->getLabels( d_spec2D->mapToType( d ) );
-            // Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthï¿½t.
+            // Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthält.
 
         NmrExperiment* e = d_pro->getRepository()->getTypes()->
 			inferExperiment2( d_spec2D->getType(), owner, d_spec2D );
@@ -1362,8 +1362,8 @@ void FourDScope2::notifyCursor(bool plane)
     QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-    ts.setf( QTextStream::fixed );
-    ts.precision( 3 ); // drei Stellen
+    ts.setRealNumberNotation( QTextStream::FixedNotation );
+    ts.setRealNumberPrecision( 3 ); // drei Stellen
 
     ts <<  "Cursor:  ";
 
@@ -1393,8 +1393,8 @@ void FourDScope2::notifyCursor(bool plane)
             val = getSpec()->getAt( p, d_folding, d_folding );
         }else
             val = d_spec4D->getAt( d_pointMdl->getPpmPoint(DimCount), d_folding, d_folding );
-        ts.setf( QTextStream::showpos );
-        ts.precision( 0 );
+        ts.setNumberFlags( QTextStream::ForceSign );
+        ts.setRealNumberPrecision( 0 );
         ts << "Level=" << val;
     }catch( ... )
     {
@@ -1504,7 +1504,7 @@ void FourDScope2::handleSetResolution()
 {
     ENABLED_IF( true );
 
-    bool ok	= FALSE;
+    bool ok	= false;
     int res	= QInputDialog::getInteger( "Set Resolution",
         "Please	enter the minimal number of pixels per sample:",
         d_resol, 1, 20, 1,	&ok, this );
@@ -1952,7 +1952,7 @@ void FourDScope2::handleLabelPeak()
     SpinLabel y = tuple[ DimY ]->getLabel();
     SpinLabelSet lx = spec->getType()->getLabels( spec->mapToType( DimX ) );
     SpinLabelSet ly = spec->getType()->getLabels( spec->mapToType( DimY ) );
-        // lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglï¿½st,
+        // lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglöst,
         // verschwinden zur Zeit noch CB aus der Liste von HNCACB von Freds Template.
         // Zu grosse Auswirkungen auf bestehende Projekte.
     NmrExperiment* e;
@@ -2397,7 +2397,7 @@ void FourDScope2::handleProposeHori()
     // TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
     // TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-    if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulï¿½sig wegen Diagonaler
+    if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulässig wegen Diagonaler
     {
         Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() );
         cmd->handle( getAgent() );
@@ -2427,7 +2427,7 @@ void FourDScope2::handleProposeVerti()
     // TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
     // TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-    if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+    if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulässig wegen Diagonaler
     {
         Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() );
         cmd->handle( getAgent() );
@@ -2484,7 +2484,7 @@ void FourDScope2::handleProposePeak()
             l1, l2, "Select Matching Spins" );
         if( res.empty() )
             return;
-        if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+        if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulässig wegen Diagonaler
             cmd->add( new LinkSpinCmd( d_pro->getSpins(), res[DimX], res[DimY] ) );
     }
 
@@ -2964,7 +2964,7 @@ void FourDScope2::handleGotoSystem()
     QString id;
     if( a->property( "0" ).isNull() )
     {
-        bool ok	= FALSE;
+        bool ok	= false;
         id	= QInputDialog::getText( "Goto System",
             "Please	enter a spin system id:", QLineEdit::Normal, "", &ok, this );
         if( !ok )
@@ -3295,7 +3295,7 @@ void FourDScope2::handleGotoPeak()
     QString id;
     if( a->property( "0" ).isNull() )
     {
-        bool ok	= FALSE;
+        bool ok	= false;
         id	= QInputDialog::getText( "Goto Peak",
             "Please	enter a spin system id:",QLineEdit::Normal, "", &ok, this );
         if( !ok )
@@ -3352,7 +3352,7 @@ void FourDScope2::handleOverlayCount()
     Root::Index c;
     if( a->property( "0" ).isNull() )
     {
-        bool ok	= FALSE;
+        bool ok	= false;
         c = QInputDialog::getInteger( "Set Overlay Count",
             "Please	enter a positive number:",
             d_plane.d_ol.size(), 1, 9, 1, &ok, this );
@@ -3615,7 +3615,7 @@ void FourDScope2::handleComposeLayers()
             l.push_back( d_plane.d_ol[i].d_iso->getBuf()->getSpectrum()->getId() );
     pl->setSpecs( l );
     SpecBatchList dlg( this, pl, d_pro );
-    dlg.setCaption( "Compose Layers" );
+    dlg.setWindowTitle( "Compose Layers" );
     if( dlg.doit() && !pl->getSpecs().empty() )
     {
         const PeakList::SpecList& s = pl->getSpecs();
@@ -3857,7 +3857,7 @@ void FourDScope2::handleLabelPlPeak()
     ENABLED_IF( d_pl && d_plane.d_peaks->getSel().size() == 1 );
 
     Root::Index peak = ( *d_plane.d_peaks->getSel().begin() );
-    bool ok	= FALSE;
+    bool ok	= false;
     QString res	= QInputDialog::getText( "Set Peak Label",
         "Please	enter a label:", QLineEdit::Normal, d_pl->getTag( peak ).data(), &ok, this );
     if( !ok )
@@ -3935,14 +3935,14 @@ void FourDScope2::handleDeleteAliasPeak()
         if( test.count( (*p)[ DimX ] ) == 0 )
         {
             cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimX ],
-            (*p)[ DimX ]->getShift(), // auf Home schieben lï¿½cht Alias
+            (*p)[ DimX ]->getShift(), // auf Home schieben löscht Alias
             getSpec() ) );
             test.insert( (*p)[ DimX ] );
         }
         if( test.count( (*p)[ DimY ] ) == 0 )
         {
             cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimY ],
-            (*p)[ DimY ]->getShift(), // auf Home schieben lï¿½cht Alias
+            (*p)[ DimY ]->getShift(), // auf Home schieben löscht Alias
             getSpec() ) );
             test.insert( (*p)[ DimY ] );
         }
@@ -3982,7 +3982,7 @@ void FourDScope2::handleGotoPlPeak()
     Root::Index id;
     if( a->property( "0" ).isNull() )
     {
-        bool ok	= FALSE;
+        bool ok	= false;
         id	= QInputDialog::getInteger( "Goto Peak",
             "Please	enter peak id:",
             0, -999999, 999999, 1, &ok, this );
@@ -4043,7 +4043,7 @@ void FourDScope2::updateCaption()
 {
 	QString str;
     str.sprintf( "FourDScope2 - %s", getSpec()->getName() );
-    setCaption( str );
+    setWindowTitle( str );
 }
 
 void FourDScope2::buildMenus()
@@ -4555,7 +4555,7 @@ void FourDScope2::handleExportPeaklist()
 		return;
 
 	QFileInfo info( fileName );
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -4565,11 +4565,11 @@ void FourDScope2::handleExportPeaklist()
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		Root::Ref<PointSet> ps = createPlanePeaks();
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -4616,7 +4616,7 @@ void FourDScope2::handleSetTolHori()
 	AtomType atom;
     atom = getSpec()->getColor( DimX );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	QString str;
 	str.sprintf( "Please enter atom positive PPM value for %s:", atom.getIsoLabel() );
@@ -4641,7 +4641,7 @@ void FourDScope2::handleSetTolVerti()
 	AtomType atom;
     atom = getSpec()->getColor( DimY );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
     res.sprintf( "%0.3f", d_pro->getMatcher()->getTol( atom ) );
 	QString str;
@@ -4666,7 +4666,7 @@ void FourDScope2::handleSetTolStrip()
 	AtomType atom;
     atom = d_spec4D->getColor( DimZ );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
     res.sprintf( "%0.3f", d_pro->getMatcher()->getTol( atom ) );
 	QString str;
@@ -4696,7 +4696,7 @@ void FourDScope2::handleExportStripPeaks()
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -4706,13 +4706,13 @@ void FourDScope2::handleExportStripPeaks()
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		Root::Ref<PointSet> ps = createStripPeaks();
 		if( ps.isNull() )
 			throw Root::Exception( "Cannot create Peaklist" );
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -4780,7 +4780,7 @@ void FourDScope2::handleGotoResidue()
     Root::Index id;
     if( a->property( "0" ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Residue", 
 			"Please	enter a residue number:", 
             0, -999999, 999999, 1, &ok, this );
@@ -4808,7 +4808,7 @@ void FourDScope2::handleSetWidthFactor()
     double g;
     if( a->property( "0" ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
         res.sprintf( "%0.2f", d_pro->getWidthFactor() );
 		res	= QInputDialog::getText( "Set Orthogonal Width Factor",

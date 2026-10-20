@@ -161,7 +161,7 @@ restart:
 		"Please select a name:", QLineEdit::Normal, "", &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 
 	for( p = sm.begin(); p != sm.end(); ++p )
 	{
@@ -201,7 +201,7 @@ void LabelingSchemeView::handleRename(Root::Action & a)
 		item->getScheme()->getName(), &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 	d_rep->getTypes()->rename( item->getScheme(), res );
 }
 

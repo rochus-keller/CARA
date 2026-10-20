@@ -201,7 +201,7 @@ void PeakListListView::handleOpenMonoScope(Root::Action & a)
 			"Invalid home spectrum", "&Cancel" );
 		return;
 	}
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	createMonoScope( d_central, s, d_pro, l, Rotation() );
 	QApplication::restoreOverrideCursor();
 }

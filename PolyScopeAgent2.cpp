@@ -462,7 +462,7 @@ void PolyScopeAgent2::initViews( bool homo )
 	}
 	d_lock = false;
 
-	// d_plane.d_ol[0].d_buf->fitToArea(); wird verzï¿½ert gemacht
+	// d_plane.d_ol[0].d_buf->fitToArea(); wird verzögert gemacht
 	updatePlaneLabel();
 }
 
@@ -668,7 +668,7 @@ void PolyScopeAgent2::updateSpecPop3D()
 				else
 				{
 					// TEST qDebug( "id=%d name=%s", spec->getId(), spec->getName() );
-					if( SpectrumType::autoRotate( a, spec, rot, false ) ) // Keine Auflï¿½ungsoptimierung
+					if( SpectrumType::autoRotate( a, spec, rot, false ) ) // Keine Auflösungsoptimierung
 					{
 						l.insert( new SpecRotator( spec, rot ) );
 					}
@@ -752,7 +752,7 @@ void PolyScopeAgent2::createPlane()
 			new PointSelect1DCtrl( d_plane.d_hRuler, false ) );
 	d_plane.d_viewer->getHandlers()->append( 
 			new PointSelect1DCtrl( d_plane.d_vRuler, false ) );
-	// NOTE: Select muss vor Cursor kommen, da sonst Selection zu spï¿½ passiert.
+	// NOTE: Select muss vor Cursor kommen, da sonst Selection zu spät passiert.
 	d_plane.d_viewer->getHandlers()->append( 
 		new PointSelectCtrl( d_plane.d_tuples, false ) );
 	d_plane.d_viewer->getHandlers()->append( 
@@ -1206,7 +1206,7 @@ bool PolyScopeAgent2::savePeakList()
 
 void PolyScopeAgent2::updatePlane(CursorMdl::Update * msg)
 {
-	// Auf der Plane wurde der Cursor geï¿½dert
+	// Auf der Plane wurde der Cursor geändert
 	assert( d_slices.size() >= 2 );
 	PpmPoint pos( msg->getX(), msg->getY() );
 
@@ -1232,13 +1232,13 @@ void PolyScopeAgent2::updatePlane(CursorMdl::Update * msg)
 				msg->override( p[ DimX ], p[ DimY ] ); 
 				pos[ DimX ] = p[ DimX ];
 				pos[ DimY ] = p[ DimY ];
-				// das geht, da View die Message erst nach Agent erhï¿½t.
+				// das geht, da View die Message erst nach Agent erhält.
 			}
 		}
 	}
 
 	// Der X-Slice zeigt den durch den Y-Cursor der Plane
-	// reprï¿½entierten Slice mit Origin Y (und umgekehrt)
+	// repräsentierten Slice mit Origin Y (und umgekehrt)
 	if( msg->getDim() == DimY || msg->getDim() == DimUndefined )
 	{
 		d_cursor[ DimY ] = pos[ DimY ];
@@ -1266,7 +1266,7 @@ void PolyScopeAgent2::updatePlane(CursorMdl::Update * msg)
 
 void PolyScopeAgent2::updateSlice(Dimension dim, CursorMdl::Update *msg)
 {
-	// Auf einem Slice wurde der Cursor geï¿½dert
+	// Auf einem Slice wurde der Cursor geändert
 	d_cursor[ dim ] = msg->getX();
 	if( dim < 2 )
 	{
@@ -1346,12 +1346,12 @@ void PolyScopeAgent2::sync2dPlaneSliceToCur()
 
 void PolyScopeAgent2::updateSlice(Dimension dim, ViewAreaMdl::Update *msg)
 {
-	// In Slice wurde Ausschnitt geï¿½dert
+	// In Slice wurde Ausschnitt geändert
 	if( msg->getType() != ViewAreaMdl::Update::Range )
 		return;
 	if( dim < 2 )
 	{
-		// X/Y-Slice verï¿½dert
+		// X/Y-Slice verändert
 		d_plane.d_viewer->getViewArea()->setRange( dim, 
 			d_slices[ dim ].d_viewer->getViewArea()->getRange( dim ) );
 		d_plane.d_viewer->redraw();
@@ -1361,7 +1361,7 @@ void PolyScopeAgent2::updateSlice(Dimension dim, ViewAreaMdl::Update *msg)
 				d_slices[ dim ].d_spec2D->getColor( DimX ) );
 	}else if( d_spec3D && dim == DimZ )
 	{
-		// Z-Slice verï¿½der
+		// Z-Slice veränder
 		d_strips[ DimX ].d_viewer->getViewArea()->setRange( DimY, 
 			d_slices[ DimZ ].d_viewer->getViewArea()->getRange( DimY ) );
 		d_strips[ DimX ].d_viewer->redraw();
@@ -1373,7 +1373,7 @@ void PolyScopeAgent2::updateSlice(Dimension dim, ViewAreaMdl::Update *msg)
 
 void PolyScopeAgent2::updatePlane(ViewAreaMdl::Update * msg)
 {
-	// In Plane wurde Ausschnitt geï¿½dert
+	// In Plane wurde Ausschnitt geändert
 	if( msg->getType() != ViewAreaMdl::Update::Range )
 		return;
 	PpmCube cube;
@@ -1406,7 +1406,7 @@ void PolyScopeAgent2::updatePlane(ViewAreaMdl::Update * msg)
 
 void PolyScopeAgent2::updateStrip(Dimension dim, ViewAreaMdl::Update *msg)
 {
-	// In einem Strip wurde Ausschnitt geï¿½dert
+	// In einem Strip wurde Ausschnitt geändert
 
 	if( d_spec3D.isNull() || msg->getType() != ViewAreaMdl::Update::Range )
 		return;
@@ -1424,7 +1424,7 @@ void PolyScopeAgent2::updateStrip(Dimension dim, ViewAreaMdl::Update *msg)
 
 void PolyScopeAgent2::updateStrip(Dimension dim, CursorMdl::Update *msg)
 {
-	// In einem Strip wurde Cursor geï¿½dert
+	// In einem Strip wurde Cursor geändert
 
 	if( d_spec3D.isNull() )
 		return;
@@ -1447,7 +1447,7 @@ void PolyScopeAgent2::updateStrip(Dimension dim, CursorMdl::Update *msg)
 				d_strips[ dim ].d_peaks->getModel()->getPos( peak, p, d_spec3D );
 				msg->override( p[ DimY ], p[ DimY ] ); 
 				pos = p[ DimY ];
-				// das geht, da View die Message erst nach Agent erhï¿½t.
+				// das geht, da View die Message erst nach Agent erhält.
 			}
 		}
 	}
@@ -1495,7 +1495,7 @@ void PolyScopeAgent2::setSpec3D(Spectrum * spec)
 		return;
 
 	// Ist egal: assert( spec == 0 || d_specList.count( spec ) > 0 ); 
-	// Nur vorher evaluierte Spektren zulï¿½sig.
+	// Nur vorher evaluierte Spektren zulässig.
 
 	Lexi::Viewport::pushHourglass();
 	Spectrum* old = d_spec3D;
@@ -1771,7 +1771,7 @@ void PolyScopeAgent2::pickSpin(Dimension d, Spin *other, SpinSystem *owner)
 	// 26.6.05: immer anzeigen if( !d_src2D->showNulls() )
 	{
 		SpinLabelSet ly = d_spec2D->getType()->getLabels( d_spec2D->mapToType( d ) );
-			// Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthï¿½t.
+			// Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthält.
 
 		NmrExperiment* e = d_pro->getRepository()->getTypes()->inferExperiment2(
 					d_spec2D->getType(), owner, d_spec2D );
@@ -1902,8 +1902,8 @@ void PolyScopeAgent2::notifyCursor(bool plane)
 	QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-	ts.setf( QTextStream::fixed );
-	ts.precision( 3 );
+	ts.setRealNumberNotation( QTextStream::FixedNotation );
+	ts.setRealNumberPrecision( 3 );
 
 	ts <<  "Cursor:  ";
 
@@ -1936,8 +1936,8 @@ void PolyScopeAgent2::notifyCursor(bool plane)
 			val = d_spec2D->getAt( p, d_folding, d_folding );
 		}else 
 			val = d_spec3D->getAt( d_cursor, d_folding, d_folding );
-		ts.setf( QTextStream::showpos );
-		ts.precision( 0 );
+		ts.setNumberFlags( QTextStream::ForceSign );
+		ts.setRealNumberPrecision( 0 );
 		ts << "Level=" << val;
 	}catch( ... )
 	{
@@ -1961,7 +1961,7 @@ void PolyScopeAgent2::notifyCursor(bool plane)
 		str += ",  ";
 		str += tmp.data();
 	}
-	Lexi::ShowStatusMessage msg( str );
+	Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 	traverseUp( msg );
 }
 
@@ -2146,7 +2146,7 @@ void PolyScopeAgent2::handleSetResolution(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	int res	= QInputDialog::getInteger( "Set Resolution", 
 		"Please	enter the minimal number of pixels per sample:", 
 		d_resol, 1, 20, 1,	&ok, MW );
@@ -2378,12 +2378,12 @@ void PolyScopeAgent2::handlePickSystem(Action & a)
 		{
 			Root::Ref<CreateSystemPairCmd> c1 = 
 				new CreateSystemPairCmd( d_pro->getSpins(),	p, d_spec2D );
-			ok = c1->handle( this ); // Darstellung von ? mï¿½lich.
+			ok = c1->handle( this ); // Darstellung von ? möglich.
 		}else
 		*/
 		{
 			Dlg::LP lp;
-			// Darstellung von ? nicht mï¿½lich. Picke mit Label.
+			// Darstellung von ? nicht möglich. Picke mit Label.
 			lp.d_x = d_spec2D->getKeyLabel( DimX );
 			lp.d_y = d_spec2D->getKeyLabel( DimY );
 
@@ -2493,7 +2493,7 @@ void PolyScopeAgent2::handleLabelPeak(Action & a)
 	SpinLabel y = tuple[ DimY ]->getLabel();
 	SpinLabelSet lx = spec->getType()->getLabels( spec->mapToType( DimX ) );
 	SpinLabelSet ly = spec->getType()->getLabels( spec->mapToType( DimY ) );
-		// lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglï¿½st,
+		// lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglöst,
 		// verschwinden zur Zeit noch CB aus der Liste von HNCACB von Freds Template.
 		// Zu grosse Auswirkungen auf bestehende Projekte.
 	NmrExperiment* e;
@@ -2920,7 +2920,7 @@ void PolyScopeAgent2::handleProposeHori(Action & a)
 	// TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
 	// TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-	if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulï¿½sig wegen Diagonaler
+	if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulässig wegen Diagonaler
 	{
 		Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() ); 
 		cmd->handle( this );
@@ -2950,7 +2950,7 @@ void PolyScopeAgent2::handleProposeVerti(Action & a)
 	// TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
 	// TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-	if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+	if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulässig wegen Diagonaler
 	{
 		Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() ); 
 		cmd->handle( this );
@@ -2997,7 +2997,7 @@ void PolyScopeAgent2::handleProposePeak(Action & a)
 			l1, l2, "Select Matching Spins" );
 		if( res.empty() )
 			return;
-		if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+		if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulässig wegen Diagonaler
 			cmd->add( new LinkSpinCmd( d_pro->getSpins(), res[DimX], res[DimY] ) ); 
 	}
 
@@ -3154,7 +3154,7 @@ void PolyScopeAgent2::handleLabelSpin3D(Action & a)
 	if( a.getParam( 0 ).isNull() || !SpinLabel::parse( a.getParam( 0 ).getCStr(), y ) )
 	{
 		SpinLabelSet ly = d_spec3D->getType()->getLabels( d_spec3D->mapToType( DimZ ) );
-		// ly soll vorerst alle statischen Labels auch sehen. Wenn man das weglï¿½st,
+		// ly soll vorerst alle statischen Labels auch sehen. Wenn man das weglöst,
 		// verschwinden zur Zeit noch CB aus der Liste von HNCACB von Freds Template.
 		// Zu grosse Auswirkungen auf bestehende Projekte.
 		NmrExperiment* e = d_pro->getRepository()->getTypes()->
@@ -3198,7 +3198,7 @@ void PolyScopeAgent2::handleForceLabelSpin3D(Action & a)
 	else
 		tuple = *d_strips[ DimY ].d_tuples->getSel().begin();
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	if( a.getParam( 0 ).isNull() )
 	{
@@ -3238,7 +3238,7 @@ void PolyScopeAgent2::handleSetWidth(Action & a)
 	{
 		dim = DimY;
 	}
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_pro->inferPeakWidth( dim, d_spec3D ) );
 	res	= QInputDialog::getText( "Set Peak Width", 
@@ -3528,7 +3528,7 @@ void PolyScopeAgent2::handleGotoSystem(Action & a)
 	QString id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getText( "Goto System", 
 			"Please	enter a spin system id:", QLineEdit::Normal, "", &ok, MW );
 		if( !ok )
@@ -3881,7 +3881,7 @@ void PolyScopeAgent2::handlePickLabel3D(Action & a)
 		d_cur[ ref ]->getSystem() );
 
 	SpinLabelSet ly = d_spec3D->getType()->getLabels( d_spec3D->mapToType( DimZ ) );
-		// ly soll vorerst alle statischen Labels auch sehen. Wenn man das weglï¿½st,
+		// ly soll vorerst alle statischen Labels auch sehen. Wenn man das weglöst,
 		// verschwinden zur Zeit noch CB aus der Liste von HNCACB von Freds Template.
 		// Zu grosse Auswirkungen auf bestehende Projekte.
 	NmrExperiment* e = d_pro->getRepository()->getTypes()->
@@ -3925,7 +3925,7 @@ void PolyScopeAgent2::handleSetDepth(Action & a)
 	float g;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
 		res.sprintf( "%f", d_pro->inferPeakWidth( DimZ, d_spec3D ) );
 		res	= QInputDialog::getText( "Set Peak Depth", 
@@ -3985,7 +3985,7 @@ void PolyScopeAgent2::handleGotoPeak(Action & a)
 	QString id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getText( "Goto Peak", 
 			"Please	enter a spin system id:",QLineEdit::Normal, "", &ok, MW );
 		if( !ok )
@@ -4043,7 +4043,7 @@ void PolyScopeAgent2::handleOverlayCount(Action & a)
 	Root::Index c;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		c = QInputDialog::getInteger( "Set Overlay Count", 
 			"Please	enter a positive number:", 
 			d_plane.d_ol.size(), 1, 9, 1, &ok, MW );
@@ -4306,7 +4306,7 @@ void PolyScopeAgent2::handleComposeLayers(Action & a)
 			l.push_back( d_plane.d_ol[i].d_spec->getId() );
 	pl->setSpecs( l );
 	SpecBatchList dlg( MW, pl, d_pro );
-	dlg.setCaption( "Compose Layers" );
+	dlg.setWindowTitle( "Compose Layers" );
 	if( dlg.doit() && !pl->getSpecs().empty() )
 	{
 		const PeakList::SpecList& s = pl->getSpecs();
@@ -4549,7 +4549,7 @@ void PolyScopeAgent2::handleLabelPlPeak(Action & a)
 	ACTION_ENABLED_IF( a, d_pl && d_plane.d_peaks->getSel().size() == 1 );
 
 	Root::Index peak = ( *d_plane.d_peaks->getSel().begin() );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res	= QInputDialog::getText( "Set Peak Label", 
 		"Please	enter a label:", QLineEdit::Normal, d_pl->getTag( peak ).data(), &ok, MW );
 	if( !ok )
@@ -4631,14 +4631,14 @@ void PolyScopeAgent2::handleDeleteAliasPeak(Action & a)
 		if( test.count( (*p)[ DimX ] ) == 0 )
 		{
 			cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimX ], 
-			(*p)[ DimX ]->getShift(), // auf Home schieben lï¿½cht Alias
+			(*p)[ DimX ]->getShift(), // auf Home schieben löscht Alias
 			d_spec2D ) );
 			test.insert( (*p)[ DimX ] );
 		}
 		if( test.count( (*p)[ DimY ] ) == 0 )
 		{
 			cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimY ], 
-			(*p)[ DimY ]->getShift(), // auf Home schieben lï¿½cht Alias
+			(*p)[ DimY ]->getShift(), // auf Home schieben löscht Alias
 			d_spec2D ) );
 			test.insert( (*p)[ DimY ] );
 		}
@@ -4677,7 +4677,7 @@ void PolyScopeAgent2::handleGotoPlPeak(Action & a)
 	Root::Index id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Peak", 
 			"Please	enter peak id:", 
 			0, -999999, 999999, 1, &ok, MW );

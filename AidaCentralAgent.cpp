@@ -110,7 +110,7 @@ enum _ItemType {
 	_Terminal
 };
 
-static const char* s_names[] =
+static const char* const s_names[] =
 {
 	"Spectrum Types", //_SpectrumTypes, 
 	"Scripts", //_Scripts, 
@@ -658,7 +658,7 @@ void AidaCentralAgent::createProject(const char *_name, bool loadSeq )
 				// Wenn man Cancel drckt, wird ein Projekt ohne Sequenz angelegt.
 
 				QFileInfo info( fileName );
-				Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+				Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 				if( name.isNull() )
 				{
 					name = info.baseName().toLatin1();
@@ -728,7 +728,7 @@ void AidaCentralAgent::createProject(const char *_name, bool loadSeq )
 		}
 	}
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	Root::Ref<Project> pro;
 	try
 	{
@@ -1032,7 +1032,7 @@ void AidaCentralAgent::handleImportAtomList(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	bool fragId = true;
 	switch( QMessageBox::information( this, "Import Atom List",
@@ -1050,7 +1050,7 @@ void AidaCentralAgent::handleImportAtomList(Action & a)
 		return;	// Cancel
 	}
 
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 
 	Root::Ref<EasyProtonList> pl;
 	try
@@ -1091,7 +1091,7 @@ void AidaCentralAgent::handleExportSequence(Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "SEQ" )
+	if( info.suffix().toUpper() != "SEQ" )
 		fileName += ".seq";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -1131,7 +1131,7 @@ void AidaCentralAgent::handleExportMapper(Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "FRA" )
+	if( info.suffix().toUpper() != "FRA" )
 		fileName += ".fra";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -1141,7 +1141,7 @@ void AidaCentralAgent::handleExportMapper(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	Root::SymbolString CA = "CA";
 	Root::SymbolString CB = "CB";
@@ -1176,7 +1176,7 @@ void AidaCentralAgent::handleRenameProject(Action & a)
 
 	Project* pro = d_parent->getRep()->findProject( d_menuTree->currentItem()->text(0).toLatin1() );
 	assert( pro );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res = QInputDialog::getText( "Rename Project", "Please enter a unique name:", QLineEdit::Normal, 
 		pro->getName().data(), &ok, this );
 	if( !ok )
@@ -1192,7 +1192,7 @@ void AidaCentralAgent::handleDuplicatePro(Action & a)
 
 	Project* pro = d_parent->getRep()->findProject( d_menuTree->currentItem()->text(0).toLatin1() );
 	assert( pro );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res = QInputDialog::getText( "Duplicate Project", "Please enter a unique name:", QLineEdit::Normal, 
 		pro->getName().data(), &ok, this );
 	if( !ok )
@@ -1257,8 +1257,8 @@ void AidaCentralAgent::handleImportProject(Action & a)
 				break;
 		}
 
-		Root::AppAgent::setCurrentDir( info.dirPath( true ) );
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 
         str.sprintf( "Opening %s", fileName.toLatin1().data() );
 		d_parent->setStatusMessage( str );

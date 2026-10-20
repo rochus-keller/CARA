@@ -288,7 +288,7 @@ void ResidueTypeView::handleOpenMolecule(Root::Action & a)
 	ACTION_ENABLED_IF( a, currentItem() && currentItem()->parent() == 0 );
 
 	_ResidueTypeItem* i = (_ResidueTypeItem*) currentItem();
-	QApplication::setOverrideCursor( Qt::waitCursor );
+	QApplication::setOverrideCursor( Qt::WaitCursor );
 	MoleculeViewer* mv = new MoleculeViewer( 0, i->getRt() );
 	mv->show();
 	QApplication::restoreOverrideCursor();
@@ -392,8 +392,8 @@ Gui::ListViewItem* ResidueTypeView::findItem( ResidueType* rt ) const
 void ResidueTypeView::handleNewType(Root::Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
-	QDialog dlg( this, "", true );
-	dlg.setCaption( "New Residue Type" );
+	QDialog dlg( this ); dlg.setModal( true );
+	dlg.setWindowTitle( "New Residue Type" );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
@@ -554,7 +554,7 @@ void ResidueTypeView::handleSetSysType(Root::Action & a)
 	}
 	l.sort();
 	if( item->getRt()->getSysType() )
-		cur = l.findIndex( item->getRt()->getSysType()->getName().data() );
+		cur = l.indexOf( item->getRt()->getSysType()->getName().data() );
 
 	bool ok;
 	QString res = QInputDialog::getItem( "Set System Type", "Select a spin system type:", 
@@ -662,10 +662,10 @@ void ResidueTypeView::handleImportValues(Root::Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	ResidueBase db;
-	QApplication::setOverrideCursor( Qt::waitCursor );
-	if( info.extension(false).upper() == "REL" )
+	QApplication::setOverrideCursor( Qt::WaitCursor );
+	if( info.suffix().toUpper() == "REL" )
 	{
 		if( !db.read( fileName, d_rep ) )
 		{
@@ -673,7 +673,7 @@ void ResidueTypeView::handleImportValues(Root::Action & a)
 					db.d_result.data(), "&Cancel" );
 		}else
 			refill();
-	}else if( info.extension(false).upper() == "STATS" )
+	}else if( info.suffix().toUpper() == "STATS" )
 	{
 		if( !db.readStats( fileName, d_rep ) )
 		{
@@ -701,7 +701,7 @@ void ResidueTypeView::handleExportValues(Root::Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "REL" )
+	if( info.suffix().toUpper() != "REL" )
 		fileName += ".rel";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -711,7 +711,7 @@ void ResidueTypeView::handleExportValues(Root::Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	ResidueBase db;
 	if( !db.write( fileName, d_rep->getTypes() ) )
 	{
@@ -731,11 +731,11 @@ void ResidueTypeView::handleImportTypes(Root::Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
-		QApplication::setOverrideCursor( Qt::waitCursor );
+		QApplication::setOverrideCursor( Qt::WaitCursor );
 		Root::Ref<Repository> temp = new Repository();
 		temp->load( fileName, true );
 		Dlg::StringList l;

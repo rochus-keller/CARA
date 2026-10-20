@@ -123,8 +123,8 @@ void ObjectDefView::handleAddAtt(Root::Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	QDialog dlg( this, "", true );
-	dlg.setCaption( "New Attribute" );
+	QDialog dlg( this ); dlg.setModal( true );
+	dlg.setWindowTitle( "New Attribute" );
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 5);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
 	top->addWidget( new QLabel( "Name:", &dlg ) );
@@ -172,7 +172,7 @@ void ObjectDefView::handleAddAtt(Root::Action & a)
 	att.d_type = (Root::Any::Type) ( t->currentItem() + 1 );
 	att.d_description = desc->text().toLatin1();
 	d_obj->setField( name->text().toLatin1(), att.d_type, att.d_description );
-	//_ObjectItem* rti = new _ObjectItem( this, name->text().latin1(), att );
+	//_ObjectItem* rti = new _ObjectItem( this, name->text().toLatin1().constData(), att );
 	refill();
 }
 
@@ -196,8 +196,8 @@ void ObjectDefView::handleEditAtt(Root::Action & a)
 
 	_ObjectItem* item = (_ObjectItem*) currentItem();
 
-	QDialog dlg( this, "", true );
-	dlg.setCaption( "Edit Attribute" );
+	QDialog dlg( this ); dlg.setModal( true );
+	dlg.setWindowTitle( "Edit Attribute" );
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 5);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
 	Q3ComboBox* t = new Q3ComboBox( &dlg );

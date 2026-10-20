@@ -187,8 +187,8 @@ QString Dlg::SpinItem::key( int f, bool ) const
 
 bool Dlg::setParams(QWidget *parent, Dlg::ContourParams & p)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Set Contour Parameters" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Set Contour Parameters" );
 
 	QString str;
 
@@ -255,8 +255,8 @@ bool Dlg::setParams(QWidget *parent, Dlg::ContourParams & p)
 
 void Dlg::showInfo(QWidget * parent, const char *title, const char *text)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 	dlg.resize( 640, 480 );
 	QString str;
 
@@ -280,8 +280,8 @@ void Dlg::showInfo(QWidget * parent, const char *title, const char *text)
 bool Dlg::getBounds(QWidget * parent, Amplitude &min, Amplitude &max,
 			const char* title )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -347,8 +347,8 @@ bool Dlg::getBounds(QWidget * parent, Amplitude &min, Amplitude &max,
 
 bool Dlg::getPhase(QWidget * parent, float &phi, float &psi)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Set Phase" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Set Phase" );
 
 	QString str;
 
@@ -406,8 +406,8 @@ bool Dlg::getPhase(QWidget * parent, float &phi, float &psi)
 
 bool Dlg::getValue(QWidget * parent, Value& val, bool setName)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Set Value" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Set Value" );
 
 	QString str;
 
@@ -471,8 +471,8 @@ bool Dlg::getValue(QWidget * parent, Value& val, bool setName)
 
 bool Dlg::selectStrings(QWidget * parent, const char* title, StringSet & sl, bool multi )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 	dlg.resize( 200, 400 );
 	QString str;
 
@@ -516,8 +516,8 @@ bool Dlg::selectStrings(QWidget * parent, const char* title, StringSet & sl, boo
 PeakList* Dlg::selectPeakList(QWidget * parent, Project * pro)
 {
 	assert( pro );
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Select Peaklist" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Select Peaklist" );
 
 	QString str;
 
@@ -554,8 +554,8 @@ PeakList* Dlg::selectPeakList(QWidget * parent, Project * pro)
 
 bool Dlg::getPredSucc(QWidget* parent, int &pred, int &succ)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Enter the Spin Systems to Link" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Enter the Spin Systems to Link" );
 
 	QString str;
 
@@ -596,8 +596,8 @@ bool Dlg::getPredSucc(QWidget* parent, int &pred, int &succ)
 
 bool Dlg::getFrameSize( QWidget* parent, float& w, float& h )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Set Frame Size" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Set Frame Size" );
 
 	QString str;
 
@@ -640,8 +640,8 @@ bool Dlg::getFrameSize( QWidget* parent, float& w, float& h )
 
 bool Dlg::getPpmRange( QWidget* parent, PpmRange& w, PpmRange& h, const char* title )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -703,8 +703,8 @@ bool Dlg::getPpmRange( QWidget* parent, PpmRange& w, PpmRange& h, const char* ti
 bool Dlg::getResolution( QWidget* parent, Root::Long& sh, Root::UInt8& ch,
 						Root::Long& sv, Root::UInt8& cv )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Set Ruler Resolution" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Set Ruler Resolution" );
 
 	QString str;
 
@@ -774,8 +774,8 @@ bool Dlg::getPpmPoint( QWidget* parent, PpmPoint& p, const QString& title, const
 {
     Q_ASSERT( labels.isEmpty() || labels.size() == p.size() );
 
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -837,8 +837,8 @@ bool Dlg::getPpmPoint( QWidget* parent, PpmPoint& p, const QString& title, const
 
 bool Dlg::getLocation( QWidget* parent, Location& p, const char* title, bool r )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -915,8 +915,8 @@ bool Dlg::getSubMatCount( QWidget* parent, Spectrum* s, Root::Extension& p, doub
 {
 	const char* title = "Create XEASY Spectrum";
 	assert( s && s->getDimCount() == p.size() );
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -1013,8 +1013,8 @@ bool Dlg::getSubMatCount( QWidget* parent, Spectrum* s, Root::Extension& p, doub
 
 bool Dlg::getSpinParams(QWidget * parent, SpinParams & sp)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Get Spin Parameters" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Get Spin Parameters" );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
@@ -1072,8 +1072,8 @@ bool Dlg::getLabels( QWidget* parent, Root::Index x, Root::Index y,
 			SpinLabel& lx, SpinLabel& ly, const SpinLabelSet& sx,
 			const SpinLabelSet& sy )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Edit Spin Labels" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Edit Spin Labels" );
 
 	QString str;
 	SpinLabelSet::const_iterator i;
@@ -1139,8 +1139,8 @@ bool Dlg::getLabels( QWidget* parent, Root::Index x, Root::Index y,
 
 bool Dlg::getLabelPoint(QWidget * parent, const SpinLabelPoints& pairs, SpinLabelPoint& res, Dimension count, const char *title)
 {
-    QDialog dlg( parent, "", true );
-    dlg.setCaption( title );
+    QDialog dlg( parent ); dlg.setModal( true );
+    dlg.setWindowTitle( title );
 
     Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
     Q3HBoxLayout* buttons = new Q3HBoxLayout();
@@ -1200,9 +1200,10 @@ bool Dlg::getLabelPoint(QWidget * parent, const SpinLabelPoints& pairs, SpinLabe
 
 _LabelSysTypeDlg::_LabelSysTypeDlg( QWidget* parent, Repository* rep, SpectrumType* st, 
 	Dimension x, Dimension y ):
-	QDialog( parent, "", true ), d_rep( rep ), d_st( st ), d_x( x ), d_y( y )
+	QDialog( parent ), d_rep( rep ), d_st( st ), d_x( x ), d_y( y )
 {
-	setCaption( "Pick System" );
+	setModal( true );
+	setWindowTitle( "Pick System" );
 
 	QString str;
 	SpinLabelSet::const_iterator i;
@@ -1363,8 +1364,8 @@ bool Dlg::getLabelsSysType( QWidget* parent, LP& lp,
 bool Dlg::getLabel( QWidget* parent, SpinLabel& lx, 
 			const SpinLabelSet& sx )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Select Spin Label" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Select Spin Label" );
 	dlg.setMinimumSize( 200, 200 );	// RISK
 
 	QString str;
@@ -1433,8 +1434,8 @@ bool Dlg::getLabelPair( QWidget* parent, Root::SymbolString& CA,
 						  Root::SymbolString& CB,
 						  const char* title, const char* up, const char* lo )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -1493,8 +1494,8 @@ static Gui::ListView* createList( QDialog* parent, const Dlg::SpinRanking & spin
 
 Spin* Dlg::selectSpin(QWidget * parent, const SpinRanking & spins, const char *title)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 	// dlg.resize( 200, 400 );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
@@ -1527,8 +1528,8 @@ Spin* Dlg::selectSpin(QWidget * parent, const SpinRanking & spins, const char *t
 Dlg::SpinTuple Dlg::selectSpinPair( QWidget* parent, const SpinRanking& lhs, 
 							   const SpinRanking& rhs, const char* title )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 	// dlg.resize( 400, 400 );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
@@ -1571,8 +1572,8 @@ Dlg::SpinTuple Dlg::selectSpinPair( QWidget* parent, const SpinRanking& lhs,
 Dlg::SpinTuple Dlg::selectSpinTriple( QWidget* parent, const SpinRanking& l1, 
 								 const SpinRanking& l2, const SpinRanking& l3, const char* title )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 	// dlg.resize( 600, 400 );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
@@ -1621,8 +1622,8 @@ Dlg::SpinTuple Dlg::selectSpinQuadruple( QWidget* parent, const SpinRanking& l1,
 								 const SpinRanking& l2, const SpinRanking& l3,
                                          const SpinRanking& l4, const char* title )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 	// dlg.resize( 600, 400 );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
@@ -1676,8 +1677,8 @@ Dlg::SpinTuple Dlg::selectSpinQuadruple( QWidget* parent, const SpinRanking& l1,
 bool Dlg::getSpectrumFormat( QWidget* parent, int& res, 
 							Spec::Amplitude& pmax, Spec::Amplitude& nmax )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Saving CARA Spectrum" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Saving CARA Spectrum" );
 
 	QString str;
 
@@ -1736,8 +1737,8 @@ bool Dlg::getSpectrumFormat( QWidget* parent, int& res,
 
 int Dlg::getOption(QWidget * parent, const StringList& l, const char* title, int init )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
@@ -1775,8 +1776,8 @@ int Dlg::getOption(QWidget * parent, const StringList& l, const char* title, int
 
 bool Dlg::getStrings(QWidget * parent, StringList& l, const char* title )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -1820,8 +1821,8 @@ bool Dlg::getStrings(QWidget * parent, StringList& l, const char* title )
 SpinPoint Dlg::selectTuple(QWidget * parent, const SpinSpace::Result & tuples, 
 						   Dimension dim, const char *title)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 	// dlg.resize( 400, 400 );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
@@ -1886,8 +1887,8 @@ SpinPoint Dlg::selectTuple(QWidget * parent, const SpinSpace::Result & tuples,
 
 bool Dlg::getLinkParams(QWidget * parent, int count, LinkParams & params)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Import Spin Links" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Import Spin Links" );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(&dlg, 10);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
@@ -1949,8 +1950,8 @@ bool Dlg::getLinkParams(QWidget * parent, int count, LinkParams & params)
 
 bool Dlg::getLinkParams2(QWidget * parent, LinkParams2 & params)
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( "Set Link Parameters" );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( "Set Link Parameters" );
 
 	QString str;
 
@@ -2017,8 +2018,8 @@ bool Dlg::getLinkParams2(QWidget * parent, LinkParams2 & params)
 
 bool Dlg::getAssig( QWidget* parent, Dimension dim, Assig& ass, float* p, const char* title )
 {
-	QDialog dlg( parent, "", true );
-	dlg.setCaption( title );
+	QDialog dlg( parent ); dlg.setModal( true );
+	dlg.setWindowTitle( title );
 
 	QString str;
 
@@ -2101,7 +2102,7 @@ ColorEdit::ColorEdit(QWidget* parent, IntensityView* iv):
 	d_thres = d_iv->getThres();
 
 	setModal( true );
-	setCaption( "Intensity Color Adjustments" );
+	setWindowTitle( "Intensity Color Adjustments" );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout(this, 10);
 	Q3HBoxLayout* buttons = new Q3HBoxLayout();
@@ -2118,12 +2119,14 @@ ColorEdit::ColorEdit(QWidget* parent, IntensityView* iv):
 
 	contents->addWidget( new QLabel( "Intensity", this ), 0, 0 ); 
 	contents->addWidget( new QLabel( "Threshold", this ), 1, 0 ); 
-	QSlider* s = new QSlider( 0, 47, 10, d_intens, Qt::Horizontal, this );
+	QSlider* s = new QSlider( Qt::Horizontal, this );
+	s->setRange( 0, 47 ); s->setSingleStep( 10 ); s->setValue( d_intens );
 	s->setTracking( false );
 	connect( s, SIGNAL( valueChanged ( int ) ), 
 		this, SLOT( handleIntensity( int ) ) );
 	contents->addWidget( s, 0, 1 );
-	s = new QSlider( 0, 47, 10, d_thres, Qt::Horizontal, this );
+	s = new QSlider( Qt::Horizontal, this );
+	s->setRange( 0, 47 ); s->setSingleStep( 10 ); s->setValue( d_thres );
 	s->setTracking( false );
 	connect( s, SIGNAL( valueChanged ( int ) ), 
 		this, SLOT( handleThreshold( int ) ) );

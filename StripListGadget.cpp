@@ -46,7 +46,7 @@ using Root::Index;
 
 //////////////////////////////////////////////////////////////////////
 
-static const char*  c_strip[] = {
+static const char* const c_strip[] = {
 "22 17 2 1",
 " 	c None",
 ".	c #000000",
@@ -67,7 +67,7 @@ static const char*  c_strip[] = {
 "      .............   ",
 "                      ",
 "                      "};
-static const char*  c_peak[] = {
+static const char* const c_peak[] = {
 "22 17 2 1",
 " 	c None",
 ".	c #000000",
@@ -88,7 +88,7 @@ static const char*  c_peak[] = {
 "    .                 ",
 "                      ",
 "                      "};
-static const char*  c_left[] = {
+static const char* const c_left[] = {
 "22 17 2 1",
 " 	c None",
 ".	c #000000",
@@ -109,7 +109,7 @@ static const char*  c_left[] = {
 " . . ....             ",
 "                      ",
 "                      "};
-static const char*  c_right[] = {
+static const char* const c_right[] = {
 "22 17 2 1",
 " 	c None",
 ".	c #000000",
@@ -130,7 +130,7 @@ static const char*  c_right[] = {
 "              .... .  ",
 "                      ",
 "                      "};
-static const char*  c_link[] = {
+static const char* const c_link[] = {
 "22 17 2 1",
 " 	c None",
 ".	c #000000",
@@ -1207,7 +1207,7 @@ void StripListGadget::handleSetSpinTol(Root::Action& a)
 	ACTION_ENABLED_IF( a, spin != 0 );
 
 	AtomType t = spin->getAtom();
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_this->d_pro->getMatcher()->getTol( t ) );
 	res	= QInputDialog::getText( "Set Spin Tolerance", 
@@ -1473,7 +1473,7 @@ void StripListGadget::handleSetSysType(Root::Action& a)
 	}
 	l.sort();
 	if( sys->getSysType() )
-		cur = l.findIndex( sys->getSysType()->getName().data() );
+		cur = l.indexOf( sys->getSysType()->getName().data() );
 
 	bool ok;
 	QString res = QInputDialog::getItem( "Set System Type", "Select a spin system type:", 
@@ -1564,7 +1564,7 @@ void StripListGadget::handleForceLabel(Root::Action& a)
 	Spin* spin = getSelectedSpin();
 	ACTION_ENABLED_IF( a, spin );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "Please enter a valid label (%s):", SpinLabel::s_syntax );
 	res = QInputDialog::getText( "Force Spin Label", res, QLineEdit::Normal, 
@@ -1573,7 +1573,7 @@ void StripListGadget::handleForceLabel(Root::Action& a)
 		return;
 
 	SpinLabel l;
-	if( !SpinLabel::parse( res, l ) )
+	if( !SpinLabel::parse( res.toLatin1().constData(), l ) )
 	{
 		QMessageBox::critical( d_this->getImp(), "Force Spin Label", 
 			"Invalid spin label syntax!", "&Cancel" );

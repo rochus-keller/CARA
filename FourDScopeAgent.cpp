@@ -1144,7 +1144,7 @@ bool FourDScopeAgent::savePeakList()
 
 void FourDScopeAgent::planeCursUpdated(CursorMdl::Update * msg)
 {
-	// Auf der Plane wurde der Cursor geï¿½dert
+	// Auf der Plane wurde der Cursor geändert
 	assert( d_slices.size() >= 2 );
 	PpmPoint pos( msg->getX(), msg->getY() );
 
@@ -1170,7 +1170,7 @@ void FourDScopeAgent::planeCursUpdated(CursorMdl::Update * msg)
 				msg->override( p[ DimX ], p[ DimY ] ); 
 				pos[ DimX ] = p[ DimX ];
 				pos[ DimY ] = p[ DimY ];
-				// das geht, da View die Message erst nach Agent erhï¿½t.
+				// das geht, da View die Message erst nach Agent erhält.
 			}
 		}
 	}
@@ -1323,7 +1323,7 @@ void FourDScopeAgent::sliceAreaUpdated(Dimension dim, ViewAreaMdl::Update *msg)
 
 void FourDScopeAgent::planeAreaUpdated(ViewAreaMdl::Update * msg)
 {
-	// In Plane wurde Ausschnitt geï¿½dert
+	// In Plane wurde Ausschnitt geändert
 	if( msg->getType() != ViewAreaMdl::Update::Range )
 		return;
 	PpmCube cube;
@@ -1403,7 +1403,7 @@ void FourDScopeAgent::orthoCursUpdated(CursorMdl::Update *msg)
 				msg->override( p[ DimX ], p[ DimY ] );
                 pos[ DimX ] = p[ DimX ];
 				pos[ DimY ] = p[ DimY ];
-				// das geht, da View die Message erst nach Agent erhï¿½t.
+				// das geht, da View die Message erst nach Agent erhält.
 			}
 		}
 	}
@@ -1665,7 +1665,7 @@ void FourDScopeAgent::pickSpin(Dimension d, Spin *other, SpinSystem *owner)
 	// 26.6.05: immer anzeigen if( !d_src2D->showNulls() )
 	{
 		SpinLabelSet ly = d_spec2D->getType()->getLabels( d_spec2D->mapToType( d ) );
-			// Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthï¿½t.
+			// Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthält.
 
 		NmrExperiment* e = d_pro->getRepository()->getTypes()->
 			inferExperiment2( d_spec2D->getType(), owner, d_spec2D );
@@ -1786,8 +1786,8 @@ void FourDScopeAgent::notifyCursor(bool plane)
 	QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-	ts.setf( QTextStream::fixed );
-	ts.precision( 3 ); // drei Stellen
+	ts.setRealNumberNotation( QTextStream::FixedNotation );
+	ts.setRealNumberPrecision( 3 ); // drei Stellen
 
 	ts <<  "Cursor:  ";
 
@@ -1817,8 +1817,8 @@ void FourDScopeAgent::notifyCursor(bool plane)
 			val = getSpec()->getAt( p, d_folding, d_folding );
 		}else 
 			val = d_spec4D->getAt( d_cursor, d_folding, d_folding );
-		ts.setf( QTextStream::showpos );
-		ts.precision( 0 );
+		ts.setNumberFlags( QTextStream::ForceSign );
+		ts.setRealNumberPrecision( 0 );
 		ts << "Level=" << val;
 	}catch( ... )
 	{
@@ -1835,7 +1835,7 @@ void FourDScopeAgent::notifyCursor(bool plane)
 		str += ",  ";
 		str += tmp.data();
 	}
-	Lexi::ShowStatusMessage msg( str );
+	Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 	traverseUp( msg );
 }
 
@@ -1999,7 +1999,7 @@ void FourDScopeAgent::handleSetResolution(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	int res	= QInputDialog::getInteger( "Set Resolution", 
 		"Please	enter the minimal number of pixels per sample:", 
 		d_resol, 1, 20, 1,	&ok, MW );
@@ -2403,7 +2403,7 @@ void FourDScopeAgent::handleLabelPeak(Action & a)
 	SpinLabel y = tuple[ DimY ]->getLabel();
 	SpinLabelSet lx = spec->getType()->getLabels( spec->mapToType( DimX ) );
 	SpinLabelSet ly = spec->getType()->getLabels( spec->mapToType( DimY ) );
-		// lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglï¿½st,
+		// lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglöst,
 		// verschwinden zur Zeit noch CB aus der Liste von HNCACB von Freds Template.
 		// Zu grosse Auswirkungen auf bestehende Projekte.
 	NmrExperiment* e;
@@ -2846,7 +2846,7 @@ void FourDScopeAgent::handleProposeHori(Action & a)
 	// TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
 	// TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-	if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulï¿½sig wegen Diagonaler
+	if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulässig wegen Diagonaler
 	{
 		Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() ); 
 		cmd->handle( this );
@@ -2876,7 +2876,7 @@ void FourDScopeAgent::handleProposeVerti(Action & a)
 	// TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
 	// TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-	if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+	if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulässig wegen Diagonaler
 	{
 		Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() ); 
 		cmd->handle( this );
@@ -2933,7 +2933,7 @@ void FourDScopeAgent::handleProposePeak(Action & a)
 			l1, l2, "Select Matching Spins" );
 		if( res.empty() )
 			return;
-		if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+		if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulässig wegen Diagonaler
 			cmd->add( new LinkSpinCmd( d_pro->getSpins(), res[DimX], res[DimY] ) ); 
 	}
 
@@ -3395,7 +3395,7 @@ void FourDScopeAgent::handleGotoSystem(Action & a)
 	QString id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getText( "Goto System", 
 			"Please	enter a spin system id:", QLineEdit::Normal, "", &ok, MW );
 		if( !ok )
@@ -3816,7 +3816,7 @@ void FourDScopeAgent::handleGotoPeak(Action & a)
 	QString id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getText( "Goto Peak", 
 			"Please	enter a spin system id:",QLineEdit::Normal, "", &ok, MW );
 		if( !ok )
@@ -3873,7 +3873,7 @@ void FourDScopeAgent::handleOverlayCount(Action & a)
 	Root::Index c;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		c = QInputDialog::getInteger( "Set Overlay Count", 
 			"Please	enter a positive number:", 
 			d_plane.d_ol.size(), 1, 9, 1, &ok, MW );
@@ -4136,7 +4136,7 @@ void FourDScopeAgent::handleComposeLayers(Action & a)
 			l.push_back( d_plane.d_ol[i].d_spec->getId() );
 	pl->setSpecs( l );
 	SpecBatchList dlg( MW, pl, d_pro );
-	dlg.setCaption( "Compose Layers" );
+	dlg.setWindowTitle( "Compose Layers" );
 	if( dlg.doit() && !pl->getSpecs().empty() )
 	{
 		const PeakList::SpecList& s = pl->getSpecs();
@@ -4379,7 +4379,7 @@ void FourDScopeAgent::handleLabelPlPeak(Action & a)
 	ACTION_ENABLED_IF( a, d_pl && d_plane.d_peaks->getSel().size() == 1 );
 
 	Root::Index peak = ( *d_plane.d_peaks->getSel().begin() );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res	= QInputDialog::getText( "Set Peak Label", 
 		"Please	enter a label:", QLineEdit::Normal, d_pl->getTag( peak ).data(), &ok, MW );
 	if( !ok )
@@ -4457,14 +4457,14 @@ void FourDScopeAgent::handleDeleteAliasPeak(Action & a)
 		if( test.count( (*p)[ DimX ] ) == 0 )
 		{
 			cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimX ], 
-			(*p)[ DimX ]->getShift(), // auf Home schieben lï¿½cht Alias
+			(*p)[ DimX ]->getShift(), // auf Home schieben löscht Alias
 			getSpec() ) );
 			test.insert( (*p)[ DimX ] );
 		}
 		if( test.count( (*p)[ DimY ] ) == 0 )
 		{
 			cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimY ], 
-			(*p)[ DimY ]->getShift(), // auf Home schieben lï¿½cht Alias
+			(*p)[ DimY ]->getShift(), // auf Home schieben löscht Alias
 			getSpec() ) );
 			test.insert( (*p)[ DimY ] );
 		}
@@ -4503,7 +4503,7 @@ void FourDScopeAgent::handleGotoPlPeak(Action & a)
 	Root::Index id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Peak", 
 			"Please	enter peak id:", 
 			0, -999999, 999999, 1, &ok, MW );

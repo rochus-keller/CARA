@@ -14,6 +14,7 @@
  */
 
 #if !defined(AFX_AIDAAPPLICATION_H__AB5EEF13_7BF5_44AC_9463_55B9AFA02B5E__INCLUDED_)
+#include <Root/SymbolString.h>
 #define AFX_AIDAAPPLICATION_H__AB5EEF13_7BF5_44AC_9463_55B9AFA02B5E__INCLUDED_
 
 #if _MSC_VER > 1000
@@ -39,6 +40,9 @@ public:
 	static void save(Spec::Repository*, const char* path);
 
 	void newFromTemplate( const char* path );
+	void newFromTemplate( const QString& path ) { newFromTemplate( path.toLatin1().constData() ); }
+	void newFromTemplate( const QByteArray& path ) { newFromTemplate( path.constData() ); }
+	void newFromTemplate( const Root::SymbolString& path ) { newFromTemplate( path.data() ); }
 	void newRepository();
 	void openRepository( const char* path );
 

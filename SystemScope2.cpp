@@ -353,7 +353,7 @@ SystemScope2::SystemScope2(Root::Agent* a,Project* pro,Spectrum* spec):
 	d_typeSelector = new Q3ComboBox( false, hbox );
 
 	d_spins = new Gui::ListView( vbox );	
-	d_spins->header()->setResizeMode( QHeaderView::ResizeToContents );
+	d_spins->header()->setSectionResizeMode( QHeaderView::ResizeToContents );
 	d_spins->setRootIsDecorated( false );
 	d_spins->setAllColumnsShowFocus( true );
 	d_spins->addColumn( "ID" );
@@ -361,7 +361,7 @@ SystemScope2::SystemScope2(Root::Agent* a,Project* pro,Spectrum* spec):
 	d_spins->addColumn( "Label" );
 
 	d_bonds = new Gui::ListView( vbox );
-	d_bonds->header()->setResizeMode( QHeaderView::ResizeToContents );
+	d_bonds->header()->setSectionResizeMode( QHeaderView::ResizeToContents );
 	d_bonds->setRootIsDecorated( false );
 	d_bonds->setAllColumnsShowFocus( true );
 	for( Dimension d = 0; d < d_agent->getModel()->getDimCount(); d++ )
@@ -714,7 +714,7 @@ void SystemScope2::adjustTol( Dimension dim )
 	AtomType atom;
 	atom = d_agent->getSpec()->getColor( dim );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_agent->getProject()->getMatcher()->getTol( atom ) );
 	QString str;
@@ -956,7 +956,7 @@ void SystemScope2::updateCaption()
 {
 	QString str;
 	str.sprintf( "SystemScope - %s", d_agent->getSpec()->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void SystemScope2::handleStripOrder(Action & a)
@@ -1097,7 +1097,7 @@ void SystemScope2::handleForceLabelSpin(Action & a)
 
 	_SpinItem3* item = dynamic_cast<_SpinItem3*>( d_spins->currentItem() );
 	assert( item );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "Please enter a valid label (%s):", SpinLabel::s_syntax );
 	res = QInputDialog::getText( "Force Spin Label", res, QLineEdit::Normal, 
@@ -1244,7 +1244,7 @@ void SystemScope2::handleGotoSystem(Action & a)
 	QString id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getText( "Goto System", 
 			"Please	enter a spin system id:", QLineEdit::Normal, "", &ok, getQt() );
 		if( !ok )
@@ -1282,7 +1282,7 @@ void SystemScope2::handleGotoResidue(Action & a)
 	Root::Index id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Residue", 
 			"Please	enter a residue number:", 
 			0, -999999, 999999, 1, &ok, getQt() );
@@ -1322,7 +1322,7 @@ void SystemScope2::handleSetWidthFactor(Action & a)
 	float g;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
 		res.sprintf( "%0.2f", d_agent->getProject()->getWidthFactor() );
 		res	= QInputDialog::getText( "Set Strip Width Factor", 

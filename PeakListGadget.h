@@ -53,6 +53,8 @@ namespace Spec
 		Peak* getPeak( bool recursive = true) const;
 		Peak::Guess* getGuess() const;
 		void saveTable( const char* path );
+		void saveTable( const QString& p ) { saveTable( p.toLatin1().constData() ); }
+		void saveTable( const QByteArray& p ) { saveTable( p.constData() ); }
 		void setPopup( Lexi::Glyph* );
 		Lexi::ListView* getListView() const;
 

@@ -355,7 +355,7 @@ void MonoScope2::updateCaption()
 {
 	QString str;
 	str.sprintf( "MonoScope - %s", d_agent->getMainSpec()->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void MonoScope2::buildMenus()
@@ -398,9 +398,9 @@ void MonoScope2::buildMenus()
 		MonoScopeAgent::ShowLowRes, true );
 	menuView->insertSeparator();
 	Gui::Menu::item( menuView, d_agent, "Forward Plane", 
-		MonoScopeAgent::ForwardPlane, false, Qt::SHIFT+Qt::Key_Next  );
+		MonoScopeAgent::ForwardPlane, false, Qt::SHIFT+Qt::Key_PageDown  );
 	Gui::Menu::item( menuView, d_agent, "Backward Plane", 
-		MonoScopeAgent::BackwardPlane, false, Qt::SHIFT+Qt::Key_Prior );
+		MonoScopeAgent::BackwardPlane, false, Qt::SHIFT+Qt::Key_PageUp );
 	menuView->insertSeparator();
 	// Gui::Menu::item( menuView, d_agent, "Show Slices", ShowSlices, true );
 	Gui::Menu::item( menuView, d_agent, "Show List", ShowList, true );
@@ -759,7 +759,7 @@ bool MonoScope2::handleSave(bool xp) const
 
 		QFileInfo info( fileName );
 
-		if( info.extension( false ).upper() != "PEAKS" )
+		if( info.suffix().toUpper() != "PEAKS" )
 			fileName += ".peaks";
 		info.setFile( fileName );
 		if( info.exists() )
@@ -769,12 +769,12 @@ bool MonoScope2::handleSave(bool xp) const
 				"&OK", "&Cancel" ) != 0 )
 				return false;
 		}
-		Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+		Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 		try
 		{
 			Root::Ref<PointSet> ps = Factory::createEasyPeakList( 
 				d_agent->getPeaklist(), d_agent->getSpec() );
-			ps->saveToFile( fileName.ascii() );
+			ps->saveToFile( fileName.toLatin1().constData() );
 		}catch( Root::Exception& e )
 		{
 			Root::ReportToUser::alert( const_cast<MonoScope2*>(this), "Error Exporting Peaklist", e.what() );
@@ -788,13 +788,13 @@ bool MonoScope2::handleSave(bool xp) const
 		if( !ok )
 			return false;
 		assert( d_agent->getPro() != 0 );
-		if( res.isEmpty() || d_agent->getPro()->findPeakList( res.latin1() ) != 0 )	
+		if( res.isEmpty() || d_agent->getPro()->findPeakList( res.toLatin1().constData() ) != 0 )	
 		{
 			QMessageBox::critical( getQt(), "Save Peaklist",
 					"This peaklist name is already used!", "&Cancel" );
 			return false;
 		}
-		d_agent->getPeaklist()->setName( res.latin1() );
+		d_agent->getPeaklist()->setName( res.toLatin1().constData() );
 		d_agent->getPro()->addPeakList( d_agent->getPeaklist() );
 		d_agent->getPeaklist()->clearDirty();
 	}
@@ -840,7 +840,7 @@ void MonoScope2::handleImportPeaklist(Action & a)
 		ps->getColors( psClr );
 		PeakList* pl = new PeakList( psClr, d_agent->getMainSpec() );
 		pl->append( ps ); // pl ist nun eine identische Kopie von ps.
-		pl->setName( info.baseName().latin1() );
+		pl->setName( info.baseName().toLatin1().constData() );
 
 		ColorMap specClr;
 		d_agent->getMainSpec()->getColors( specClr );
@@ -905,7 +905,7 @@ void MonoScope2::handleGotoPeak(Action & a)
 	Root::Index id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Peak", 
 			"Please	enter peak id:", 
 			0, -999999, 999999, 1, &ok, getQt() );
@@ -951,7 +951,7 @@ void MonoScope2::handleExportIntegTable(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	d_agent->getPro()->saveIntegTable( d_agent->getPeaklist(), fileName );
 }
 
@@ -1294,13 +1294,13 @@ void MonoScope2::handleSetLabel(Action & a)
 
 	Peak* p = d_agent->getPeaklist()->getPeak( d_list->getSelected() );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res	= QInputDialog::getText( "Force Peak Label", 
 		"Please	enter a label:", QLineEdit::Normal, 
 		p->getTag().c_str(), &ok, getQt() );
 	if( !ok )
 		return;
-	d_agent->getPeaklist()->setTag( p, res.latin1() );	// TODO: undo
+	d_agent->getPeaklist()->setTag( p, res.toLatin1().constData() );	// TODO: undo
 }
 
 void MonoScope2::handleEditAssig(Action & a)
@@ -1365,7 +1365,7 @@ void MonoScope2::handleExportTable(Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "TXT" )
+	if( info.suffix().toUpper() != "TXT" )
 		fileName += ".txt";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -1375,7 +1375,7 @@ void MonoScope2::handleExportTable(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	d_list->saveTable( fileName );
 }
 

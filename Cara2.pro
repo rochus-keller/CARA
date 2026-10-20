@@ -1,8 +1,8 @@
 TARGET = CARA
 TEMPLATE = app
-QT += qt3support
+QT += widgets printsupport
 
-INCLUDEPATH += ../NAF ./..
+INCLUDEPATH += ../NAF ../NAF/Qt3Compat ./..
 
 win32 {
     RC_FILE = Cara2.rc
@@ -31,7 +31,8 @@ macx {
 	 }
 
 #Header files
-HEADERS += ../NAF/Root/Action.h \
+HEADERS += ../NAF/Qt3Compat/Qt3Compat.h \
+	../NAF/Root/Action.h \
 	../NAF/Root/ActionCommand.h \
 	../NAF/Root/ActionHandler.h \
 	../NAF/Root/Agent.h \
@@ -467,7 +468,8 @@ HEADERS += ../NAF/Root/Action.h \
     ../NAF/Star/LuaStar.h
 
 #Source files
-SOURCES += ../NAF/Root/Action.cpp \
+SOURCES += ../NAF/Qt3Compat/Qt3Compat.cpp \
+	../NAF/Root/Action.cpp \
 	../NAF/Root/ActionCommand.cpp \
 	../NAF/Root/ActionHandler.cpp \
 	../NAF/Root/Agent.cpp \

@@ -76,6 +76,8 @@ namespace Spec
 		static bool getBounds( QWidget * parent, Spec::Amplitude& min, 
 			Spec::Amplitude& max, const char* title = "Get Slice Bounds" );
 		static void showInfo( QWidget*, const char* title, const char* text );
+		static void showInfo( QWidget* w, const char* t, const QString& s ) { showInfo( w, t, s.toLatin1().constData() ); }
+		static void showInfo( QWidget* w, const char* t, const QByteArray& s ) { showInfo( w, t, s.constData() ); }
 		struct ContourParams
 		{
 			Root::Float d_factor;

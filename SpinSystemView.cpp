@@ -380,7 +380,7 @@ void SpinSystemView::handle(Root::Message & msg)
 		case SpinSystem::Update::Assig:
 		case SpinSystem::Update::SysType:
 		case SpinSystem::Update::Candidates:
-			viewport()->repaint( true );
+			viewport()->repaint();
 			break;
 		case SpinSystem::Update::All:
 			refill();
@@ -451,7 +451,7 @@ void SpinSystemView::handleForceLabel(Root::Action & a)
 	ACTION_ENABLED_IF( a, item );
 
 	assert( item );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "Please enter a valid label (%s):", SpinLabel::s_syntax );
 	res = QInputDialog::getText( "Force Spin Label", res, QLineEdit::Normal, 
@@ -634,7 +634,7 @@ void SpinSystemView::handleSetSysType(Action & a)
 	}
 	l.sort();
 	if( item->d_spin->getSystem()->getSysType() )
-		cur = l.findIndex( item->d_spin->getSystem()->getSysType()->getName().data() );
+		cur = l.indexOf( item->d_spin->getSystem()->getSysType()->getName().data() );
 
 	bool ok;
 	QString res = QInputDialog::getItem( "Set System Type", "Select a spin system type:", 

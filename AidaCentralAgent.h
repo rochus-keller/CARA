@@ -14,6 +14,7 @@
  */
 
 #if !defined(AFX_AIDACENTRALAGENT_H__7F8C2721_4034_4606_B6F4_B81B172C6412__INCLUDED_)
+#include <Root/SymbolString.h>
 #define AFX_AIDACENTRALAGENT_H__7F8C2721_4034_4606_B6F4_B81B172C6412__INCLUDED_
 
 #if _MSC_VER > 1000
@@ -65,6 +66,9 @@ protected:
 	GENERIC_MESSENGER(QWidget)
 	void handle( Root::Message& );
 	void createProject( const char* name, bool loadSeq );
+	void createProject( const QString& name, bool loadSeq ) { createProject( name.toLatin1().constData(), loadSeq ); }
+	void createProject( const QByteArray& name, bool loadSeq ) { createProject( name.constData(), loadSeq ); }
+	void createProject( const Root::SymbolString& name, bool loadSeq ) { createProject( name.data(), loadSeq ); }
 	void importAtomList(Spec::Project*, Spec::EasyProtonList* pl, bool);
 	void setPane( QWidget* );
 	void clearPane();

@@ -402,7 +402,7 @@ void FourDScope::updateCaption()
 {
 	QString str;
 	str.sprintf( "FourDScope - %s", d_agent->getSpec()->getName() );
-	getQt()->setCaption( str );
+	getQt()->setWindowTitle( str );
 }
 
 void FourDScope::buildMenus()
@@ -988,7 +988,7 @@ void FourDScope::handleExportPeaklist(Action & a)
 		return;
 
 	QFileInfo info( fileName );
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -998,11 +998,11 @@ void FourDScope::handleExportPeaklist(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		Root::Ref<PointSet> ps = createPlanePeaks();
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -1050,7 +1050,7 @@ void FourDScope::handleSetTolHori(Action & a)
 	AtomType atom;
 	atom = d_agent->getSpec()->getColor( DimX );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	QString str;
 	str.sprintf( "Please enter atom positive PPM value for %s:", atom.getIsoLabel() );
@@ -1075,7 +1075,7 @@ void FourDScope::handleSetTolVerti(Action & a)
 	AtomType atom;
 	atom = d_agent->getSpec()->getColor( DimY );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_agent->getProject()->getMatcher()->getTol( atom ) );
 	QString str;
@@ -1100,7 +1100,7 @@ void FourDScope::handleSetTolStrip(Action & a)
 	AtomType atom;
 	atom = d_agent->getSpec4D()->getColor( DimZ );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_agent->getProject()->getMatcher()->getTol( atom ) );
 	QString str;
@@ -1130,7 +1130,7 @@ void FourDScope::handleExportStripPeaks(Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -1140,13 +1140,13 @@ void FourDScope::handleExportStripPeaks(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		Root::Ref<PointSet> ps = createStripPeaks();
 		if( ps.isNull() )
 			throw Root::Exception( "Cannot create Peaklist" );
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -1213,7 +1213,7 @@ void FourDScope::handleGotoResidue(Action & a)
 	Root::Index id;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Residue", 
 			"Please	enter a residue number:", 
 			0, -999999, 999999, 1, &ok, getQt() );
@@ -1243,7 +1243,7 @@ void FourDScope::handleSetWidthFactor(Action & a)
 	float g;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
 		res.sprintf( "%0.2f", d_agent->getProject()->getWidthFactor() );
 		res	= QInputDialog::getText( "Set Orthogonal Width Factor",

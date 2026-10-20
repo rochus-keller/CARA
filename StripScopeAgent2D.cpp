@@ -19,7 +19,7 @@
 #include <qmessagebox.h>
 
 #define INCLUDE_MENUITEM_DEF	
-#include <qmenudata.h>
+// #include <qmenudata.h> // Qt3 header; not needed on Qt5
 #include <qpainter.h>	// TEST
 
 #include <Root/Any.h>
@@ -567,7 +567,7 @@ void StripScopeAgent2D::handle(Root::Message& msg)
 				fillPage( false );
 				QString str;
 				str.sprintf( "%d Strips Selected", d_query->getResult().size() );
-				Lexi::ShowStatusMessage msg( str );
+				Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 				traverseUp( msg );
 			}
 			break;
@@ -942,8 +942,8 @@ void StripScopeAgent2D::notifyCursor()
 	QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-	ts.setf( QTextStream::fixed );
-	ts.precision( 3 );
+	ts.setRealNumberNotation( QTextStream::FixedNotation );
+	ts.setRealNumberPrecision( 3 );
 
 	if( d_spec )
 	{
@@ -965,8 +965,8 @@ void StripScopeAgent2D::notifyCursor()
 		try
 		{
 			Amplitude val = d_spec->getAt( d_cursor, d_folding, d_folding );
-			ts.setf( QTextStream::showpos );
-			ts.precision( 0 );
+			ts.setNumberFlags( QTextStream::ForceSign );
+			ts.setRealNumberPrecision( 0 );
 			ts << "Level=" << val;
 		}catch( ... )
 		{
@@ -982,7 +982,7 @@ void StripScopeAgent2D::notifyCursor()
 		str += ",  ";
 		str += tmp.data();
 	}
-	Lexi::ShowStatusMessage msg( str );
+	Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 	traverseUp( msg );
 }
 
@@ -1186,7 +1186,7 @@ void StripScopeAgent2D::handleForceLabelSpin(Action & a)
 
 	SpinPoint tuple = *d_strips[ d_curLane ].d_tuples->getSel().begin();
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	if( a.getParam( 0 ).isNull() )
 	{
@@ -1244,7 +1244,7 @@ void StripScopeAgent2D::handleSetResolution(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	int res	= QInputDialog::getInteger( "Set Resolution", 
 		"Please	enter the minimal number of pixels per sample:", 
 		d_resol, 1, 20, 1,	&ok, MW );
@@ -1339,7 +1339,7 @@ void StripScopeAgent2D::handleSelectStrips(Action & a)
 			"", &ok, MW );
 		if( !ok )
 			return;
-		QTextIStream in( &seq );
+		QTextStream in( &seq );
 		StripQuery2::Result f;
 		SpinSystem* sys;
 		QString id;
@@ -1427,7 +1427,7 @@ void StripScopeAgent2D::handleGotoStrip(Action & a)
 	
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		int res	= QInputDialog::getInteger( "Goto System", 
 			"Please	enter the spin system id to display:", 
 			0, 1, 99999999, 1, &ok, MW );
@@ -1649,7 +1649,7 @@ void StripScopeAgent2D::handleAssignStrip(Action & a)
 	{
 		str.sprintf( "Assigned spin system %d to residue %d", 
 			sys->getId(), res->getId() );
-		Lexi::ShowStatusMessage msg( str );
+		Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 		traverseUp( msg );
 	}else
 	{
@@ -1677,7 +1677,7 @@ void StripScopeAgent2D::handleUnassignStrip(Action & a)
 	{
 		QString str;
 		str.sprintf( "Unassigned spin system %d", sys->getId() );
-		Lexi::ShowStatusMessage msg( str );
+		Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 		traverseUp( msg );
 	}else
 	{
@@ -1741,7 +1741,7 @@ void StripScopeAgent2D::handleSetWidth(Action & a)
 	ACTION_ENABLED_IF( a, d_curLane != -1 &&
 		d_strips[ d_curLane ].d_viewer->hasFocus() );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_pro->inferPeakWidth( DimX, d_strips[ d_curLane ].d_spec ) );
 	res	= QInputDialog::getText( "Set Peak Width", 
@@ -1767,7 +1767,7 @@ void StripScopeAgent2D::handleSetTol(Action & a)
 	AtomType atom;
 	atom = d_spec->getColor( DimY );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.3f", d_pro->getMatcher()->getTol( atom ) );
 	res	= QInputDialog::getText( "Set Spin Tolerance", 

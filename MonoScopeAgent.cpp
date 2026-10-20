@@ -916,8 +916,8 @@ void MonoScopeAgent::notifyCursor()
 	QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-	ts.setf( QTextStream::fixed );
-	ts.precision( 3 );
+	ts.setRealNumberNotation( QTextStream::FixedNotation );
+	ts.setRealNumberPrecision( 3 );
 
 	ts <<  "Cursor:  ";
 
@@ -939,8 +939,8 @@ void MonoScopeAgent::notifyCursor()
 			val = ( (Spectrum*)d_back )->getAt( d_cursor, d_folding, d_folding );
 		else
 			val = d_spec->getAt( d_cursor, d_folding, d_folding );
-		ts.setf( QTextStream::showpos );
-		ts.precision( 0 );
+		ts.setNumberFlags( QTextStream::ForceSign );
+		ts.setRealNumberPrecision( 0 );
 		ts << "Level=" << val;
 	}catch( ... )
 	{
@@ -952,7 +952,7 @@ void MonoScopeAgent::notifyCursor()
 		ts << ",  ";
 		ts << tmp.data();
 	}
-	Lexi::ShowStatusMessage msg( str );
+	Lexi::ShowStatusMessage msg( str.toLatin1().constData() );
 	traverseUp( msg );
 }
 
@@ -1060,7 +1060,7 @@ void MonoScopeAgent::handleSetResolution(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	int res	= QInputDialog::getInteger( "Set Resolution", 
 		"Please	enter the minimal number of pixels per sample:", 
 		d_resol, 1, 20, 1,	&ok, MW );
@@ -1547,7 +1547,7 @@ void MonoScopeAgent::handleForceLabel(Action & a)
 	ACTION_ENABLED_IF( a, !d_peaks.isNull() && d_plane.d_peaks->getSel().size() == 1 );
 
 	Root::Index peak = *d_plane.d_peaks->getSel().begin();
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res	= QInputDialog::getText( "Force Peak Label", 
 		"Please	enter a label:", QLineEdit::Normal, 
 		d_pp->getTag( peak ).data(), &ok, MW );
@@ -2032,7 +2032,7 @@ void MonoScopeAgent::handleSetDepth(Action & a)
 	float g;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		QString res;
 		res.sprintf( "%f", d_spec->getPeakWidth( DimZ ) );
 		res	= QInputDialog::getText( "Set Peak Depth", 
@@ -2060,7 +2060,7 @@ void MonoScopeAgent::handleOverlayCount(Action & a)
 	Root::Index c;
 	if( a.getParam( 0 ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		c = QInputDialog::getInteger( "Set Overlay Count", 
 			"Please	enter a positive number:", 
 			d_plane.d_ol.size(), 1, 9, 1, &ok, MW );
@@ -2323,7 +2323,7 @@ void MonoScopeAgent::handleComposeLayers(Action & a)
 			l.push_back( d_plane.d_ol[i].d_spec->getId() );
 	pl->setSpecs( l );
 	SpecBatchList dlg( MW, pl, d_pro );
-	dlg.setCaption( "Compose Layers" );
+	dlg.setWindowTitle( "Compose Layers" );
 	if( dlg.doit() && !pl->getSpecs().empty() )
 	{
 		const PeakList::SpecList& s = pl->getSpecs();

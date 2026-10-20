@@ -167,9 +167,9 @@ ProposeSpinDlg::ProposeSpinDlg( QWidget* p, Spec::Project* pro, Spec::AtomType t
 	LuaProposeSpinDlg::install( Lua::Engine::inst()->getCtx() );
 
 	if( title.isEmpty() )
-		setCaption( "Select Spin" );
+		setWindowTitle( "Select Spin" );
 	else
-		setCaption( title );
+		setWindowTitle( title );
 	setModal( true );
 
 	Q3VBoxLayout* top = new Q3VBoxLayout( this, 10);
@@ -212,7 +212,7 @@ ProposeSpinDlg::ProposeSpinDlg( QWidget* p, Spec::Project* pro, Spec::AtomType t
 	top->addLayout( buttons );
 }
 
-bool ProposeSpinDlg::exec()
+int ProposeSpinDlg::exec()
 {
 	d_okHook = false;
 	const int cur = d_cbo->findText( s_script.data() );
@@ -223,14 +223,14 @@ bool ProposeSpinDlg::exec()
 	}else
 		d_cbo->setCurrentIndex( cur );
 	if( QDialog::exec() != QDialog::Accepted )
-		return false;
+		return QDialog::Rejected;
 
 	if( d_okHook && d_lv->selectedItem() != 0 )
 	{
 		runSpinFilter( true );
 	}
 
-	return d_lv->selectedItem() != 0; 
+	return d_lv->selectedItem() != 0 ? QDialog::Accepted : QDialog::Rejected; 
 }
 
 void ProposeSpinDlg::runSpinFilter( bool okHook )

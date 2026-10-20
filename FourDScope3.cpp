@@ -624,7 +624,7 @@ void FourDScope3::setCursor( PpmPoint p)
 
 void FourDScope3::planeAreaUpdated(ViewAreaMdl3::UpdRange *msg)
 {
-    // In Plane wurde Ausschnitt geï¿½dert
+    // In Plane wurde Ausschnitt geändert
     PpmCube cube;
     cube.assign( 2, PpmRange() );
     cube[ DimX ] = d_plane->getPlaneViewer()->getArea()->getRange( DimX );
@@ -886,7 +886,7 @@ void FourDScope3::pickSpin(Dimension d, Spin *other, SpinSystem *owner)
     // 26.6.05: immer anzeigen if( !d_src2D->showNulls() )
     {
         SpinLabelSet ly = d_spec2D->getType()->getLabels( d_spec2D->mapToType( d ) );
-            // Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthï¿½t.
+            // Ich lasse das vorerst so, da nicht sicher ist, ob Inference Keys enthält.
 
         NmrExperiment* e = d_pro->getRepository()->getTypes()->
 			inferExperiment2( d_spec2D->getType(), owner, d_spec2D );
@@ -984,8 +984,8 @@ void FourDScope3::notifyCursor(bool plane)
     QString str;
     QTextStream ts( &str, QIODevice::WriteOnly );
 
-    ts.setf( QTextStream::fixed );
-    ts.precision( 3 ); // drei Stellen
+    ts.setRealNumberNotation( QTextStream::FixedNotation );
+    ts.setRealNumberPrecision( 3 ); // drei Stellen
 
     ts <<  "Cursor:  ";
 
@@ -1015,8 +1015,8 @@ void FourDScope3::notifyCursor(bool plane)
             val = getSpec()->getAt( p, d_plane->getFolding(), d_plane->getFolding() );
         }else
             val = d_spec4D->getAt( d_pointMdl->getPpmPoint(DimCount), d_ortho->getFolding(), d_ortho->getFolding() );
-        ts.setf( QTextStream::showpos );
-        ts.precision( 0 );
+        ts.setNumberFlags( QTextStream::ForceSign );
+        ts.setRealNumberPrecision( 0 );
         ts << "Level=" << val;
     }catch( ... )
     {
@@ -1398,7 +1398,7 @@ void FourDScope3::handleLabelPeak()
     SpinLabel y = tuple[ DimY ]->getLabel();
     SpinLabelSet lx = spec->getType()->getLabels( spec->mapToType( DimX ) );
     SpinLabelSet ly = spec->getType()->getLabels( spec->mapToType( DimY ) );
-        // lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglï¿½st,
+        // lx/y soll vorerst alle statischen Labels auch sehen. Wenn man das weglöst,
         // verschwinden zur Zeit noch CB aus der Liste von HNCACB von Freds Template.
         // Zu grosse Auswirkungen auf bestehende Projekte.
     NmrExperiment* e;
@@ -1780,7 +1780,7 @@ void FourDScope3::handleProposeHori()
     // TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
     // TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-    if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulï¿½sig wegen Diagonaler
+    if( ref->findLink( dlg.getSpin() ) == 0 )	// Ref == target zulässig wegen Diagonaler
     {
         Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() );
         cmd->handle( getAgent() );
@@ -1810,7 +1810,7 @@ void FourDScope3::handleProposeVerti()
     // TODO: wenn target kein SpinSystem hat, dann ins ref einfgen.
     // TODO: wenn target und ref System haben, einen SysLink vorschlagen (Seite?)
 
-    if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+    if( ref->findLink( dlg.getSpin() ) == 0 ) // Ref == target zulässig wegen Diagonaler
     {
         Root::Ref<LinkSpinCmd> cmd = new LinkSpinCmd( d_pro->getSpins(), ref, dlg.getSpin() );
         cmd->handle( getAgent() );
@@ -1867,7 +1867,7 @@ void FourDScope3::handleProposePeak()
             l1, l2, "Select Matching Spins" );
         if( res.empty() )
             return;
-        if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulï¿½sig wegen Diagonaler
+        if( res[DimX]->findLink( res[DimY] ) == 0 ) // Ref == target zulässig wegen Diagonaler
             cmd->add( new LinkSpinCmd( d_pro->getSpins(), res[DimX], res[DimY] ) );
     }
 
@@ -2287,7 +2287,7 @@ void FourDScope3::handleGotoSystem()
     QString id;
     if( a->property( "0" ).isNull() )
     {
-        bool ok	= FALSE;
+        bool ok	= false;
         id	= QInputDialog::getText( "Goto System",
             "Please	enter a spin system id:", QLineEdit::Normal, "", &ok, this );
         if( !ok )
@@ -2553,7 +2553,7 @@ void FourDScope3::handleGotoSpin()
     QString id;
     if( a->property( "0" ).isNull() )
     {
-        bool ok	= FALSE;
+        bool ok	= false;
         id	= QInputDialog::getText( "Goto Peak",
             "Please	enter a spin system id:",QLineEdit::Normal, "", &ok, this );
         if( !ok )
@@ -2832,7 +2832,7 @@ void FourDScope3::handleLabelPlPeak()
     ENABLED_IF( d_pl && d_plane->getPeakView()->getSel().size() == 1 );
 
     Root::Index peak = ( *d_plane->getPeakView()->getSel().begin() );
-    bool ok	= FALSE;
+    bool ok	= false;
     QString res	= QInputDialog::getText( "Set Peak Label",
         "Please	enter a label:", QLineEdit::Normal, d_pl->getTag( peak ).data(), &ok, this );
     if( !ok )
@@ -2895,14 +2895,14 @@ void FourDScope3::handleDeleteAliasPeak()
         if( test.count( (*p)[ DimX ] ) == 0 )
         {
             cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimX ],
-            (*p)[ DimX ]->getShift(), // auf Home schieben lï¿½cht Alias
+            (*p)[ DimX ]->getShift(), // auf Home schieben löscht Alias
             getSpec2() ) );
             test.insert( (*p)[ DimX ] );
         }
         if( test.count( (*p)[ DimY ] ) == 0 )
         {
             cmd->add( new MoveSpinCmd( d_pro->getSpins(), (*p)[ DimY ],
-            (*p)[ DimY ]->getShift(), // auf Home schieben lï¿½cht Alias
+            (*p)[ DimY ]->getShift(), // auf Home schieben löscht Alias
             getSpec2() ) );
             test.insert( (*p)[ DimY ] );
         }
@@ -2918,7 +2918,7 @@ void FourDScope3::handleGotoPlPeak()
     Root::Index id;
     if( a->property( "0" ).isNull() )
     {
-        bool ok	= FALSE;
+        bool ok	= false;
         id	= QInputDialog::getInteger( "Goto Peak",
             "Please	enter peak id:",
             0, -999999, 999999, 1, &ok, this );
@@ -2948,7 +2948,7 @@ void FourDScope3::updateCaption()
 {
 	QString str;
 	str.sprintf( "FourDScope - %s", getSpec()->getName() );
-    setCaption( str );
+    setWindowTitle( str );
 }
 
 void FourDScope3::buildMenus()
@@ -3424,7 +3424,7 @@ void FourDScope3::handleExportPlanePeaks()
 		return;
 
 	QFileInfo info( fileName );
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -3434,11 +3434,11 @@ void FourDScope3::handleExportPlanePeaks()
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		Root::Ref<PointSet> ps = createPlanePeaks();
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -3519,7 +3519,7 @@ void FourDScope3::handleExportOrthoPeaks()
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "PEAKS" )
+	if( info.suffix().toUpper() != "PEAKS" )
 		fileName += ".peaks";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -3529,13 +3529,13 @@ void FourDScope3::handleExportOrthoPeaks()
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 	try
 	{
 		Root::Ref<PointSet> ps = createStripPeaks();
 		if( ps.isNull() )
 			throw Root::Exception( "Cannot create Peaklist" );
-		ps->saveToFile( fileName.toAscii().data() );
+		ps->saveToFile( fileName.toLatin1().data() );
 	}catch( Root::Exception& e )
 	{
 		Root::ReportToUser::alert( this, "Error Exporting Peaklist", e.what() );
@@ -3603,7 +3603,7 @@ void FourDScope3::handleGotoResidue()
     Root::Index id;
     if( a->property( "0" ).isNull() )
 	{
-		bool ok	= FALSE;
+		bool ok	= false;
 		id	= QInputDialog::getInteger( "Goto Residue", 
 			"Please	enter a residue number:", 
             0, -999999, 999999, 1, &ok, this );

@@ -2,24 +2,21 @@
 CARA is a software application for the analysis of NMR spectra and computer aided resonance assignment which is particularly suited for biomacromolecules. Dedicated tools for backbone assignment, side chain assignment, and peak integration support the entire process of structure determination.
 For more information about CARA please refer to the official website at http://cara.nmr.ch.
 
+NOTE: This is the Qt5 branch which includes a minimal Qt3 compatibility layer (a subset of the one in Qt4) on top of Qt5. I hope for community tests so some day it will replace the
+official release; send me feedback to the issue tracker or my email.
+
 ## Download and Installation
-CARA is deployed as a compressed single-file executable for all major platforms. See http://cara.nmr.ch/doku.php/cara_downloads. The executable is built from the source code accessible here. Of course you can build the executable yourself if you want (see below for instructions). Since CARA is a single executable, it can just be downloaded and unpacked. No installation is necessary. You therefore need no special privileges to run CARA on your machine. 
+
+NOTE: For this Qt5 branch there are no precompiled versions so far. If you need one or have problems building CARA yourself, post an issue.
+
+See http://cara.nmr.ch/doku.php/cara_downloads for other precompiled versions.
 
 ## How to Build CARA
 
 ### Preconditions
-CARA requires Qt4.x. Our single-file executables are static builds based on Qt 4.4.3. But CARA compiles also well with the Qt 4.8 series. It does not yet compile with Qt 5 due to the missing Qt3 support library still in use by CARA. Please also note that we didn't try yet to do 64 bit compilations. If you intend to try it we're interested in the results.
-
-You can download the Qt 4.4.3 source tree from here: http://download.qt.io/archive/qt/4.4/qt-all-opensource-src-4.4.3.tar.gz
+This CARA version requires Qt5. It is supposed to compile and run on both 32 and 64 bit systems.
 
 The source tree also includes documentation and build instructions.
-
-If you intend to do static builds on Windows without dependency on C++ runtime libs and manifest complications, follow the recommendations in this post: http://www.archivum.info/qt-interest@trolltech.com/2007-02/00039/Fed-up-with-Windows-runtime-DLLs-and-manifest-files-Here's-a-solution.html
-
-Here is the summary on how to do independent Qt Win32 static builds:
-1. in Qt/mkspecs/win32-msvc2005/qmake.conf replace MD with MT and MDd with MTd
-2. in Qt/mkspecs/features clear the content of the two embed_manifest_*.prf files (but don't delete the files)
-3. run configure -release -static -platform win32-msvc2005
 
 ### Build Steps
 Follow these steps if you inted to build CARA yourself (don't forget to meet the preconditions before you start):

@@ -186,7 +186,7 @@ void SystemTypeView::handleNewType(Root::Action & a)
 		"Please select a unique name:", QLineEdit::Normal, "", &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 	if( res.isEmpty() )
 	{
 		QMessageBox::critical( this, "New Spin System Type", 
@@ -233,7 +233,7 @@ void SystemTypeView::handleRenameType(Root::Action & a)
 		"Please choose a new unique name:", QLineEdit::Normal, item->getSt()->getName().data(), &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 	if( res.isEmpty() )
 	{
 		QMessageBox::critical( this, "Rename Spin System Type", 
@@ -286,7 +286,7 @@ void SystemTypeView::handleSetModel(Root::Action & a)
 	}
 	l.sort();
 	if( item->getSt()->getRt() )
-		cur = l.findIndex( item->getSt()->getRt()->getShort().data() );
+		cur = l.indexOf( item->getSt()->getRt()->getShort().data() );
 
 	bool ok;
 	QString res = QInputDialog::getItem( "Set Model", "Select a residue type:", 
@@ -321,7 +321,7 @@ void SystemTypeView::handleSetGeneric(Root::Action & a)
 	}
 	l.sort();
 	if( item->getSt()->getGenSys() )
-		cur = l.findIndex( item->getSt()->getGenSys()->getShort().data() );
+		cur = l.indexOf( item->getSt()->getGenSys()->getShort().data() );
 
 	bool ok;
 	QString res = QInputDialog::getItem( "Set Generic Neighbors", "Select a residue type:", 
@@ -370,7 +370,7 @@ void SystemTypeView::handleSetClass(Root::Action & a)
 		"Please enter an arbitrary name:", QLineEdit::Normal, item->getSt()->getClass().data(), &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 	d_rep->getTypes()->setClass( item->getSt(), res.toLatin1() );
 }
 

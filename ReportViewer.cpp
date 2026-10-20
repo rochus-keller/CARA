@@ -676,7 +676,7 @@ ReportViewer::ReportViewer(Root::Agent* a,const Dlg::ContourParams& p,
 	if( !g_bgClr.isValid() )
 		g_bgClr = ( Qt::white );
 
-	setCaption( "CARA Print Preview" );
+	setWindowTitle( "CARA Print Preview" );
 
 	d_focus = new FocusManager( nil, true );
 
@@ -1207,7 +1207,7 @@ void ReportViewer::handleFilePrint(Action& a)
 	// print.setOutputFormat(QPrinter::NativeFormat);
 	// Wenn man das hier explizit setzt, strzt es immer.
 #else
-    print.setOutputFormat(QPrinter::PostScriptFormat);
+    print.setOutputFormat(QPrinter::PdfFormat);
 #endif
     // Strzt print.setOutputFileName("*.ps");
 
@@ -1650,7 +1650,7 @@ void ReportViewer::handleCenterColor(Action & a)
 void ReportViewer::handleLinkAdd(Action & a)
 {
 	ACTION_ENABLED_IF( a, d_legende );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res	= QInputDialog::getText( "Add Link for Label", 
 		"Please	enter a label:", QLineEdit::Normal, 
 		"", &ok, this );
@@ -1772,7 +1772,7 @@ void ReportViewer::handleSaveSettings(Action & a)
 
 	QFileInfo info( fileName );
 
-	if( info.extension( false ).upper() != "INI" )
+	if( info.suffix().toUpper() != "INI" )
 		fileName += ".ini";
 	info.setFile( fileName );
 	if( info.exists() )
@@ -1782,7 +1782,7 @@ void ReportViewer::handleSaveSettings(Action & a)
 			"&OK", "&Cancel" ) != 0 )
 			return;
 	}
-	Root::AppAgent::setCurrentDir( info.dirPath( true ) );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	try
 	{
@@ -1936,12 +1936,12 @@ void ReportViewer::handleTitleColor(Action & a)
 void ReportViewer::handleTitleText(Action & a)
 {
 	ACTION_ENABLED_IF( a, d_title );
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res	= QInputDialog::getText( "Set Title", 
 		"Please	enter a text:", QLineEdit::Normal, d_titleText.data(), &ok, this );
 	if( !ok )
 		return;
-	res = res.stripWhiteSpace();
+	res = res.trimmed();
 	d_sup->d_showTitle = !res.isEmpty();
 	d_titleText = res.toLatin1();
 	setTitle();
@@ -1979,7 +1979,7 @@ void ReportViewer::handleAutoGain(Action & a)
 {
 	ACTION_ENABLED_IF( a, true );
 
-	bool ok	= FALSE;
+	bool ok	= false;
 	QString res;
 	res.sprintf( "%0.2f", d_gain );
 	res	= QInputDialog::getText( "Set Auto Gain", 
@@ -2053,7 +2053,7 @@ void ReportViewer::handleExportPdf(Action& a)
 	if( info.suffix().toUpper() != "PDF" )
 		fileName += ".pdf";
 	info.setFile( fileName );
-	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1() );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	Root::Ref<Glyph> tmp = d_focus->getBody();
 	d_focus->setBody( nil );
@@ -2093,7 +2093,7 @@ void ReportViewer::handleExportSvg(Action& a)
 	if( info.suffix().toUpper() != "SVG" )
 		fileName += ".svg";
 	info.setFile( fileName );
-	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1() );
+	Root::AppAgent::setCurrentDir( info.absolutePath().toLatin1().constData() );
 
 	Root::Ref<Glyph> tmp = d_focus->getBody();
 	d_focus->setBody( nil );
